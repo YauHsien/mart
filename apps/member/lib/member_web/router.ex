@@ -1,29 +1,17 @@
 defmodule M.MemberWeb.Router do
   use M.MemberWeb, :router
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {M.MemberWeb.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/", M.MemberWeb do
-    pipe_through :browser
+  scope "/api", M.MemberWeb do
+    pipe_through :api
 
-    get "/", PageController, :index
+    post "/tokens", TokenController, :login
+    post "/tokens/:token", TokenController, :login
+    get "/validations/:token", ValidationController, :validate
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", M.MemberWeb do
-  #   pipe_through :api
-  # end
 
   # Enables LiveDashboard only for development
   #
@@ -36,7 +24,7 @@ defmodule M.MemberWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through :api
 
       live_dashboard "/dashboard", metrics: M.MemberWeb.Telemetry
     end
@@ -48,7 +36,7 @@ defmodule M.MemberWeb.Router do
   # node running the Phoenix server.
   if Mix.env() == :dev do
     scope "/dev" do
-      pipe_through :browser
+      pipe_through :api
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
