@@ -7,6 +7,10 @@
 # General application configuration
 import Config
 
+config :member, :server_security,
+  public_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem.pub", "321@mart@321")),
+  private_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem", "321@mart@321"))
+
 config :member,
   namespace: M.Member,
   ecto_repos: [M.Member.Repo]
