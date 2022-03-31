@@ -34,6 +34,7 @@ defmodule M.Member.MixProject do
   defp deps do
     [
       {:ex_crypto, "~> 0.10.0"},
+      {:timex, "~> 3.7.7"},
       {:phoenix, "~> 1.6.6"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
@@ -49,7 +50,8 @@ defmodule M.Member.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:plug_crypto, "~> 1.2.2"}
     ]
   end
 
