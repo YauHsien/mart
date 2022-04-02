@@ -57,6 +57,7 @@ defmodule M.Member.User.Account do
     |> Password.maybe_change_password()
     |> reset_expiring_time()
     |> validate_required([:username, :password, :salt, :password_changed_when])
+    |> unique_constraint(:username, name: :uk_username)
   end
 
   @spec reset_expiring_time(Ecto.Changeset.t()) :: Ecto.Changeset.t()

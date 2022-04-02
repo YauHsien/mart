@@ -14,8 +14,9 @@ defmodule M.MemberWeb.TokenController do
     conn
     |> send_resp(200, Repo.create(username, password) |> then(&(
         case &1 do
-          {:ok, %{user_account: user_account}} -> Jason.encode!(user_account)
-          error -> Jason.encode!(error)
+          {:ok, %{user_account: user_account}} -> Jason.encode!(%{ status: :ok, result: user_account })
+          {:error, :user_account, %Ecto.Changeset{errors: [username: {reason, [constraint: constraint, constraint_name: constraint_name]}]}, _map} ->
+            Jason.encode!(%{ status: :error, description: "username #{reason}: #{constraint} #{constraint_name}" })
         end)) )
   end
 
