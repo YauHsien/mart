@@ -6,6 +6,7 @@ defmodule M.Member.User.Account do
   alias M.Member.Session.Timespan
   alias Plug.Crypto
 
+  @derive {Jason.Encoder, only: [:username, :salt, :password_changed_when, :user_token, :expired_when]}
   schema "user_accounts" do
     field :password_changed_when, :naive_datetime
     field :expired_when, :naive_datetime
@@ -23,6 +24,13 @@ defmodule M.Member.User.Account do
 
   @doc """
   更改使用者欄位
+
+  - :username
+  - :password
+  - :salt
+  - (:password_changed_when)
+  - :user_token
+  - (:expired_when)
 
   # 更改密碼，並變更 session 期限
 

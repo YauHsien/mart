@@ -33,6 +33,7 @@ defmodule M.Member.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:uuid, "~> 1.1"},
       {:ex_crypto, "~> 0.10.0"},
       {:timex, "~> 3.7.7"},
       {:phoenix, "~> 1.6.6"},

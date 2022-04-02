@@ -8,6 +8,8 @@ defmodule M.MemberWeb.Router do
   scope "/api", M.MemberWeb do
     pipe_through :api
 
+    get "/members", TokenController, :users
+    post "/memberships", TokenController, :signup
     post "/tokens", TokenController, :login
     post "/tokens/:token", TokenController, :login
     get "/validations/:token", ValidationController, :validate

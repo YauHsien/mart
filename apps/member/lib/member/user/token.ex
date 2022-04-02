@@ -2,6 +2,7 @@ defmodule M.Member.User.Token do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:user_token, :expired_when]}
   schema "user_tokens" do
     field :expired_when, :naive_datetime
     field :user_token, :string
