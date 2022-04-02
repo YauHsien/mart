@@ -32,3 +32,5 @@ member-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Emacs ~undo-tree~
+*.~undo-tree~

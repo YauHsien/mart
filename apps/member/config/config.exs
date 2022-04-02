@@ -13,7 +13,8 @@ config :member, :server_security,
 
 config :member,
   namespace: M.Member,
-  ecto_repos: [M.Member.Repo]
+  ecto_repos: [M.Member.Repo],
+  session_timespan: {1, :day}
 
 # Configures the endpoint
 config :member, M.MemberWeb.Endpoint,

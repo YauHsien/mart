@@ -1,11 +1,10 @@
 defmodule M.Member.User.Account do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Ecto.Changeset
   alias M.Member.User.Account
-  alias M.Member.User.Token
+  alias M.Member.User.Account.Password
+  alias M.Member.Session.Timespan
   alias Plug.Crypto
-  alias Timex.Timezone
 
   schema "user_accounts" do
     field :password_changed_when, :naive_datetime
@@ -25,7 +24,7 @@ defmodule M.Member.User.Account do
   @doc """
   更改使用者欄位
 
-  # 更改密碼
+  # 更改密碼，並變更 session 期限
 
   iex> alias M.Member.User.Account
   ...> alias Ecto.Changeset
@@ -39,49 +38,33 @@ defmodule M.Member.User.Account do
   {:error, :invalid}
   iex> nil == Changeset.get_change(changeset, :password_changed_when)
   false
+  iex> nil == Changeset.get_change(changeset, :expired_when)
+  false
 
   """
   def changeset(account, attrs) do
     account
     |> cast(attrs, [:username, :password, :salt, :password_changed_when, :user_token, :expired_when])
     |> cast_assoc(:user_tokens)
-    |> maybe_change_password()
+    |> Password.maybe_change_password()
+    |> reset_expiring_time()
     |> validate_required([:username, :password, :salt, :password_changed_when])
   end
 
-  defp maybe_change_password(changeset) do
+  @spec reset_expiring_time(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  defp reset_expiring_time(changeset) do
+    expired_when =
+      Timespan.to_datetime(after: Application.fetch_env!(:member,:session_timespan))
     changeset
-    |> Changeset.get_change(:password)
-    |> maybe_change_password_in(changeset)
-  end
-
-  defp maybe_change_password_in(nil, changeset), do: changeset
-  defp maybe_change_password_in(password0, changeset) do
-    changeset
-    |> Changeset.get_field(:salt)
-    |> maybe_change_password(password0, in: changeset)
-  end
-
-  defp maybe_change_password(nil, _password, in: changeset), do: changeset # 無效資料，不處理。
-  defp maybe_change_password(salt, password0, in: changeset) do
-    changeset
-    |> Changeset.get_field(:username)
-    |> maybe_change_password(password0, salt, in: changeset)
-  end
-
-  defp maybe_change_password(nil, _password, _salt, in: changeset), do: changeset # 無效資料，不處理。
-  defp maybe_change_password(username, password0, salt, in: changeset) do
-    password = Crypto.sign(password0, salt, username)
-    password_changed_when = DateTime.now!(Timezone.local.full_name)
-    changeset
-    |> cast(%{password: password, password_changed_when: password_changed_when}, [:password, :password_changed_when])
+    |> cast(%{expired_when: expired_when}, [:expired_when])
   end
 
   @doc """
   verify/2 檢查帳號名稱與密碼匹配。
 
   iex> alias M.Member.User.Account
-  ...> account = %Account { password: "SFMyNTY.g2gDbQAAAAhKb2huIERvZW4GABsUB-F_AWIAAVGA.cM88H94lay0U08xa12_mQk8_CtzYtsxbV5sxmxOd2IY", salt: "salt", username: "John Doe" }
+  ...> alias Plug.Crypto
+  ...> account = %Account { password: Crypto.sign("password","salt","John Doe"), salt: "salt", username: "John Doe" }
   ...> Account.verify(account, "password")
   {:ok, "John Doe"}
   iex> Account.verify(account, "password0")
@@ -98,7 +81,8 @@ defmodule M.Member.User.Account do
   verify!/2 檢查帳號名稱與密碼匹配。
 
   iex> alias M.Member.User.Account
-  ...> account = %Account { password: "SFMyNTY.g2gDbQAAAAhKb2huIERvZW4GABsUB-F_AWIAAVGA.cM88H94lay0U08xa12_mQk8_CtzYtsxbV5sxmxOd2IY", salt: "salt", username: "John Doe" }
+  ...> alias Plug.Crypto
+  ...> account = %Account { password: Crypto.sign("password","salt","John Doe"), salt: "salt", username: "John Doe" }
   ...> Account.verify!(account, "password")
   true
   iex> Account.verify!(account, "password0")
