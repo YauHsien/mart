@@ -7,14 +7,13 @@
 # General application configuration
 import Config
 
-config :member, :server_security,
-  public_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem.pub", "321@mart@321")),
-  private_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem", "321@mart@321"))
-
 config :member,
   namespace: M.Member,
   ecto_repos: [M.Member.Repo],
   session_timespan: {1, :day}
+
+config :member, :distribution,
+  peer_nodes: []
 
 # Configures the endpoint
 config :member, M.MemberWeb.Endpoint,
@@ -31,6 +30,10 @@ config :member, M.MemberWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :member, M.Member.Mailer, adapter: Swoosh.Adapters.Local
+
+config :member, :server_security,
+  public_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem.pub", "321@mart@321")),
+  private_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem", "321@mart@321"))
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
