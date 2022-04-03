@@ -4,9 +4,11 @@ defmodule M.Member.Repo do
     adapter: Ecto.Adapters.Postgres
   import Ecto.Query
   alias Ecto.Multi
+  alias M.Member, as: App
   alias M.Member.Repo
   alias M.Member.User.Account
   alias M.Member.User.Token
+  alias Timex.Timezone
   alias UUID
 
   def user_accounts() do
@@ -18,9 +20,9 @@ defmodule M.Member.Repo do
   @spec create(any, any) :: Ecto.Multi.t()
   def create(username, password) do
     salt =
-      UUID.uuid5(:nil, "password salt")
+      UUID.uuid5(:nil, "password salt:"|>App.get_uuid())
     user_token =
-      UUID.uuid5(:nil, "user_token")
+      UUID.uuid5(:nil, "user token:"|>App.get_uuid())
     Multi.new()
     |> Multi.insert(:user_account, %{
           username: username,
