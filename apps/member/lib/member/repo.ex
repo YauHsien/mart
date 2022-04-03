@@ -7,9 +7,8 @@ defmodule M.Member.Repo do
   alias Ecto.Multi
   alias M.Member, as: App
   alias M.Member.Repo
-  alias M.Member.Session.Timespan
   alias M.Member.User.Account
-  alias M.Member.User.Token
+  alias NaiveDateTime
   alias UUID
 
   def user_accounts() do
@@ -39,11 +38,21 @@ defmodule M.Member.Repo do
     |> Repo.transaction()
   end
 
-  def signin(token) do
-    #from(a in Account, where: a.user_token == ^token)
-    #|> Repo.all()
-    #Repo.update
-    nil
+  @spec maybe_update(token0::String.t()) :: {:ok, token::String.t(), expired_when::String.t()} | {:error, issue::String.t()}
+  def maybe_update(token) do
+    case from(a in Account, where: a.user_token == ^token)
+    |> Repo.one() do
+      nil ->
+        nil
+      account ->
+        if NaiveDateTime.compare(Map.get(account,:expired_when), NaiveDateTime.local_now()) == :lt do
+          account
+          |> change_user_token()
+          |> then(&( {:ok,Map.get(&1,:user_token),Map.get(&1,:expired_when)} ))
+        else
+          {:ok, Map.get(account,:user_token), Map.get(account,:expired_when)}
+        end
+    end
   end
 
   @spec signin(username::String.t(), password::String.t()) :: {:ok,%Account{}} | {:error,:failed}
@@ -57,17 +66,24 @@ defmodule M.Member.Repo do
           false ->
             {:error, :failed}
           true ->
-            user_token =
-              UUID.uuid5(:nil, "user token:"|>App.get_uuid())
-            Multi.new()
-            |> Multi.update(:user_account, Account.changeset(account,%{user_token: user_token}))
-            |> Multi.insert(:user_token, fn %{user_account: account} ->
-              Ecto.build_assoc(account, :user_tokens, user_token: account.user_token, expired_when: account.expired_when)
-            end)
-            |> Repo.transaction()
-            |> then(&( {:ok, elem(&1,1)|>Map.get(:user_account)} ))
+            account
+            |> change_user_token()
         end
     end
+  end
+
+  @spec change_user_token(account0::%Account{}) :: (account::%Account{})
+  defp change_user_token(account) do
+    user_token =
+      UUID.uuid5(:nil, "user token:"|>App.get_uuid())
+    Multi.new()
+    |> Multi.update(:user_account, Account.changeset(account,%{user_token: user_token}))
+    |> Multi.insert(:user_token, fn %{user_account: account} ->
+      Ecto.build_assoc(account, :user_tokens, user_token: account.user_token, expired_when: account.expired_when)
+    end)
+    |> Repo.transaction()
+    |> elem(1)
+    |> Map.get(:user_account)
   end
 
   def verify(token) do

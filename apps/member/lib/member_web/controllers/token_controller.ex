@@ -3,8 +3,6 @@ defmodule M.MemberWeb.TokenController do
   import Plug.Conn
   alias Jason
   alias M.Member.Repo
-  alias M.Member.User.Account
-  alias Map
 
   def users(conn, _params) do
     conn
@@ -21,9 +19,15 @@ defmodule M.MemberWeb.TokenController do
         end)) )
   end
 
-  def login(conn, %{"token" => token}) do
+  def maybe_update_token(conn, %{"token" => token}) do
     conn
-    |> text(Repo.signin(token))
+    |> send_resp(200, Repo.maybe_update(token) |> then(&(
+        case &1 do
+          {:ok, token, expired_when} ->
+            Jason.encode!(%{ status: :ok, token: token, expired_when: expired_when })
+          {:error, issue} ->
+            Jason.encode!(%{ status: :error, description: issue })
+        end)))
   end
 
   def signin_by_username(conn, %{"username" => username, "password" => password}) do
