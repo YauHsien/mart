@@ -3,12 +3,12 @@ defmodule M.Member.Repo do
     otp_app: :member,
     adapter: Ecto.Adapters.Postgres
   import Ecto.Query
+  alias Ecto
   alias Ecto.Multi
   alias M.Member, as: App
   alias M.Member.Repo
   alias M.Member.User.Account
   alias M.Member.User.Token
-  alias Timex.Timezone
   alias UUID
 
   def user_accounts() do
@@ -32,6 +32,9 @@ defmodule M.Member.Repo do
                     }
                     |> then(&(Account.changeset(%Account{}, &1)))
     )
+    |> Multi.insert(:user_token, fn %{user_account: account} ->
+      Ecto.build_assoc(account, :user_tokens, user_token: account.user_token, expired_when: account.expired_when)
+    end)
     |> Repo.transaction()
   end
 
