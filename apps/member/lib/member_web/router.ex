@@ -10,7 +10,7 @@ defmodule M.MemberWeb.Router do
 
     get "/members", TokenController, :users
     post "/memberships", TokenController, :signup
-    post "/tokens", TokenController, :login
+    post "/tokens", TokenController, :signin_by_username
     post "/tokens/:token", TokenController, :login
     get "/validations/:token", ValidationController, :validate
   end

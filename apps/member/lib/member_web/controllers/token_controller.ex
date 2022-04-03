@@ -4,6 +4,7 @@ defmodule M.MemberWeb.TokenController do
   alias Jason
   alias M.Member.Repo
   alias M.Member.User.Account
+  alias Map
 
   def users(conn, _params) do
     conn
@@ -25,8 +26,14 @@ defmodule M.MemberWeb.TokenController do
     |> text(Repo.signin(token))
   end
 
-  def login(conn, %{"username" => username, "password" => password}) do
+  def signin_by_username(conn, %{"username" => username, "password" => password}) do
     conn
-    |> text(Repo.signin(username, password))
+    |> send_resp(200, Repo.signin(username, password) |> then(&(
+        case &1 do
+          {:ok, user_account}->
+            Jason.encode!(%{ status: :ok, token: Map.get(user_account, :user_token), expired_when: Map.get(user_account, :expired_when) })
+          {:error, :failed} ->
+            Jason.encode!(%{ status: :error, description: "login failed with that username and password" })
+        end)))
   end
 end
