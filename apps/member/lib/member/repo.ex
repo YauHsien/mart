@@ -55,7 +55,7 @@ defmodule M.Member.Repo do
     end
   end
 
-  @spec signin(username::String.t(), password::String.t()) :: {:ok,%Account{}} | {:error,:failed}
+  @spec signin(username::String.t(), password::String.t()) :: {:ok,Account.t()} | {:error,:failed}
   def signin(username, password) do
     case from(a in Account, where: a.username == ^username)
     |> Repo.one() do
@@ -67,7 +67,7 @@ defmodule M.Member.Repo do
             {:error, :failed}
           true ->
             account
-            |> change_user_token()
+            |> then(&( {:ok, change_user_token(&1)} ))
         end
     end
   end

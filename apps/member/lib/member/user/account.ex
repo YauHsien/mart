@@ -99,8 +99,8 @@ defmodule M.Member.User.Account do
 
   """
   @spec verify!(%Account{}, password :: String.t()) :: boolean()
-  def verify!(%Account{username: username} = account, password) do
+  def verify!(%Account{username: _username} = account, password) do
     verify(account, password)
-    |> then(&(&1 == {:ok,username}))
+    |> then(&(&1 !== {:error,:invalid}))
   end
 end

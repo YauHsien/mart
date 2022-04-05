@@ -16,10 +16,12 @@ defmodule M.Member.Application do
       M.MemberWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: M.Member.PubSub},
+      {Registry, keys: :unique, name: M.Member.Registry},
       # Start the Endpoint (http/https)
-      M.MemberWeb.Endpoint
+      M.MemberWeb.Endpoint,
       # Start a worker by calling: M.Member.Worker.start_link(arg)
       # {M.Member.Worker, arg}
+      {M.Member.Session.Registry, id: M.Member.Session.Registry}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

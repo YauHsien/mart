@@ -3,6 +3,8 @@ defmodule M.MemberWeb.TokenController do
   import Plug.Conn
   alias Jason
   alias M.Member.Repo
+  alias M.Member.Session.Account
+  alias M.Member.Session.Registry
 
   def users(conn, _params) do
     conn
@@ -32,11 +34,12 @@ defmodule M.MemberWeb.TokenController do
 
   def signin_by_username(conn, %{"username" => username, "password" => password}) do
     conn
-    |> send_resp(200, Repo.signin(username, password) |> then(&(
+    |> send_resp(200, Registry.find_user_by_username(Registry, username, password) |> then(&(
         case &1 do
-          {:ok, user_account}->
-            Jason.encode!(%{ status: :ok, token: Map.get(user_account, :user_token), expired_when: Map.get(user_account, :expired_when) })
-          {:error, :failed} ->
+          {:ok, user_pid}->
+            token = Account.get_user_token(user_pid)
+            Jason.encode!(%{ status: :ok, token: elem(token,0), expired_when: elem(token,1) })
+          {:error, _reason} ->
             Jason.encode!(%{ status: :error, description: "login failed with that username and password" })
         end)))
   end
