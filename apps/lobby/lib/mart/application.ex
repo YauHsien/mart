@@ -12,10 +12,12 @@ defmodule M.Lobby.Application do
       M.LobbyWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: M.Lobby.PubSub},
+      {Registry, keys: :unique, name: M.Lobby.Registry},
       # Start the Endpoint (http/https)
-      M.LobbyWeb.Endpoint
+      M.LobbyWeb.Endpoint,
       # Start a worker by calling: M.Lobby.Worker.start_link(arg)
       # {M.Lobby.Worker, arg}
+      {M.Shop, name: :host, channel: M.Lobby.PubSub, registry: M.Lobby.Registry}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
