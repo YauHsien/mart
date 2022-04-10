@@ -1,5 +1,5 @@
 defmodule M.LobbyWeb.Controllers.PubSub.Receiver do
-	use GenServer, id: __MODULE__
+	use GenServer
 
 
   def start_link(args),

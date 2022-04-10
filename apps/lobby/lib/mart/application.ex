@@ -17,7 +17,7 @@ defmodule M.Lobby.Application do
       M.LobbyWeb.Endpoint,
       # Start a worker by calling: M.Lobby.Worker.start_link(arg)
       # {M.Lobby.Worker, arg}
-      {M.Shop, name: :host, channel: M.Lobby.PubSub, registry: M.Lobby.Registry},
+      {M.Shop, name: :host, channel: M.Lobby.PubSub},
       M.LobbyWeb.Controllers.PubSub.Receiver
     ]
 
