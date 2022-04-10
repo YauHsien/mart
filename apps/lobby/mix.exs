@@ -46,7 +46,8 @@ defmodule M.Lobby.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:shop, path: "../shop"}
+      {:mart_core, path: "../core"},
+      {:mart_shop, path: "../shop"}
     ]
   end
 
