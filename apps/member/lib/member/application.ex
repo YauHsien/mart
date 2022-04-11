@@ -40,7 +40,7 @@ defmodule M.Member.Application do
 
   def load_peer_nodes(:nonode@nohost), do: :ok
   def load_peer_nodes(_nodename) do
-    Application.fetch_env!(:member, :distribution)[:peer_nodes]
+    Application.fetch_env!(:mart_member, :distribution)[:peer_nodes]
     |> Enum.map(&(
         if false == Enum.member?(:erlang.nodes(), &1) do
           try do

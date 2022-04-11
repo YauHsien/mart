@@ -20,5 +20,5 @@ defmodule M.MemberWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :member
+  use Gettext, otp_app: :mart_member
 end

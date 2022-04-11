@@ -63,7 +63,7 @@ defmodule M.Member.User.Account do
   @spec reset_expiring_time(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp reset_expiring_time(changeset) do
     expired_when =
-      Timespan.to_datetime(after: Application.fetch_env!(:member,:session_timespan))
+      Timespan.to_datetime(after: Application.fetch_env!(:mart_member,:session_timespan))
     changeset
     |> cast(%{expired_when: expired_when}, [:expired_when])
   end

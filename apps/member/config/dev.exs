@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-config :member, M.Member.Repo,
+config :mart_member, M.Member.Repo,
   username: "m",
   password: "321@mart@321",
   hostname: "localhost",
@@ -15,7 +15,7 @@ config :member, M.Member.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :member, M.MemberWeb.Endpoint,
+config :mart_member, M.MemberWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4000],
@@ -53,7 +53,7 @@ config :member, M.MemberWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :member, M.MemberWeb.Endpoint,
+config :mart_member, M.MemberWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

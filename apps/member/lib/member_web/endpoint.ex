@@ -1,5 +1,5 @@
 defmodule M.MemberWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :member
+  use Phoenix.Endpoint, otp_app: :mart_member
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -28,7 +28,7 @@ defmodule M.MemberWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :member
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :mart_member
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

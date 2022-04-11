@@ -3,7 +3,7 @@ defmodule M.LobbyWeb.Controllers.PubSub.Receiver do
 
   @type t() :: __MODULE__
   @type action() ::
-  M.Shop.Resource.Action.t() |
+  M.Member.Resource.Action.t() |
   M.Shop.Resource.Action.t()
 
   alias ExPublicKey.RSAPrivateKey

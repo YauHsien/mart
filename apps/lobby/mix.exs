@@ -22,8 +22,7 @@ defmodule M.Lobby.MixProject do
       mod: {M.Lobby.Application, []},
       extra_applications: [
         :logger,
-        :runtime_tools,
-        :mart_core
+        :runtime_tools
       ]
     ]
   end
@@ -52,7 +51,8 @@ defmodule M.Lobby.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:plug_crypto, "~> 1.2.2"},
-      {:mart_core, path: "../core", app: false},
+      {:mart_core, app: false, path: "../core"},
+      {:mart_member, app: false, path: "../member"},
       {:mart_shop, path: "../shop"}
     ]
   end

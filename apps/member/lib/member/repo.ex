@@ -1,6 +1,6 @@
 defmodule M.Member.Repo do
   use Ecto.Repo,
-    otp_app: :member,
+    otp_app: :mart_member,
     adapter: Ecto.Adapters.Postgres
   import Ecto.Query
   alias Ecto
