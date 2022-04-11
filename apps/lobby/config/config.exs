@@ -26,6 +26,10 @@ config :mart, M.LobbyWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :mart, M.Lobby.Mailer, adapter: Swoosh.Adapters.Local
 
+config :mart, :server_security,
+  public_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem.pub", "321@mart@321")),
+  private_key: (quote do: ExPublicKey.load!("priv/server_pem/mart_pem", "321@mart@321"))
+
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
 

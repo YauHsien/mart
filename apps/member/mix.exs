@@ -52,7 +52,8 @@ defmodule M.Member.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:plug_crypto, "~> 1.2.2"}
+      {:plug_crypto, "~> 1.2.2"},
+      {:mart_core, app: false, path: "../core"}
     ]
   end
 

@@ -20,7 +20,11 @@ defmodule M.Lobby.MixProject do
   def application do
     [
       mod: {M.Lobby.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [
+        :logger,
+        :runtime_tools,
+        :mart_core
+      ]
     ]
   end
 
@@ -33,6 +37,7 @@ defmodule M.Lobby.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ex_crypto, "~> 0.10.0"},
       {:phoenix, "~> 1.6.6"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -46,7 +51,8 @@ defmodule M.Lobby.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:mart_core, path: "../core"},
+      {:plug_crypto, "~> 1.2.2"},
+      {:mart_core, path: "../core", app: false},
       {:mart_shop, path: "../shop"}
     ]
   end
