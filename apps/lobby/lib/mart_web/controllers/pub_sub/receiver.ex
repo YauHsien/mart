@@ -32,7 +32,7 @@ defmodule M.LobbyWeb.Controllers.PubSub.Receiver do
   @doc """
 
   # 要求 pub_sub_receiver 代理發送動作需求
-  
+
   """
 
   @spec request(
@@ -48,7 +48,7 @@ defmodule M.LobbyWeb.Controllers.PubSub.Receiver do
           pub_sub_receiver,
           { :request,
             %{ from: from,
-               action_type: action_type,
+               action_type: inspect(action_type),
                action_id: action_id,
                payload: payload
             }
@@ -97,6 +97,45 @@ defmodule M.LobbyWeb.Controllers.PubSub.Receiver do
   end
 
 
+
+
+  @impl true
+  def handle_info(%{return_addr: return_addr}=msg, state),
+    do: Registry.lookup(MyRegistry, return_addr)
+    |> maybe_take_pub_sub_return(msg, state)
+    |> then(&( {:noreply,&1} ))
+
+  def handle_info(_msg, state),
+    do: {:noreply, state}
+
+
+
+  defp maybe_take_pub_sub_return([], _msg, state), do: state
+  defp maybe_take_pub_sub_return(
+    [{_my_pid, origin}],
+    %{
+      return_addr: return_addr,
+      action_type: action_type,
+      action_id: action_id,
+      payload: payload
+    },
+    state
+  ) do
+
+    Registry.unregister(MyRegistry, return_addr)
+    PubSub.unsubscribe(MyPubSub, return_addr)
+
+    r_a_1 =
+      Crypto.sign(
+        get_private_key(:mart) |> RSAPrivateKey.get_fingerprint(),
+        inspect(M.LobbyWeb.Controllers.PubSub.Receiver),
+        "#{inspect action_type}:#{inspect action_id}:response")
+
+    if (r_a_1 == return_addr),
+      do: send(origin, payload)
+
+    state
+  end
 
 
 end
