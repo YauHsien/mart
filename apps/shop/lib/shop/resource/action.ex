@@ -8,7 +8,13 @@ defmodule M.Shop.Resource.Action do
     action_type: Action.type(),
     action_id: any(),
     return_addr: PubSub.topic(),
-    payload: map()
+    payload: Action.param()
+  }
+
+  @type param() :: %{
+    shop_id: any(),
+    item_id: any(),
+    detail_id: any()
   }
 
   @type result() :: %{
@@ -39,14 +45,6 @@ defmodule M.Shop.Resource.Action do
 
 
 
-
-  @spec serve(pub_sub :: PubSub.t(), [action_type :: Action.type()]) :: :ok | {:error, term()}
-
-  def serve(pub_sub, action_type_list),
-    do: for action_type <- action_type_list, do: PubSub.subscribe(pub_sub, inspect(action_type))
-
-
-
   @spec get_action_id :: Float.t()
 
   def get_action_id,
@@ -57,18 +55,20 @@ defmodule M.Shop.Resource.Action do
              end ))
 
 
-
-
   @spec build_return_addr(action_type :: Action.type(), action_id :: any()) :: String.t()
 
   def build_return_addr(action_type, action_id),
     do: "#{inspect action_type}:#{inspect action_id}:response"
 
 
-
-
-
-  @spec request(action_type :: Action.type(), action_id :: any(), return_addr :: any(), PubSub.t(), payload :: map(), timeout()) :: result()
+  @spec request(
+    action_type :: Action.type(),
+    action_id :: any(),
+    return_addr :: any(),
+    PubSub.t(),
+    payload :: Action.param(),
+    timeout()
+  ) :: result()
 
   def request(action_type, action_id, return_addr, pub_sub, payload, timeout \\ 5000) do
     PubSub.subscribe(pub_sub, return_addr)
@@ -91,7 +91,22 @@ defmodule M.Shop.Resource.Action do
 
 
 
-  @spec solve(shop :: GenServer.server(), action_type :: Action.type(), payload :: map()) :: result when result: result()
+
+
+  @spec serve(pub_sub :: PubSub.t(), [action_type :: Action.type()]) :: :ok | {:error, term()}
+
+  def serve(pub_sub, action_type_list),
+    do: for action_type <- action_type_list, do: PubSub.subscribe(pub_sub, inspect(action_type))
+
+
+
+
+  @spec solve(
+    shop :: GenServer.server(),
+    action_type :: Action.type(),
+    payload :: Action.param()
+  ) :: result
+  when result: result()
 
   def solve(shop, action_type, content)
 
@@ -103,14 +118,14 @@ defmodule M.Shop.Resource.Action do
   end
 
 
-  def solve(_shop, action_shop_item() = _action_type, %{shop_id: shop_id, item_id: item_id} = _content) do
+  def solve(_shop, action_shop_item() = _action_type, %{shop_id: _shop_id, item_id: _item_id} = _content) do
     status= :do_shop_item # TODO
     payload = %{}
     %{status: status, payload: payload}
   end
 
 
-  def solve(_shop, action_shop_item_detail() = _action_type, %{shop_id: shop_id, item_id: item_id, detail_id: detail_id} = _content) do
+  def solve(_shop, action_shop_item_detail() = _action_type, %{shop_id: _shop_id, item_id: _item_id, detail_id: _detail_id} = _content) do
     status= :do_shop_item_detail # TODO
     payload = %{}
     %{status: status, payload: payload}
