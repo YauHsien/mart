@@ -47,10 +47,31 @@ defmodule M.Shop.Resource.Action do
 
 
 
+  @spec get_action_id :: Float.t()
 
-  @spec request(action_type :: Action.t(), action_id :: any(), return_addr :: any(), pub_sub :: PubSub.t(), payload :: map()) :: :ok
+  def get_action_id,
+    do: NaiveDateTime.utc_now()
+  |> NaiveDateTime.to_gregorian_seconds()
+  |> then(&( case &1 do
+               {f, s} -> f + s / 1_000_000
+             end ))
 
-  def request(action_type, action_id, return_addr, pub_sub, payload) do
+
+
+
+  @spec build_return_addr(action_type :: Action.type(), action_id :: any()) :: String.t()
+
+  def build_return_addr(action_type, action_id),
+    do: "#{inspect action_type}:#{inspect action_id}:response"
+
+
+
+
+
+  @spec request(action_type :: Action.type(), action_id :: any(), return_addr :: any(), PubSub.t(), payload :: map(), timeout()) :: result()
+
+  def request(action_type, action_id, return_addr, pub_sub, payload, timeout \\ 5000) do
+    PubSub.subscribe(pub_sub, return_addr)
     PubSub.broadcast!(pub_sub,
       inspect(action_type),
       %{
@@ -59,30 +80,39 @@ defmodule M.Shop.Resource.Action do
         return_addr: return_addr,
         payload: payload
       })
+    receive do
+      %{status: status, payload: _} = result
+      when status === :ok or status === :error -> result
+    after
+      timeout -> {:error, :timeout}
+    end
   end
 
 
 
 
-  @spec solve(shop :: GenServer.server(), action_type :: Action.t(), payload :: map()) :: result when result: result()
+  @spec solve(shop :: GenServer.server(), action_type :: Action.type(), payload :: map()) :: result when result: result()
 
   def solve(shop, action_type, content)
 
 
   def solve(_shop, action_shop_listings() = _action_type, %{shop_id: _shop_id} = _content) do
-    status: :do_shop_listings # TODO 處理店家資訊的查詢，希望分為二端：如果是 shop gen-server 快取的，就調用 shop gen-server ；否則可往 Repo 方查詢。
+    status= :do_shop_listings # TODO 處理店家資訊的查詢，希望分為二端：如果是 shop gen-server 快取的，就調用 shop gen-server ；否則可往 Repo 方查詢。
+    payload = %{}
     %{status: status, payload: payload}
   end
 
 
   def solve(_shop, action_shop_item() = _action_type, %{shop_id: shop_id, item_id: item_id} = _content) do
-    status: :do_shop_item # TODO
+    status= :do_shop_item # TODO
+    payload = %{}
     %{status: status, payload: payload}
   end
 
 
   def solve(_shop, action_shop_item_detail() = _action_type, %{shop_id: shop_id, item_id: item_id, detail_id: detail_id} = _content) do
-    status: :do_shop_item_detail # TODO
+    status= :do_shop_item_detail # TODO
+    payload = %{}
     %{status: status, payload: payload}
   end
 
