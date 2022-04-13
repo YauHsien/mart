@@ -72,8 +72,9 @@ defmodule M.Shop.Resource.Action do
 
   def request(action_type, action_id, return_addr, pub_sub, payload, timeout \\ 5000) do
     PubSub.subscribe(pub_sub, return_addr)
+    topic = inspect(action_type)
     PubSub.broadcast!(pub_sub,
-      inspect(action_type),
+      topic,
       %{
         action_type: action_type,
         action_id: action_id,
@@ -82,9 +83,13 @@ defmodule M.Shop.Resource.Action do
       })
     receive do
       %{status: status, payload: _} = result
-      when status === :ok or status === :error -> result
+      when status === :ok or status === :error ->
+        PubSub.unsubscribe(pub_sub, topic)
+        result
     after
-      timeout -> {:error, :timeout}
+      timeout ->
+        PubSub.unsubscribe(pub_sub, topic)
+        {:error, :timeout}
     end
   end
 
