@@ -34,22 +34,22 @@ defmodule M.Core.Common do
 
 
 
-  @spec command(from :: PubSub.t(), to :: PubSub.t(), channel :: PubSub.topic(), command :: map()) :: result
+  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map()) :: result
   when result :: map() | false
 
-  @spec command(from :: PubSub.t(), to :: PubSub.t(), channel :: PubSub.topic(), command :: map(), timeout :: Integer.t()) :: result
+  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map(), timeout :: Integer.t()) :: result
   when result :: map() | false
 
-  def command(from, to, channel, command, timeout \\ @timeout) do
+  def command(from, to, resource, command, timeout \\ @timeout) do
 
     return_addr =
       NaiveDateTime.utc_now() |>
       NaiveDateTime.to_gregorian_seconds() |>
-      then(&("#{channel}:#{inspect &1}"))
+      then(&("#{resource}:#{inspect &1}"))
 
     PubSub.subscribe(from, return_addr)
 
-    PubSub.broadcast!(to, channel, %{command|return_addr: return_addr})
+    PubSub.broadcast!(to, resource, %{command|return_addr: return_addr})
 
     try do
       map_or_false ->
