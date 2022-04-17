@@ -8,6 +8,11 @@ defmodule M.Shop.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Shop.pub_sub()}, id: :pub_0),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Backoffice.pub_sub()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Lobby.pub_sub()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_4)
       # Starts a worker by calling: M.Shop.Worker.start_link(arg)
       # {M.Shop.Worker, arg}
     ]

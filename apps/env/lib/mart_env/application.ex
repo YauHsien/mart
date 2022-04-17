@@ -14,7 +14,16 @@ defmodule M.Env.Application do
       M.EnvWeb.Telemetry,
       # Start the PubSub system
       Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_0),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Accounting.pub_sub()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Backoffice.pub_sub()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Finance.pub_sub()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Lobby.pub_sub()}, id: :pub_4),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Member.pub_sub()}, id: :pub_5),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Portfolio.pub_sub()}, id: :pub_6),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_7),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.SalesOrder.pub_sub()}, id: :pub_8),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Shop.pub_sub()}, id: :pub_9),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Studio.pub_sub()}, id: :pub_10),
       # Start the Endpoint (http/https)
       M.EnvWeb.Endpoint,
       # Start a worker by calling: M.Env.Worker.start_link(arg)

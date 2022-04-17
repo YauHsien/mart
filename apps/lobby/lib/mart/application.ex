@@ -11,7 +11,13 @@ defmodule M.Lobby.Application do
       # Start the Telemetry supervisor
       M.LobbyWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: M.Lobby.PubSub},
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Lobby.pub_sub()}, id: :pub_0),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Accounting.pub_sub()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Member.pub_sub()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Portfolio.pub_sub()}, id: :pub_4),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.SalesOrder.pub_sub()}, id: :pub_5),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Shop.pub_sub()}, id: :pub_6),
       {Registry, keys: :unique, name: M.Lobby.Registry},
       # Start the Endpoint (http/https)
       M.LobbyWeb.Endpoint,
