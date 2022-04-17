@@ -3,16 +3,5 @@ defmodule M.Accounting do
   Documentation for `M.Accounting`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> M.Accounting.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  defmacro pub_sub(), do: M.Accounting.PubSub
 end

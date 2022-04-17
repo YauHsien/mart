@@ -26,7 +26,7 @@ defmodule M.Member.Application do
       # Start the Endpoint (http/https)
       M.MemberWeb.Endpoint,
       # Start a worker by calling: M.Member.Worker.start_link(arg)
-      # {M.Member.Worker, arg}
+      M.Member.Worker,
       {M.Member.Session.Registry, id: M.Member.Session.Registry}
     ]
 

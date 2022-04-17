@@ -19,9 +19,9 @@ defmodule M.BackOffice.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.SalesOrder.pub_sub()}, id: :pub_5),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Shop.pub_sub()}, id: :pub_6),
       # Start the Endpoint (http/https)
-      M.BackOfficeWeb.Endpoint
+      M.BackOfficeWeb.Endpoint,
       # Start a worker by calling: M.BackOffice.Worker.start_link(arg)
-      # {M.BackOffice.Worker, arg}
+      M.BackOffice.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -12,9 +12,9 @@ defmodule M.Shop.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.Backoffice.pub_sub()}, id: :pub_1),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_2),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Lobby.pub_sub()}, id: :pub_3),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_4)
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_4),
       # Starts a worker by calling: M.Shop.Worker.start_link(arg)
-      # {M.Shop.Worker, arg}
+      M.Shop.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

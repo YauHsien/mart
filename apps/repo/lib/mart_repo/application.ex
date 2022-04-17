@@ -23,9 +23,9 @@ defmodule M.Repo.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.SalesOrder.pub_sub()}, id: :pub_6),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Shop.pub_sub()}, id: :pub_7),
       # Start the Endpoint (http/https)
-      M.RepoWeb.Endpoint
+      M.RepoWeb.Endpoint,
       # Start a worker by calling: M.Repo.Worker.start_link(arg)
-      # {M.Repo.Worker, arg}
+      M.Repo.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

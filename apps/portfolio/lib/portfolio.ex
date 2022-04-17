@@ -3,16 +3,5 @@ defmodule M.Portfolio do
   Documentation for `M.Portfolio`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> M.Portfolio.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  defmacro pub_sub(), do: M.Portfolio.PubSub
 end

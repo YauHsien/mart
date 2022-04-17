@@ -3,16 +3,5 @@ defmodule M.SalesOrder do
   Documentation for `M.SalesOrder`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> M.SalesOrder.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  defmacro pub_sub(), do: M.SalesOrder.PubSub
 end

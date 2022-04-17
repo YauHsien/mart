@@ -17,9 +17,9 @@ defmodule M.Studio.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.Member.pub_sub()}, id: :pub_3),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Portfolio.pub_sub()}, id: :pub_4),
       # Start the Endpoint (http/https)
-      M.StudioWeb.Endpoint
+      M.StudioWeb.Endpoint,
       # Start a worker by calling: M.Studio.Worker.start_link(arg)
-      # {M.Studio.Worker, arg}
+      M.Studio.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

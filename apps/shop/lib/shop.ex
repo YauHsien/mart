@@ -7,6 +7,7 @@ defmodule M.Shop do
   alias M.Shop.Resource.Action
   alias Phoenix.PubSub
 
+  defmacro pub_sub(), do: M.Shop.PubSub
 
 
 
@@ -46,6 +47,12 @@ defmodule M.Shop do
   ) :: {:ok, map()} |  {:stop, reason :: term()}
 
   def init(args) do
+
+    [
+      "set on_network"
+    ] |>
+      Enum.map(&( PubSub.subscribe(M.Shop.pub_sub(), &1) ))
+
     channel = Keyword.get(args, :channel)
     Action.serve(channel, [
           Action.action_shop_listings(),

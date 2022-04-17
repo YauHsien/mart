@@ -17,9 +17,9 @@ defmodule M.Finance.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.Member.pub_sub()}, id: :pub_3),
       Supervisor.child_spec({Phoenix.PubSub, name: M.SalesOrder.pub_sub()}, id: :pub_4),
       # Start the Endpoint (http/https)
-      M.FinanceWeb.Endpoint
+      M.FinanceWeb.Endpoint,
       # Start a worker by calling: M.Finance.Worker.start_link(arg)
-      # {M.Finance.Worker, arg}
+      M.Finance.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

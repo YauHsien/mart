@@ -11,9 +11,9 @@ defmodule M.Classroom.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.Classroom.pub_sub()}, id: :pub_0),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_1),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_2),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Studio.pub_sub()}, id: :pub_3)
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Studio.pub_sub()}, id: :pub_3),
       # Starts a worker by calling: M.Classroom.Worker.start_link(arg)
-      # {M.Classroom.Worker, arg}
+      M.Classroom.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

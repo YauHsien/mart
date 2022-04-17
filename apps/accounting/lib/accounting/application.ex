@@ -12,9 +12,9 @@ defmodule M.Accounting.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.Backoffice.pub_sub()}, id: :pub_1),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_2),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Finance.pub_sub()}, id: :pub_3),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_4)
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_4),
       # Starts a worker by calling: M.Accounting.Worker.start_link(arg)
-      # {M.Accounting.Worker, arg}
+      M.Accounting.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

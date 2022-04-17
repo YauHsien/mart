@@ -13,9 +13,9 @@ defmodule M.SalesOrder.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_2),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Finance.pub_sub()}, id: :pub_3),
       Supervisor.child_spec({Phoenix.PubSub, name: M.Lobby.pub_sub()}, id: :pub_4),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_5)
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_5),
       # Starts a worker by calling: M.SalesOrder.Worker.start_link(arg)
-      # {M.SalesOrder.Worker, arg}
+      M.SalesOrder.Worker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

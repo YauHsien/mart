@@ -3,16 +3,5 @@ defmodule M.Classroom do
   Documentation for `M.Classroom`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> M.Classroom.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  defmacro pub_sub(), do: M.Classroom.PubSub
 end
