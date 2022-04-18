@@ -14,8 +14,9 @@ defmodule M.LobbyWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    resources "/users", UserController, except: [:index, :delete]
   end
-  
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put

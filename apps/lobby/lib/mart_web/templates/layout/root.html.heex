@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "M.Lobby", suffix: " · Phoenix Framework" %>
+    <title><%= title() %></title>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
@@ -14,17 +14,27 @@
       <section class="container">
         <nav>
           <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
+            <li>
+              <a href="#"><%= "註冊(no-impl)" %></a>
+              <a href="#"><%= "登入(no-impl)" %></a>
+            </li>
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
               <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
             <% end %>
           </ul>
         </nav>
         <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src={Routes.static_path(@conn, "/images/phoenix.png")} alt="Phoenix Framework Logo"/>
+          <img src={Routes.static_path(@conn, "/images/ddilogy_logo.png")} alt="（滴隧 Dhis-way （假名）首圖）"/>
         </a>
       </section>
     </header>
     <%= @inner_content %>
+    <footer>
+      <section class="container">
+        <nav>
+          （頁尾資訊區）
+        </nav>
+      </section>
+    </footer>
   </body>
 </html>
