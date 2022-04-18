@@ -1,8 +1,7 @@
 defmodule M.SalesOrder.Worker do
 	use GenServer, async: false
+  require M.Core.Common
   alias M.Core.Common
-  require M.Env
-  require M.SalesOrder
   alias Phoenix.PubSub
 
   def start_link(args), do: GenServer.start_link(__MODULE__, args)
@@ -21,11 +20,11 @@ defmodule M.SalesOrder.Worker do
     [
       "set on_network"
     ] |>
-      Enum.map(&( PubSub.subscribe(M.SalesOrder.pub_sub(), &1) ))
+      Enum.map(&( PubSub.subscribe(Common.sales_order_pub_sub_name(), &1) ))
 
 
     {:ok, %{
-        on_network: Common.try_connect(M.Env.pub_sub(), M.SalesOrder.pub_sub())
+        on_network: Common.try_connect(Common.env_pub_sub_name(), Common.sales_order_pub_sub_name())
      }}
   end
 

@@ -1,4 +1,6 @@
 defmodule M.Shop.Resource.Action do
+  require M.Core.Common
+  alias M.Core.Common
   alias M.Shop.Resource.Action
   alias Phoenix.PubSub
 

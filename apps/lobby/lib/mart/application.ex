@@ -4,6 +4,8 @@ defmodule M.Lobby.Application do
   @moduledoc false
 
   use Application
+  require M.Core.Common
+  alias M.Core.Common
 
   @impl true
   def start(_type, _args) do
@@ -11,19 +13,19 @@ defmodule M.Lobby.Application do
       # Start the Telemetry supervisor
       M.LobbyWeb.Telemetry,
       # Start the PubSub system
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Lobby.pub_sub()}, id: :pub_0),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Accounting.pub_sub()}, id: :pub_1),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_2),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Member.pub_sub()}, id: :pub_3),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Portfolio.pub_sub()}, id: :pub_4),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.SalesOrder.pub_sub()}, id: :pub_5),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Shop.pub_sub()}, id: :pub_6),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.lobby_pub_sub_name()}, id: :pub_0),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.accounting_pub_sub_name()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.member_pub_sub_name()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.portfolio_pub_sub_name()}, id: :pub_4),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.sales_order_pub_sub_name()}, id: :pub_5),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.shop_pub_sub_name()}, id: :pub_6),
       {Registry, keys: :unique, name: M.Lobby.Registry},
       # Start the Endpoint (http/https)
       M.LobbyWeb.Endpoint,
       # Start a worker by calling: M.Lobby.Worker.start_link(arg)
       # {M.Lobby.Worker, arg}
-      {M.Shop, name: :host, shop_id: :host, channel: M.Lobby.PubSub},
+      {M.Shop, name: :host, shop_id: :host, channel: Common.lobby_pub_sub_name()},
       M.Lobby.Worker,
       M.LobbyWeb.Controllers.PubSub.Receiver
     ]

@@ -53,13 +53,7 @@ defmodule M.Member.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:plug_crypto, "~> 1.2.2"},
-      {:mart_backoffice, app: false, path: "../backoffice"},
-      {:mart_core, app: false, path: "../core"},
-      {:mart_env, app: false, path: "../env"},
-      {:mart_finance, app: false, path: "../finance"},
-      {:mart, app: false, path: "../lobby"},
-      {:mart_repo, app: false, path: "../repo"},
-      {:mart_studio, app: false, path: "../studio"}
+      {:mart_core, app: false, path: "../core"}
     ]
   end
 

@@ -25,11 +25,7 @@ defmodule M.Shop.MixProject do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:phoenix_pubsub, "~> 2.1.1"},
-      {:mart_backoffice, app: false, path: "../backoffice"},
-      {:mart_core, app: false, path: "../core"},
-      {:mart_env, app: false, path: "../env"},
-      {:mart, app: false, path: "../lobby"},
-      {:mart_repo, app: false, path: "../repo"}
+      {:mart_core, app: false, path: "../core"}
     ]
   end
 end

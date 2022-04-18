@@ -1,8 +1,7 @@
 defmodule M.Accounting.Worker do
 	use GenServer, async: false
-  require M.Accounting
+  require M.Core.Common
   alias M.Core.Common
-  require M.Env
   alias Phoenix.PubSub
 
   def start_link(args), do: GenServer.start_link(__MODULE__, args)
@@ -18,11 +17,11 @@ defmodule M.Accounting.Worker do
     [
       "set on_network"
     ] |>
-      Enum.map(&( PubSub.subscribe(M.Accounting.pub_sub(), &1) ))
+      Enum.map(&( PubSub.subscribe(Common.accounting_pub_sub_name(), &1) ))
 
 
     {:ok, %{
-        on_network: Common.try_connect(M.Env.pub_sub(), M.Accounting.pub_sub())
+        on_network: Common.try_connect(Common.env_pub_sub_name(), Common.accounting_pub_sub_name())
      }}
   end
 

@@ -3,11 +3,11 @@ defmodule M.Shop do
   Documentation for `M.Shop`.
   """
   use GenServer
+  require M.Core.Common
+  alias M.Core.Common
   require M.Shop.Resource.Action
   alias M.Shop.Resource.Action
   alias Phoenix.PubSub
-
-  defmacro pub_sub(), do: M.Shop.PubSub
 
 
 
@@ -51,7 +51,7 @@ defmodule M.Shop do
     [
       "set on_network"
     ] |>
-      Enum.map(&( PubSub.subscribe(M.Shop.pub_sub(), &1) ))
+      Enum.map(&( PubSub.subscribe(Common.shop_pub_sub_name(), &1) ))
 
     channel = Keyword.get(args, :channel)
     Action.serve(channel, [

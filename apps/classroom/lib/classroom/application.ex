@@ -4,14 +4,16 @@ defmodule M.Classroom.Application do
   @moduledoc false
 
   use Application
+  require M.Core.Common
+  alias M.Core.Common
 
   @impl true
   def start(_type, _args) do
     children = [
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Classroom.pub_sub()}, id: :pub_0),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_1),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_2),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Studio.pub_sub()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.classroom_pub_sub_name()}, id: :pub_0),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.studio_pub_sub_name()}, id: :pub_3),
       # Starts a worker by calling: M.Classroom.Worker.start_link(arg)
       M.Classroom.Worker
     ]

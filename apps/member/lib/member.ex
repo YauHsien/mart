@@ -9,9 +9,6 @@ defmodule M.Member do
   alias Timex.Timezone
   alias UUID
 
-  defmacro pub_sub(), do: M.Member.pub_sub()
-
-
   def get_uuid(category) do
     Timezone.local().full_name|>DateTime.now!()|>to_string()|>then(&(category<>&1))
   end

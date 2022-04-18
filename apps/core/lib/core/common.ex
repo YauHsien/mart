@@ -1,6 +1,22 @@
 defmodule M.Core.Common do
   alias Phoenix.PubSub
 
+
+  defmacro accounting_pub_sub_name(), do: Accounting.PubSub
+  defmacro backoffice_pub_sub_name(), do: Backoffice.PubSub
+  defmacro classroom_pub_sub_name(), do: Classroom.PubSub
+  defmacro env_pub_sub_name(), do: Env.PubSub
+  defmacro finance_pub_sub_name(), do: Finance.PubSub
+  defmacro lobby_pub_sub_name(), do: Lobby.PubSub
+  defmacro member_pub_sub_name(), do: Member.PubSub
+  defmacro portfolio_pub_sub_name(), do: Portfolio.PubSub
+  defmacro repo_pub_sub_name(), do: Repo.PubSub
+  defmacro sales_order_pub_sub_name(), do: SalesOrder.PubSub
+  defmacro shop_pub_sub_name(), do: Shop.PubSub
+  defmacro studio_pub_sub_name(), do: Studio.PubSub
+
+
+
   @timeout 900
   @try_connect_key_prefix "try connect"
 
@@ -20,7 +36,7 @@ defmodule M.Core.Common do
 
     PubSub.broadcast!(to_pub_sub, @try_connect_key_prefix, try_key)
 
-    try do
+    receive do
       try_key ->
         PubSub.unsubscribe(replay_to_pub_sub, try_key)
         true
@@ -34,11 +50,9 @@ defmodule M.Core.Common do
 
 
 
-  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map()) :: result
-  when result :: map() | false
+  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map()) :: result :: (map() | false)
 
-  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map(), timeout :: Integer.t()) :: result
-  when result :: map() | false
+  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map(), timeout :: Integer.t()) :: result :: (map() | false)
 
   def command(from, to, resource, command, timeout \\ @timeout) do
 
@@ -51,7 +65,7 @@ defmodule M.Core.Common do
 
     PubSub.broadcast!(to, resource, %{command|pub_sub_name: from, return_addr: return_addr})
 
-    try do
+    receive do
       map_or_false ->
         PubSub.unsubscribe(from, return_addr)
         map_or_false

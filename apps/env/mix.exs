@@ -46,17 +46,7 @@ defmodule M.Env.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:plug_crypto, "~> 1.2.2"},
-      {:mart_accounting, app: false, path: "../accounting"},
-      {:mart_backoffice, app: false, path: "../backoffice"},
-      {:mart_core, app: false, path: "../core"},
-      {:mart_finance, app: false, path: "../finance"},
-      {:mart, app: false, path: "../lobby"},
-      {:mart_member, app: false, path: "../member"},
-      {:mart_portfolio, app: false, path: "../portfolio"},
-      {:mart_repo, app: false, path: "../repo"},
-      {:mart_sales_order, app: false, path: "../sales_order"},
-      {:mart_shop, app: false, path: "../shop"},
-      {:mart_studio, app: false, path: "../studio"}
+      {:mart_core, app: false, path: "../core"}
     ]
   end
 

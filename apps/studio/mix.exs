@@ -46,11 +46,7 @@ defmodule M.Studio.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:mart_classroom, app: false, path: "../classroom"},
-      {:mart_core, app: false, path: "../core"},
-      {:mart_env, app: false, path: "../env"},
-      {:mart_member, app: false, path: "../member"},
-      {:mart_portfolio, app: false, path: "../portfolio"}
+      {:mart_core, app: false, path: "../core"}
     ]
   end
 

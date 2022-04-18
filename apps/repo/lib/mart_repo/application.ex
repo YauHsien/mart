@@ -4,7 +4,8 @@ defmodule M.Repo.Application do
   @moduledoc false
 
   use Application
-  require M.Repo
+  require M.Core.Common
+  alias M.Core.Common
 
   @impl true
   def start(_type, _args) do
@@ -14,14 +15,14 @@ defmodule M.Repo.Application do
       # Start the Telemetry supervisor
       M.RepoWeb.Telemetry,
       # Start the PubSub system
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_0),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Accounting.pub_sub()}, id: :pub_1),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Classroom.pub_sub()}, id: :pub_2),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_3),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Member.pub_sub()}, id: :pub_4),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Portfolio.pub_sub()}, id: :pub_5),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.SalesOrder.pub_sub()}, id: :pub_6),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Shop.pub_sub()}, id: :pub_7),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_0),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.accounting_pub_sub_name()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.classroom_pub_sub_name()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.member_pub_sub_name()}, id: :pub_4),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.portfolio_pub_sub_name()}, id: :pub_5),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.sales_order_pub_sub_name()}, id: :pub_6),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.shop_pub_sub_name()}, id: :pub_7),
       # Start the Endpoint (http/https)
       M.RepoWeb.Endpoint,
       # Start a worker by calling: M.Repo.Worker.start_link(arg)

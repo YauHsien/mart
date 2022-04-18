@@ -1,8 +1,7 @@
 defmodule M.Classroom.Worker do
 	use GenServer, async: false
-  require M.Classroom
+  require M.Core.Common
   alias M.Core.Common
-  require M.Env
   alias Phoenix.PubSub
 
   def start_link(args), do: GenServer.start_link(__MODULE__, args)
@@ -20,11 +19,11 @@ defmodule M.Classroom.Worker do
     [
       "set on_network"
     ] |>
-      Enum.map(&( PubSub.subscribe(M.Classroom.pub_sub(), &1) ))
+      Enum.map(&( PubSub.subscribe(Common.classroom_pub_sub_name(), &1) ))
 
 
     {:ok, %{
-        on_network: Common.try_connect(M.Env.pub_sub(), M.Classroom.pub_sub())
+        on_network: Common.try_connect(Common.env_pub_sub_name(), Common.classroom_pub_sub_name())
      }}
   end
 

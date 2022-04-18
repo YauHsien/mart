@@ -1,8 +1,8 @@
 defmodule M.Env.Server do
   use GenServer
   require M.Core.Server.Security
-  alias Application
-  require M.Repo
+  require M.Core.Common
+  alias M.Core.Common
   alias Phoenix.PubSub
 
 
@@ -40,7 +40,7 @@ defmodule M.Env.Server do
       List.flatten()
 
     config_keys |>
-      Enum.map(&( PubSub.broadcast!(M.Repo.pub_sub(), "#{__MODULE__}:config:load", &1) ))
+      Enum.map(&( PubSub.broadcast!(Common.repo_pub_sub_name(), "#{__MODULE__}:config:load", &1) ))
 
     state =
       %{

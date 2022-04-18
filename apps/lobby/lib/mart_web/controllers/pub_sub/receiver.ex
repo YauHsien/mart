@@ -7,10 +7,11 @@ defmodule M.LobbyWeb.Controllers.PubSub.Receiver do
   M.Shop.Resource.Action.t()
 
   alias ExPublicKey.RSAPrivateKey
+  require M.Core.Common
+  alias M.Core.Common
   require M.Core.Server.Security
   import M.Core.Server.Security, only: [get_private_key: 1]
   alias M.Lobby.Registry, as: MyRegistry
-  alias M.Lobby.PubSub, as: MyPubSub
   alias Phoenix.PubSub
   alias Plug.Crypto
 
@@ -87,7 +88,7 @@ defmodule M.LobbyWeb.Controllers.PubSub.Receiver do
         "#{inspect action_type}:#{inspect action_id}:response")
 
     Registry.register(MyRegistry, return_addr, from)
-    PubSub.subscribe(MyPubSub, return_addr)
+    PubSub.subscribe(Common.lobby_pub_sub_name(), return_addr)
 
     PubSub.broadcast!(MyPubSub, action_type,
       %{ action_id: action_id,

@@ -46,11 +46,7 @@ defmodule M.Finance.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:mart_accounting, app: false, path: "../accounting"},
-      {:mart_core, app: false, path: "../core"},
-      {:mart_env, app: false, path: "../env"},
-      {:mart_member, app: false, path: "../member"},
-      {:mart_sales_order, app: false, path: "../sales_order"}
+      {:mart_core, app: false, path: "../core"}
     ]
   end
 

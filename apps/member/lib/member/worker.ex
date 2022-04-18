@@ -1,8 +1,7 @@
 defmodule M.Member.Worker do
 	use GenServer, async: false
+  require M.Core.Common
   alias M.Core.Common
-  require M.Env
-  require M.Member
   alias Phoenix.PubSub
 
   def start_link(args), do: GenServer.start_link(__MODULE__, args)
@@ -20,11 +19,11 @@ defmodule M.Member.Worker do
     [
       "set on_network"
     ] |>
-      Enum.map(&( PubSub.subscribe(M.Member.pub_sub(), &1) ))
+      Enum.map(&( PubSub.subscribe(Common.member_pub_sub_name(), &1) ))
 
 
     {:ok, %{
-        on_network: Common.try_connect(M.Env.pub_sub(), M.Member.pub_sub())
+        on_network: Common.try_connect(Common.env_pub_sub_name(), Common.member_pub_sub_name())
      }}
   end
 

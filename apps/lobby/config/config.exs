@@ -14,7 +14,7 @@ config :mart,
 config :mart, M.LobbyWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: M.LobbyWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: M.Lobby.PubSub,
+  pubsub_server: Lobby.PubSub,
   live_view: [signing_salt: "nP6YK9LO"]
 
 # Configures the mailer

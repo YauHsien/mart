@@ -4,6 +4,8 @@ defmodule M.Member.Application do
   @moduledoc false
 
   use Application
+  require M.Core.Common
+  alias M.Core.Common
 
   @impl true
   def start(_type, _args) do
@@ -15,13 +17,13 @@ defmodule M.Member.Application do
       # Start the Telemetry supervisor
       M.MemberWeb.Telemetry,
       # Start the PubSub system
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Member.pub_sub()}, id: :pub_0),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Backoffice.pub_sub()}, id: :pub_1),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Env.pub_sub()}, id: :pub_2),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Finance.pub_sub()}, id: :pub_3),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Lobby.pub_sub()}, id: :pub_4),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pub_sub()}, id: :pub_5),
-      Supervisor.child_spec({Phoenix.PubSub, name: M.Studio.pub_sub()}, id: :pub_6),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.member_pub_sub_name()}, id: :pub_0),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.backoffice_pub_sub_name()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.finance_pub_sub_name()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.lobby_pub_sub_name()}, id: :pub_4),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_5),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.studio_pub_sub_name()}, id: :pub_6),
       {Registry, keys: :unique, name: M.Member.Registry},
       # Start the Endpoint (http/https)
       M.MemberWeb.Endpoint,
