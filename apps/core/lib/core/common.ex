@@ -49,7 +49,7 @@ defmodule M.Core.Common do
 
     PubSub.subscribe(from, return_addr)
 
-    PubSub.broadcast!(to, resource, %{command|return_addr: return_addr})
+    PubSub.broadcast!(to, resource, %{command|pub_sub_name: from, return_addr: return_addr})
 
     try do
       map_or_false ->
