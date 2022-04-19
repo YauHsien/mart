@@ -1,12 +1,10 @@
 <section>
-  <h2>帳號註冊</h2>
+  <h2>登入</h2>
   <%= form_for @conn, Routes.user_path(@conn, :create), [as: :user], fn f -> %>
   <%= label :user, :username, "用戶名稱" %>
   <%= text_input f, :username, placeholder: "E-mail 位址"  %>
-  <%= label :user, :hello, "設定密碼" %>
+  <%= label :user, :hello, "登入密碼" %>
   <%= text_input f, :hello, type: "password" %>
-  <%= label :user, :world, "確認密碼" %>
-  <%= text_input f, :world, type: "password" %>
-  <%= submit "送出" %>
+  <%= submit "登入" %>
   <% end %>
 </section>

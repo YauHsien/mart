@@ -1,14 +1,8 @@
 defmodule M.LobbyWeb.UserController do
   use M.LobbyWeb, :controller
 
-  def edit(conn, _params) do
-  end
-
-  def new(conn, _params) do
-    render(conn, "new.html")
-  end
-
-  def show(conn, %{id: id}) do
+  def new(conn, params) do
+    render(conn, "login.html")
   end
 
   def create(conn, params) do
@@ -17,6 +11,9 @@ defmodule M.LobbyWeb.UserController do
     |> send_resp(200, inspect params)
   end
 
-  def update(conn, _params) do
+  def detete(conn, params) do
+    # TODO: need implementation
+    conn
+    |> send_resp(200, inspect params)
   end
 end

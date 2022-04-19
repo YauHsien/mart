@@ -14,7 +14,38 @@ defmodule M.LobbyWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/users", UserController, except: [:index, :delete]
+    resources "/accounts", AccountController, except: [:index, :delete]
+    resources "/users/sign-in", UserController, only: [
+      :new,    # 登入頁面
+      :create, # 登入
+      :delete  # 登出
+    ]
+    resources "/shops", ShopController, only: [
+      :index, # 商家全覽
+      :show,  # 供應商頁面
+      :update # 更改明細資料
+    ] do
+      resources "products", ShopProductController # 商家的產品全操作功能
+    end
+    resources "/products", ProductController, only: [
+      :index, # 產品全覽
+      :show,  # 產品頁
+      :update # 更新產品瀏覽紀錄
+    ]
+    resources "/users", UserController, only: [] do
+      resources "/baskets", BasketController, only: [
+        :show,   # 購物籃或銷售訂單頁面
+        :create, # 新增品項
+        :delete, # 移除品項
+        :update, # 結帳
+        :index   # 銷售訂單全覽
+      ]
+      resources "/portfolios", PortfolioController, only: [
+        :index,  # 使用歷程全覽
+        :show,   # 使用歷程頁面
+        :update  # 更新使用歷程
+      ]
+    end
   end
 
   # Enables LiveDashboard only for development
