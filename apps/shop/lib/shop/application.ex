@@ -9,6 +9,9 @@ defmodule M.Shop.Application do
 
   @impl true
   def start(_type, _args) do
+
+    Node.connect_node([Application.fetch_env!(:mart_shop, :node_env)])
+    
     children = [
       Supervisor.child_spec({Phoenix.PubSub, name: Common.shop_pub_sub_name()}, id: :pub_0),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.backoffice_pub_sub_name()}, id: :pub_1),

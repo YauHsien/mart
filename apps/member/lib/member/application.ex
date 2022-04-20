@@ -9,7 +9,8 @@ defmodule M.Member.Application do
 
   @impl true
   def start(_type, _args) do
-    load_peer_nodes(:erlang.node())
+
+    Node.connect_node([Application.fetch_env!(:mart_member, :node_env)])
 
     children = [
       # Start the Ecto repository
@@ -46,17 +47,4 @@ defmodule M.Member.Application do
     :ok
   end
 
-  def load_peer_nodes(:nonode@nohost), do: :ok
-  def load_peer_nodes(_nodename) do
-    Application.fetch_env!(:mart_member, :distribution)[:peer_nodes]
-    |> Enum.map(&(
-        if false == Enum.member?(:erlang.nodes(), &1) do
-          try do
-            :net_kernel.connect_node(&1)
-          catch
-            _ -> :ok
-          end
-        end ))
-    :ok
-  end
 end

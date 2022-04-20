@@ -6,15 +6,20 @@ defmodule M.Accounting.Application do
   use Application
   require M.Core.Common
   alias M.Core.Common
+  alias M.Core.Node
 
   @impl true
   def start(_type, _args) do
+
+    Node.connect_node([Application.fetch_env!(:mart_accounting, :node_env)])
+
     children = [
       Supervisor.child_spec({Phoenix.PubSub, name: Common.accounting_pub_sub_name()}, id: :pub_0),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.backoffice_pub_sub_name()}, id: :pub_1),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_2),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.finance_pub_sub_name()}, id: :pub_3),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_4),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.lobby_pub_sub_name()}, id: :pub_4),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_5),
       # Starts a worker by calling: M.Accounting.Worker.start_link(arg)
       M.Accounting.Worker
     ]

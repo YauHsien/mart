@@ -13,9 +13,6 @@ config :mart_member,
   session_timespan: {1, :day},
   node_env: :"env@yauhsien-Precision-5540"
 
-config :mart_member, :distribution,
-  peer_nodes: []
-
 # Configures the endpoint
 config :mart_member, M.MemberWeb.Endpoint,
   url: [host: "localhost"],

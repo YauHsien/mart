@@ -6,9 +6,13 @@ defmodule M.Lobby.Application do
   use Application
   require M.Core.Common
   alias M.Core.Common
+  alias M.Core.Node
 
   @impl true
   def start(_type, _args) do
+
+    Node.connect_node([Application.fetch_env!(:mart, :node_env)])
+
     children = [
       # Start the Telemetry supervisor
       M.LobbyWeb.Telemetry,

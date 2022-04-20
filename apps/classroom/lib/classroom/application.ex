@@ -9,6 +9,9 @@ defmodule M.Classroom.Application do
 
   @impl true
   def start(_type, _args) do
+
+    Node.connect_node([Application.fetch_env!(:mart_classroom, :node_env)])
+
     children = [
       Supervisor.child_spec({Phoenix.PubSub, name: Common.classroom_pub_sub_name()}, id: :pub_0),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_1),
