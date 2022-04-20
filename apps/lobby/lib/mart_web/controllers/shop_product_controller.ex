@@ -2,6 +2,9 @@ defmodule M.LobbyWeb.ShopProductController do
   @moduledoc """
   商家的產品全操作功能
   """
+  use M.LobbyWeb, :controller
+  require M.Core.Common
+  alias M.Core.Common
 
   @doc """
   產品全覽
@@ -35,26 +38,44 @@ defmodule M.LobbyWeb.ShopProductController do
   新增產品
   """
   def create(conn, params) do
-    # TODO: need implementation
+    result =
+      Common.command(
+        Common.lobby_pub_sub_name(),
+        Common.shop_pub_sub_name(),
+        Common.Resource.product(),
+        Common.Command.create(Common.Resource.basket(), params)
+      )
     conn
-    |> send_resp(200, params)
+    |> send_resp(200, Jason.encode!(params))
   end
 
   @doc """
   更改產品資料
   """
   def update(conn, params) do
-    # TODO: need implementation
+    result =
+      Common.command(
+        Common.lobby_pub_sub_name(),
+        Common.shop_pub_sub_name(),
+        Common.Resource.product(),
+        Common.Command.update(Common.Resource.basket(), params)
+      )
     conn
-    |> send_resp(200, params)
+    |> send_resp(200, Jason.encode!(params))
   end
 
   @doc """
   刪除產品
   """
   def delete(conn, params) do
-    # TODO: need implementation
+    result =
+      Common.command(
+        Common.lobby_pub_sub_name(),
+        Common.shop_pub_sub_name(),
+        Common.Resource.product(),
+        Common.Command.delete(Common.Resource.basket(), params)
+      )
     conn
-    |> send_resp(200, params)
+    |> send_resp(200, Jason.encode!(params))
   end
 end
