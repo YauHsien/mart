@@ -10,7 +10,8 @@ import Config
 config :mart_member,
   namespace: M.Member,
   ecto_repos: [M.Member.Repo],
-  session_timespan: {1, :day}
+  session_timespan: {1, :day},
+  node_env: :"env@yauhsien-Precision-5540"
 
 config :mart_member, :distribution,
   peer_nodes: []

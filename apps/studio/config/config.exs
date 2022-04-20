@@ -8,7 +8,8 @@
 import Config
 
 config :mart_studio,
-  namespace: M.Studio
+  namespace: M.Studio,
+  node_env: :"env@yauhsien-Precision-5540"
 
 # Configures the endpoint
 config :mart_studio, M.StudioWeb.Endpoint,

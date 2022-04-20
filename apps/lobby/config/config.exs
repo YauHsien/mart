@@ -8,7 +8,8 @@
 import Config
 
 config :mart,
-  namespace: M.Lobby
+  namespace: M.Lobby,
+  node_env: :"env@yauhsien-Precision-5540"
 
 # Configures the endpoint
 config :mart, M.LobbyWeb.Endpoint,

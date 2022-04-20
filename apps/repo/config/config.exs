@@ -18,7 +18,8 @@ config :mart_repo, M.Member.Repo,
 
 config :mart_repo,
   namespace: M.Repo,
-  ecto_repos: [M.Repo.Repo]
+  ecto_repos: [M.Repo.Repo],
+  node_env: :"env@yauhsien-Precision-5540"
 
 # Configures the endpoint
 config :mart_repo, M.RepoWeb.Endpoint,

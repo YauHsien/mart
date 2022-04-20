@@ -8,7 +8,8 @@
 import Config
 
 config :mart_finance,
-  namespace: M.Finance
+  namespace: M.Finance,
+  node_env: :"env@yauhsien-Precision-5540"
 
 # Configures the endpoint
 config :mart_finance, M.FinanceWeb.Endpoint,

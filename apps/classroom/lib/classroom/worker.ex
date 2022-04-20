@@ -1,5 +1,5 @@
 defmodule M.Classroom.Worker do
-	use GenServer, async: false
+	use GenServer
   require M.Core.Common
   alias M.Core.Common
   alias Phoenix.PubSub

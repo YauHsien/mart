@@ -8,7 +8,8 @@
 import Config
 
 config :mart_backoffice,
-  namespace: M.BackOffice
+  namespace: M.BackOffice,
+  node_env: :"env@yauhsien-Precision-5540"
 
 # Configures the endpoint
 config :mart_backoffice, M.BackOfficeWeb.Endpoint,
