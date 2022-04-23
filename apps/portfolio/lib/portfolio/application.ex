@@ -6,6 +6,8 @@ defmodule M.Portfolio.Application do
   use Application
   require M.Core.Common
   alias M.Core.Common
+  alias M.Core.Node
+
 
   @impl true
   def start(_type, _args) do
