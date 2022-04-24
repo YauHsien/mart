@@ -1,7 +1,7 @@
 defmodule M.Member.Session.Account do
   use GenServer
   alias M.Member.Repo
-  alias M.Member.User.Account
+  alias M.Repo.User.Account
 
   @spec start_link(iusername: username :: String.t(), password: password :: String.t()) :: GenServer.on_start()
   def start_link(username: username, password: password),

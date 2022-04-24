@@ -7,7 +7,7 @@ defmodule M.Member.Repo do
   alias Ecto.Multi
   alias M.Member, as: App
   alias M.Member.Repo
-  alias M.Member.User.Account
+  alias M.Repo.User.Account
   alias NaiveDateTime
   alias UUID
 

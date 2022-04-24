@@ -29,7 +29,7 @@ defmodule M.Repo.Worker do
 
 
 
-  @impl
+  @impl true
 
   def handle_info(msg, state)
 

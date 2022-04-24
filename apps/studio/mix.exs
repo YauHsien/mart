@@ -20,7 +20,7 @@ defmodule M.Studio.MixProject do
   def application do
     [
       mod: {M.Studio.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :sprawl]
     ]
   end
 
@@ -46,6 +46,7 @@ defmodule M.Studio.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
+      {:sprawl, ">= 1.0.0", github: "YauHsien/beamsprawl", branch: "main", sparse: "sprawl"},
       {:mart_core, app: false, path: "../core"}
     ]
   end

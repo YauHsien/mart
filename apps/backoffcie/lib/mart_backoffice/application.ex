@@ -12,8 +12,6 @@ defmodule M.BackOffice.Application do
   @impl true
   def start(_type, _args) do
 
-    Node.connect_node([Application.fetch_env!(:mart_backoffice, :node_env)])
-
     children = [
       # Start the Telemetry supervisor
       M.BackOfficeWeb.Telemetry,

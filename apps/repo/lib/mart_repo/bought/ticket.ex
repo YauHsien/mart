@@ -18,7 +18,7 @@ defmodule M.Repo.Bought.Ticket do
       references: :id
 
     has_one :studentship, M.Repo.Studentship,
-      foreign_key: :studentship_id,
+      foreign_key: :bought_ticket_id,
       references: :id
 
     timestamps()

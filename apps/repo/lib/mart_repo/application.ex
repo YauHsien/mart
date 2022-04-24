@@ -12,7 +12,7 @@ defmodule M.Repo.Application do
   @impl true
   def start(_type, _args) do
 
-    Node.connect_node([Application.fetch_env!(:mart_repo, :node_env)])
+    #Node.connect_node([Application.fetch_env!(:mart_repo, :node_env)])
 
     children = [
       # Start the Ecto repository
