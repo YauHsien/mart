@@ -7,6 +7,16 @@ defmodule M.Repo.Pricing do
     field :sku_id, :id
     field :promotion_id, :id
 
+    belongs_to :sku, M.Repo.SKU,
+      define_field: false,
+      foreign_key: :sku_id,
+      references: :id
+
+    belongs_to :promotion, M.Repo.Promotion,
+      define_field: false,
+      foreign_key: :promotion_id,
+      references: :id
+
     timestamps()
   end
 

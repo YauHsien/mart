@@ -12,6 +12,21 @@ defmodule M.Repo.Tutorship do
     many_to_many :rooms, M.Repo.Room,
       join_through: :lecturers
 
+    belongs_to :shop, M.Repo.Shop,
+      define_field: false,
+      foreign_key: :shop_id,
+      references: :id
+
+    belongs_to :course, M.Repo.Course,
+      define_field: false,
+      foreign_key: :course_id,
+      references: :id
+
+    belongs_to :user_account, M.Repo.User.Account,
+      define_field: false,
+      foreign_key: :user_account_id,
+      references: :id
+
     timestamps()
   end
 

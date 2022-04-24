@@ -8,7 +8,19 @@ defmodule M.Repo.Room do
     field :ending_datetime, :naive_datetime
 
     many_to_many :tutorships, M.Repo.Tutorship,
-      join_through: :lecturers
+      join_through: "lecturers"
+
+    has_many :studentships, M.Repo.Studentship,
+      foreign_key: :room_id,
+      references: :id
+
+    has_one :lesson, M.Repo.Lesson,
+      foreign_key: :room_id,
+      references: :id
+
+    has_many :vlogs, M.Repo.Room.Vlog,
+      foreign_key: :room_id,
+      references: :id
 
     timestamps()
   end

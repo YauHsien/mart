@@ -11,6 +11,21 @@ defmodule M.Repo.Studentship do
     field :room_id, :id
     field :bought_ticket_id, :id
 
+    belongs_to :room, M.Repo.Room,
+      define_field: false,
+      foreign_key: :room_id,
+      references: :id
+
+    belongs_to :bought_ticket, M.Repo.Bought.Ticket,
+      define_field: false,
+      foreign_key: :bought_ticket_id,
+      references: :id
+
+    belongs_to :user_account, M.Repo.User.Account,
+      define_field: false,
+      foreign_key: :user_account_id,
+      references: :id
+
     timestamps()
   end
 

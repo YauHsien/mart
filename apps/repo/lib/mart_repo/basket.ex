@@ -18,7 +18,7 @@ defmodule M.Repo.Basket do
     has_one :sales_order, M.Repo.SalesOrder,
       foreign_key: :basket_id,
       references: :id
-    
+
     timestamps()
   end
 

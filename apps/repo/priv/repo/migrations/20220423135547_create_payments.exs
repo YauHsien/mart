@@ -3,6 +3,7 @@ defmodule M.Repo.Repo.Migrations.CreatePayments do
 
   def change do
     create table(:payments) do
+      add :bookkeeping_datetime, :naive_datetime
       add :amount, :decimal
       add :via, :string
       add :arguments, :string
