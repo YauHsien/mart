@@ -23,7 +23,7 @@ defmodule M.Repo.SKU do
     has_many :sales_order_items, M.Repo.SalesOrder.Item,
       foreign_key: :sku_id,
       references: :id
-    
+
     timestamps()
   end
 
