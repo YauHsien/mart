@@ -64,11 +64,11 @@
 
 ## Domain events
 
+- Object event:
+  - Value: {:object, table, id: id}
+
 - Field event:
-  - Key: `{table, id: id, field: field}`
-  - Value: just `value`.
+  - Value: {:field, table, id: id, field: field, value: value}
 
 - Structure event:
-  - Key: `{parent, child}`
-  - Value: `{parent_id, child_id}`
-  - By custom.
+  - Value: {:relation, parent, id: id, child, child_id: child_id}

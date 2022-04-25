@@ -31,6 +31,7 @@ defmodule M.Member.Application do
       M.MemberWeb.Endpoint,
       # Start a worker by calling: M.Member.Worker.start_link(arg)
       M.Member.Worker,
+      M.Member.Aggregate,
       {M.Member.Session.Registry, id: M.Member.Session.Registry}
     ]
 

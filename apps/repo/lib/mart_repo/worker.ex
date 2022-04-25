@@ -19,11 +19,11 @@ defmodule M.Repo.Worker do
     [
       "set on_network"
     ] |>
-      Enum.map(&( PubSub.subscribe(Common.repo_pub_sub_name(), &1) ))
+      Enum.map(&( PubSub.subscribe(Common.repo_write_pub_sub_name(), &1) ))
 
 
     {:ok, %{
-        on_network: Common.try_connect(Common.env_pub_sub_name(), Common.repo_pub_sub_name())
+        on_network: Common.try_connect(Common.env_pub_sub_name(), Common.repo_write_pub_sub_name())
      }}
   end
 

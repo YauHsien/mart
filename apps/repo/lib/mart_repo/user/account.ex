@@ -15,7 +15,7 @@ defmodule M.Repo.User.Account do
     field :user_token, :string
     field :username, :string
 
-    has_many :user_tokens, M.Rpo.User.Token,
+    has_many :user_tokens, M.Repo.User.Token,
       foreign_key: :user_account_id,
       references: :id
 
