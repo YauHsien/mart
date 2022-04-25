@@ -18,7 +18,8 @@ defmodule M.SalesOrder.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_2),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.finance_pub_sub_name()}, id: :pub_3),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.lobby_pub_sub_name()}, id: :pub_4),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_5),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_read_pub_sub_name()}, id: :pub_5),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_write_pub_sub_name()}, id: :pub_6),
       # Starts a worker by calling: M.SalesOrder.Worker.start_link(arg)
       M.SalesOrder.Worker
     ]

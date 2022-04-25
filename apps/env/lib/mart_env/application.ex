@@ -16,16 +16,8 @@ defmodule M.Env.Application do
       M.EnvWeb.Telemetry,
       # Start the PubSub system
       Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_0),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.accounting_pub_sub_name()}, id: :pub_1),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.backoffice_pub_sub_name()}, id: :pub_2),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.finance_pub_sub_name()}, id: :pub_3),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.lobby_pub_sub_name()}, id: :pub_4),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.member_pub_sub_name()}, id: :pub_5),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.portfolio_pub_sub_name()}, id: :pub_6),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_7),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.sales_order_pub_sub_name()}, id: :pub_8),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.shop_pub_sub_name()}, id: :pub_9),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.studio_pub_sub_name()}, id: :pub_10),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_read_pub_sub_name()}, id: :pub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_write_pub_sub_name()}, id: :pub_2),
       # Start the Endpoint (http/https)
       M.EnvWeb.Endpoint,
       # Start a worker by calling: M.Env.Worker.start_link(arg)

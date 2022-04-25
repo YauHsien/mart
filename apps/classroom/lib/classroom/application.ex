@@ -15,8 +15,9 @@ defmodule M.Classroom.Application do
     children = [
       Supervisor.child_spec({Phoenix.PubSub, name: Common.classroom_pub_sub_name()}, id: :pub_0),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_1),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_pub_sub_name()}, id: :pub_2),
-      Supervisor.child_spec({Phoenix.PubSub, name: Common.studio_pub_sub_name()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_read_pub_sub_name()}, id: :pub_2),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_write_pub_sub_name()}, id: :pub_3),
+      Supervisor.child_spec({Phoenix.PubSub, name: Common.studio_pub_sub_name()}, id: :pub_4),
       # Starts a worker by calling: M.Classroom.Worker.start_link(arg)
       M.Classroom.Worker
     ]

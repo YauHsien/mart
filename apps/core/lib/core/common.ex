@@ -10,7 +10,8 @@ defmodule M.Core.Common do
   defmacro lobby_pub_sub_name(), do: Lobby.PubSub
   defmacro member_pub_sub_name(), do: Member.PubSub
   defmacro portfolio_pub_sub_name(), do: Portfolio.PubSub
-  defmacro repo_pub_sub_name(), do: Repo.PubSub
+  defmacro repo_read_pub_sub_name(), do: Repo.Read.PubSub
+  defmacro repo_write_pub_sub_name(), do: Repo.Write.PubSub
   defmacro sales_order_pub_sub_name(), do: SalesOrder.PubSub
   defmacro shop_pub_sub_name(), do: Shop.PubSub
   defmacro studio_pub_sub_name(), do: Studio.PubSub

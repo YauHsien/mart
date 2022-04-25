@@ -1,19 +1,74 @@
-# M.Repo
+# Mart Repo
 
-To start your Phoenix server:
+## Relationships between domain objects to repositories
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+- Member
+  - :user_account (aggregate)
+    - :user_token
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+- Shop
+  - :shop (aggregate)
+    - :tutorship
+      - :user_account
+    - :sku
+      - :course (aggregate)
+        - :course_plan
+        - :lesson
+      - :pricing
+        - :promotion
+      - :sales_order\_item
+        - :sales_order
+          - :user_account
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+- Sales Order
+  - :sales_order (aggregate)
+    - :user_account
+    - :sales_order\_item
+    - :payment
 
-## Learn more
+- Classroom
+  - :room (aggregate)
+    - :course_plan
+      - :course
+        - :lesson
+    - :tutorship
+      - :user_account
+        - :user_token
+    - :studentship
+      - :user_account
+        - :user_token
+        - :bought_ticket
+          - :bought_package
+    - :vlog
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+- Accounting
+  - :payment (appregate)
+    - :user_account
+    - :sales_order
+      - :sales_order_item
+        - :skus
+          - :pricing
+            - :promotion
+
+- Portfolio
+  - :user_account (aggregate)
+    - :bought_package
+      - :bought_ticket
+      - :sales_order\_item
+      - :skus
+        - :course
+          - :course_plan
+          - :lesson
+        - :pricing
+          - :promotion
+
+## Domain events
+
+- Field event:
+  - Key: `{table, id: id, field: field}`
+  - Value: just `value`.
+
+- Structure event:
+  - Key: `{parent, child}`
+  - Value: `{parent_id, child_id}`
+  - By custom.
