@@ -23,6 +23,6 @@ defmodule M.Repo.SalesOrder do
   def changeset(sales_order, attrs) do
     sales_order
     |> cast(attrs, [])
-    |> validate_required([])
+    |> validate_required([:basket_id, :user_account_id])
   end
 end

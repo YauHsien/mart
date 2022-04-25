@@ -24,6 +24,6 @@ defmodule M.Repo.Pricing do
   def changeset(pricing, attrs) do
     pricing
     |> cast(attrs, [:price])
-    |> validate_required([:price])
+    |> validate_required([:price, :sku_id])
   end
 end

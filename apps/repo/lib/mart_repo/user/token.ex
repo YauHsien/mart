@@ -20,6 +20,6 @@ defmodule M.Repo.User.Token do
   def changeset(token, attrs) do
     token
     |> cast(attrs, [:user_token, :expired_when])
-    |> validate_required([:user_token, :expired_when])
+    |> validate_required([:user_account_id, :user_token, :expired_when])
   end
 end

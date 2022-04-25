@@ -34,6 +34,6 @@ defmodule M.Repo.SalesOrder.Item do
   def changeset(item, attrs) do
     item
     |> cast(attrs, [])
-    |> validate_required([])
+    |> validate_required([:sku_id, :sales_order_id])
   end
 end

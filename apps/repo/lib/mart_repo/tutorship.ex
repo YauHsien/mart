@@ -10,7 +10,7 @@ defmodule M.Repo.Tutorship do
     field :course_id, :id
 
     many_to_many :rooms, M.Repo.Room,
-      join_through: :lecturers
+      join_through: "lectures"
 
     belongs_to :shop, M.Repo.Shop,
       define_field: false,
@@ -34,6 +34,6 @@ defmodule M.Repo.Tutorship do
   def changeset(tutorship, attrs) do
     tutorship
     |> cast(attrs, [:name, :is_owner])
-    |> validate_required([:name, :is_owner])
+    |> validate_required([:name, :is_owner, :user_account_id, :shop_id, :course_id])
   end
 end

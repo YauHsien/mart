@@ -27,6 +27,6 @@ defmodule M.Repo.Payment do
   def changeset(payment, attrs) do
     payment
     |> cast(attrs, [:amount, :via, :arguments])
-    |> validate_required([:amount, :via, :arguments])
+    |> validate_required([:amount, :via, :arguments, :user_account_id, :sales_order_id])
   end
 end

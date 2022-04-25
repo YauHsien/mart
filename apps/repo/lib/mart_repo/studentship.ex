@@ -33,6 +33,6 @@ defmodule M.Repo.Studentship do
   def changeset(studentship, attrs) do
     studentship
     |> cast(attrs, [:stars, :max_stars, :comment, :comment_time])
-    |> validate_required([:stars, :max_stars, :comment, :comment_time])
+    |> validate_required([:stars, :max_stars, :comment, :comment_time, :user_account_id, :room_id, :bought_ticket_id])
   end
 end

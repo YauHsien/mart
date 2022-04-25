@@ -20,6 +20,6 @@ defmodule M.Repo.Room.Vlog do
   def changeset(vlog, attrs) do
     vlog
     |> cast(attrs, [:starting_seconds, :ending_seconds, :uri])
-    |> validate_required([:starting_seconds, :ending_seconds, :uri])
+    |> validate_required([:starting_seconds, :ending_seconds, :uri, :room_id])
   end
 end

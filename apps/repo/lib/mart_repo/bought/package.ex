@@ -34,6 +34,6 @@ defmodule M.Repo.Bought.Package do
   def changeset(package, attrs) do
     package
     |> cast(attrs, [])
-    |> validate_required([])
+    |> validate_required([:course_id, :sales_order_item_id, :user_account_id])
   end
 end

@@ -28,6 +28,6 @@ defmodule M.Repo.Bought.Ticket do
   def changeset(ticket, attrs) do
     ticket
     |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> validate_required([:name, :bought_package_id])
   end
 end

@@ -9,7 +9,7 @@ defmodule M.Repo.Promotion do
     has_many :pricings, M.Repo.Pricing,
       foreign_key: :promotion_id,
       references: :id
-    
+
     timestamps()
   end
 

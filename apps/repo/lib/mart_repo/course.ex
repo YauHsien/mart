@@ -33,6 +33,6 @@ defmodule M.Repo.Course do
   def changeset(course, attrs) do
     course
     |> cast(attrs, [:name, :description])
-    |> validate_required([:name, :description])
+    |> validate_required([:name, :description, :course_plan_id])
   end
 end

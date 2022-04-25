@@ -6,7 +6,6 @@ defmodule M.Repo.Lesson do
     field :description, :string
     field :name, :string
     field :cource_id, :id
-    field :room_id, :id
 
     belongs_to :course, M.Repo.Course,
       define_field: false,
@@ -29,6 +28,6 @@ defmodule M.Repo.Lesson do
   def changeset(lesson, attrs) do
     lesson
     |> cast(attrs, [:name, :description])
-    |> validate_required([:name, :description])
+    |> validate_required([:name, :description, :course_id])
   end
 end

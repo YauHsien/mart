@@ -26,6 +26,6 @@ defmodule M.Repo.Basket do
   def changeset(basket, attrs) do
     basket
     |> cast(attrs, [:description])
-    |> validate_required([:description])
+    |> validate_required([:user_account_id])
   end
 end

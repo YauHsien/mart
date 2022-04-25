@@ -31,6 +31,6 @@ defmodule M.Repo.SKU do
   def changeset(sku, attrs) do
     sku
     |> cast(attrs, [:name, :price])
-    |> validate_required([:name, :price])
+    |> validate_required([:name, :price, :shop_id])
   end
 end

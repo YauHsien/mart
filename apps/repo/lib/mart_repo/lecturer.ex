@@ -14,6 +14,6 @@ defmodule M.Repo.Lecturer do
   def changeset(lecturer, attrs) do
     lecturer
     |> cast(attrs, [])
-    |> validate_required([])
+    |> validate_required([:room_id, :tutorship_id])
   end
 end
