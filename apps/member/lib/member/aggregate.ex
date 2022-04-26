@@ -6,13 +6,28 @@ defmodule M.Member.Aggregate do
   require M.Core.Common
   alias   M.Core.Common
   require M.Core.Common.RepoCommand
-  alias   M.Core.Common.RepoCommand
   alias Phoenix.PubSub
 
   @registry M.Member.Registry
+  @aggregate M.Repo.User.Account
+
+  defstruct id: 0,
+    username: "",
+    salt: "",
+    password: "",
+    password_changed_when: nil,
+    user_token: "",
+    expired_when: nil,
+    user_tokens: [] # list of M.Member.Aggregate.UserToken
+
+  defmodule M.Member.Aggregate.UserToken,
+    do: defstruct id: 0,
+      user_token: "",
+      expired_when: nil
 
 
-  @spec start_link(Keyword.t()) :: on_start
+
+  @spec start_link(Keyword.t()) :: GenServer.on_start
 
   def start_link(args), do: GenServer.start_link(__MODULE__, args)
 
@@ -25,19 +40,21 @@ defmodule M.Member.Aggregate do
 
     id = Keyword.get(args, :id)
 
-    [RepoCommand.repo_query()]
-    |> Enum.map(&(
-          Common.repo_read_pub_sub_name()
-          |> PubSub.suscribe(&1)
-        ))
+    Common.repo_read_pub_sub_name()
+    |> PubSub.subscribe(Common.RepoCommand.aggregate(@aggregate) |> Common.RepoCommand.topic() |> Common.RepoCommand.return())
 
-    {:ok, %{}}
+    Common.repo_read_pub_sub_name()
+    |> PubSub.broadcast!(
+      Common.RepoCommand.aggregate(@aggregate) |> Common.RepoCommand.topic(),
+      Common.RepoCommand.aggregate(@aggregate, id)
+    )
+
+    {:ok, %{
+        aggregate: @aggregate,
+        id: id
+     }}
   end
 
-  # Aggregate User-Account
-  #
-  # root: :user_account
-  #       - list of :user_token
 
 
   @impl true
@@ -50,20 +67,22 @@ defmodule M.Member.Aggregate do
   def handle_info(msg, state)
 
 
-  def handle_info({:field, table, id: id, field: field, value: value0}, state) do
-
-    key = {:field, table, id: id, field: field}
-    value = value0
-    Registry.register(@registry, key, value)
-
+  def handle_info({:field, M.Repo.User.Account, id: id, field: field, value: value0}, state) do
+    # TODO
     {:noreply, state}
   end
 
 
-  def handle_info({:relation, parent, id: id, child, dhild_id: child_id}, state) do
+  def handle_info({:object, M.Repo.User.Token, id: id, field: field, value: value0}, state) do
+    # TODO
+    {:noreply, state}
+  end
 
-    key = {:relation, parent, child}
-    value = {:id: id, child_id: child_id}
+
+  def handle_info({:field, M.Repo.User.Token, id: id, field: field, value: value0}, state) do
+    # TODO
+    key = {:field, table, id: id, field: field}
+    value = value0
     Registry.register(@registry, key, value)
 
     {:noreply, state}

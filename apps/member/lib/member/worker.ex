@@ -29,14 +29,14 @@ defmodule M.Member.Worker do
 
 
 
-  @impl
+  @impl true
 
   def handle_info(msg, state)
 
   def handle_info(@set_on_network, state),
 	  do: {:noreply, %{state|on_network: true}}
 
-  def handle_info(msg, state),
+  def handle_info(_msg, state),
     do: {:noreply, state}
 
 end

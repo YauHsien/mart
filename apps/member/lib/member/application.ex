@@ -6,18 +6,12 @@ defmodule M.Member.Application do
   use Application
   require M.Core.Common
   alias M.Core.Common
-  alias M.Core.Node
 
 
   @impl true
   def start(_type, _args) do
 
     children = [
-      # Start the Ecto repository
-      M.Member.Repo,
-      # Start the Telemetry supervisor
-      M.MemberWeb.Telemetry,
-      # Start the PubSub system
       Supervisor.child_spec({Phoenix.PubSub, name: Common.member_pub_sub_name()}, id: :pub_0),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.backoffice_pub_sub_name()}, id: :pub_1),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.env_pub_sub_name()}, id: :pub_2),
@@ -27,12 +21,9 @@ defmodule M.Member.Application do
       Supervisor.child_spec({Phoenix.PubSub, name: Common.repo_write_pub_sub_name()}, id: :pub_6),
       Supervisor.child_spec({Phoenix.PubSub, name: Common.studio_pub_sub_name()}, id: :pub_7),
       {Registry, keys: :unique, name: M.Member.Registry},
-      # Start the Endpoint (http/https)
-      M.MemberWeb.Endpoint,
       # Start a worker by calling: M.Member.Worker.start_link(arg)
       M.Member.Worker,
-      M.Member.AggregateEmitter,
-      {M.Member.Session.Registry, id: M.Member.Session.Registry}
+      M.Member.AggregateEmitter
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -40,13 +31,4 @@ defmodule M.Member.Application do
     opts = [strategy: :one_for_one, name: M.Member.Supervisor]
     Supervisor.start_link(children, opts)
   end
-
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
-  @impl true
-  def config_change(changed, _new, removed) do
-    M.MemberWeb.Endpoint.config_change(changed, removed)
-    :ok
-  end
-
 end

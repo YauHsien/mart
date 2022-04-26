@@ -1,6 +1,7 @@
 defmodule M.Core.Common.RepoCommand do
-  require M.Core.Common
-  alias M.Core.Common
+
+  @comment_aggregate """
+  """
 
   @comment_topic_list """
   # Recommandation on Phoenix.PubSub.broadcast!
@@ -18,6 +19,12 @@ defmodule M.Core.Common.RepoCommand do
   @comment_topic_rest ""
   @comment_return_rest ""
 
+  @doc @comment_aggregate
+  defmacro aggregate(aggregate), do: quote do: {:aggregate, aggregate}
+
+  @doc @comment_aggregate
+  defmacro aggregate(aggregate, id), do: quote do: {:aggregate, unquote(aggregate), id: unquote(id)}
+
   @doc @comment_topic_list
   defmacro list(things), do: {:list, things}
 
@@ -28,5 +35,5 @@ defmodule M.Core.Common.RepoCommand do
   defmacro topic(name), do: "topic #{inspect name}"
 
   @doc @comment_topic_list <> @comment_return_rest
-  defmacro return(topic), do: "return #{topic}"
+  defmacro return(topic), do: "return #{inspect topic}"
 end

@@ -71,4 +71,4 @@
   - Value: {:field, table, id: id, field: field, value: value}
 
 - Structure event:
-  - Value: {:relation, parent, id: id, child, child_id: child_id}
+  - Value: {:relation, parent, id: id, child: child, child_id: child_id}
