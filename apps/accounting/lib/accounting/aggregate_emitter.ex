@@ -1,8 +1,8 @@
-defmodule M.Member.AggregateEmitter do
+defmodule M.Accounting.AggregateEmitter do
   @doc """
-  To generate Member.Aggregate-s.
+  To generate Accounting.Aggregate-s.
 
-  All generated aggregates are collected in M.Member.Registry.
+  All generated aggregates are collected in M.Accounting.Registry.
   """
   use GenServer
   require M.Core.Common
@@ -11,7 +11,7 @@ defmodule M.Member.AggregateEmitter do
   alias   M.Core.Common.RepoCommand
   alias Phoenix.PubSub
 
-  @registry M.Member.Registry
+  @registry M.Accounting.Registry
 
 
   @spec start_link(Keyword.t()) :: on_start
@@ -25,7 +25,7 @@ defmodule M.Member.AggregateEmitter do
 
   def init(_args) do
 
-    aggregate = M.Repo.User.Account
+    aggregate = M.Repo.Payment
 
     Common.repo_read_pub_sub_name()
     |> PubSub.subscribe(Common.RepoCommand.list(aggregate) |> Common.topic() |> Common.return())
@@ -62,7 +62,7 @@ defmodule M.Member.AggregateEmitter do
         value = {id: id}
         Registry.register(@registry, key, value)
 
-        {:ok, pid} = M.Member.Aggregate.start_link(id: id)
+        {:ok, pid} = M.Accounting.Aggregate.start_link(id: id)
         key = {:aggregate_root, aggregate, id: id}
         value = pid
         Registry.registry(@register, key, value)

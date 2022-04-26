@@ -27,19 +27,19 @@
     - :payment
 
 - Classroom
-  - :room (aggregate)
+  - :course (aggregate)
     - :course_plan
-      - :course
-        - :lesson
-    - :tutorship
-      - :user_account
-        - :user_token
-    - :studentship
-      - :user_account
-        - :user_token
-        - :bought_ticket
-          - :bought_package
-    - :vlog
+    - :lesson
+      - :room
+        - :tutorship
+          - :user_account
+            - :user_token
+        - :studentship
+          - :user_account
+            - :user_token
+            - :bought_ticket
+              - :bought_package
+        - :vlog
 
 - Accounting
   - :payment (appregate)
