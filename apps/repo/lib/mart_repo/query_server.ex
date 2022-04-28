@@ -59,11 +59,11 @@ defmodule M.Repo.QueryServer do
 
     repos
     |> Enum.map(&( Common.RepoCommand.list(&1) |> Common.RepoCommand.topic ))
-    |> Enum.map(&( PubSub.subscribe(Common.repo_read_pub_sub_name, &1) ))
+    |> Enum.map(&( PubSub.subscribe(M.Repo.pubsub_repo_query, &1) ))
 
     repos
     |> Enum.map(&( Common.RepoCommand.aggregate(&1) |> Common.RepoCommand.topic ))
-    |> Enum.map(&( PubSub.subscribe(Common.repo_read_pub_sub_name, &1) ))
+    |> Enum.map(&( PubSub.subscribe(M.Repo.pubsub_repo_query, &1) ))
 
     {:ok, %{}}
   end
@@ -85,7 +85,7 @@ defmodule M.Repo.QueryServer do
     list(target)
     |> Enum.map(&(
           PubSub.broadcast!(
-            Common.repo_read_pub_sub_name,
+            M.Repo.pubsub_repo_query,
             Command.RepoCommand.list(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
             &1
           )
@@ -100,7 +100,7 @@ defmodule M.Repo.QueryServer do
     aggregate(target, id)
     |> Enum.map(&(
           PubSub.broadcast!(
-            Common.repo_read_pub_sub_name,
+            M.Repo.pubsub_repo_query,
             Commadn.RepoCommand.aggregate(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
             &1
           )))

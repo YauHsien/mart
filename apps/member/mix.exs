@@ -20,7 +20,7 @@ defmodule M.Member.MixProject do
   def application do
     [
       mod: {M.Member.Application, []},
-      extra_applications: [:logger, :runtime_tools, :sprawl]
+      extra_applications: [:logger]
     ]
   end
 
@@ -34,7 +34,6 @@ defmodule M.Member.MixProject do
   defp deps do
     [
       {:phoenix_pubsub, "~> 2.1.1"},
-      {:sprawl, ">= 1.0.0", github: "YauHsien/beamsprawl", branch: "main", sparse: "sprawl"},
       {:mart_core, app: false, path: "../core"}
     ]
   end

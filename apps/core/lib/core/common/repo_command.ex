@@ -20,7 +20,7 @@ defmodule M.Core.Common.RepoCommand do
   @comment_return_rest ""
 
   @doc @comment_aggregate
-  defmacro aggregate(aggregate), do: quote do: {:aggregate, aggregate}
+  defmacro aggregate(aggregate), do: quote do: {:aggregate, unquote(aggregate)}
 
   @doc @comment_aggregate
   defmacro aggregate(aggregate, id), do: quote do: {:aggregate, unquote(aggregate), id: unquote(id)}

@@ -2,7 +2,6 @@ defmodule M.Env.Server do
   use GenServer
   require M.Core.Server.Security
   require M.Core.Common
-  alias M.Core.Common
   alias Phoenix.PubSub
 
 
@@ -40,7 +39,7 @@ defmodule M.Env.Server do
       List.flatten()
 
     config_keys |>
-      Enum.map(&( PubSub.broadcast!(Common.repo_pub_sub_name(), "#{__MODULE__}:config:load", &1) ))
+      Enum.map(&( PubSub.broadcast!(M.Env.pubsub_repo_query(), "#{__MODULE__}:config:load", &1) ))
 
     state =
       %{
@@ -82,7 +81,7 @@ defmodule M.Env.Server do
   def handle_call(request, from, state)
 
 
-  def handle_call({:connect_node, node}, from, state) do
+  def handle_call({:connect_node, node}, _from, state) do
 
     result =
 	  if false == Enum.member?(:erlang.nodes(), node) do

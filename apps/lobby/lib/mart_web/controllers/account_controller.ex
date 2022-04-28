@@ -4,7 +4,9 @@ defmodule M.LobbyWeb.AccountController do
   """
   use M.LobbyWeb, :controller
   require M.Core.Common
-  alias M.Core.Common
+  alias   M.Core.Common
+  require M.Core.Common.Command
+  require M.Core.Common.Resource
 
   @doc """
   變更帳號內容頁面
@@ -23,7 +25,7 @@ defmodule M.LobbyWeb.AccountController do
   @doc """
   帳號說明頁面
   """
-  def show(conn, %{id: id}) do
+  def show(conn, %{id: _id}) do
     render(conn, "show.html")
   end
 
@@ -33,8 +35,8 @@ defmodule M.LobbyWeb.AccountController do
   def create(conn, params) do
     result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.member_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_member(),
         Common.Resource.account(),
         Common.Command.create(Common.Resource.account(), params)
       )
@@ -48,8 +50,8 @@ defmodule M.LobbyWeb.AccountController do
   def update(conn, params) do
     result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.member_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_member(),
         Common.Resource.account(),
         Common.Command.update(Common.Resource.account(), params)
       )

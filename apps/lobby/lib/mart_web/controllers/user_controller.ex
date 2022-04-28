@@ -4,12 +4,14 @@ defmodule M.LobbyWeb.UserController do
   """
   use M.LobbyWeb, :controller
   require M.Core.Common
-  alias M.Core.Common
+  alias   M.Core.Common
+  require M.Core.Common.Command
+  require M.Core.Common.Resource
 
   @doc """
   登入頁面
   """
-  def new(conn, params) do
+  def new(conn, _params) do
     render(conn, "login.html")
   end
 
@@ -17,10 +19,10 @@ defmodule M.LobbyWeb.UserController do
   使用者登入
   """
   def create(conn, params) do
-    result =
+    _result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.member_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_member(),
         Common.Resource.user(),
         Common.Command.login(Common.Resource.basket(), params)
       )
@@ -32,10 +34,10 @@ defmodule M.LobbyWeb.UserController do
   使用者登出
   """
   def detete(conn, params) do
-    result =
+    _result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.member_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_member(),
         Common.Resource.user(),
         Common.Command.logout(Common.Resource.basket(), params)
       )

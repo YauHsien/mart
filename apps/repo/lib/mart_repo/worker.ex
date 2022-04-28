@@ -62,7 +62,7 @@ defmodule M.Repo.Worker do
       User.Token
     ]
     |> Enum.map(&( Common.RepoCommand.list(&1) |> Common.RepoCommand.topic ))
-    |> Enum.map(&( PubSub.subscribe(Common.repo_read_pub_sub_name, &1) ))
+    |> Enum.map(&( PubSub.subscribe(M.Repo.pubsub_repo_query, &1) ))
 
     {:ok, %{}}
   end
@@ -83,7 +83,7 @@ defmodule M.Repo.Worker do
     list(target)
     |> then(&(
           PubSub.broadcast!(
-            Common.repo_read_pub_sub_name,
+            M.Repo.pubsub_repo_query,
             {:list, target} |> Common.RepoCommand.topic |> Common.RepoCommand.return,
             &1
           )

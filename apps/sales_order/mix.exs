@@ -14,7 +14,7 @@ defmodule M.SalesOrder.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :sprawl],
+      extra_applications: [:logger],
       mod: {M.SalesOrder.Application, []}
     ]
   end
@@ -25,7 +25,6 @@ defmodule M.SalesOrder.MixProject do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:phoenix_pubsub, "~> 2.1.1"},
-      {:sprawl, ">= 1.0.0", github: "YauHsien/beamsprawl", branch: "main", sparse: "sprawl"},
       {:mart_core, app: false, path: "../core"}
     ]
   end

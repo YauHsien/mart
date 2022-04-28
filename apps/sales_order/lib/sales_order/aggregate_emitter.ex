@@ -8,13 +8,12 @@ defmodule M.SalesOrder.AggregateEmitter do
   require M.Core.Common
   alias   M.Core.Common
   require M.Core.Common.RepoCommand
-  alias   M.Core.Common.RepoCommand
   alias Phoenix.PubSub
 
   @registry M.SalesOrder.Registry
 
 
-  @spec start_link(Keyword.t()) :: on_start
+  @spec start_link(Keyword.t()) :: GenServer.on_start
 
   def start_link(args), do: GenServer.start_link(__MODULE__, args)
 
@@ -27,12 +26,12 @@ defmodule M.SalesOrder.AggregateEmitter do
 
     aggregate = M.Repo.SalesOrder
 
-    Common.repo_read_pub_sub_name()
-    |> PubSub.subscribe(Common.RepoCommand.list(aggregate) |> Common.topic() |> Common.return())
+    M.SalesOrder.pubsub_repo_query()
+    |> PubSub.subscribe(Common.RepoCommand.list(aggregate) |> Common.RepoCommand.topic() |> Common.RepoCommand.return())
 
-    Common.repo_read_pub_sub_name()
+    M.SalesOrder.pubsub_repo_query()
     |> PubSub.broadcast!(
-      Common.RepoCommand.list(aggregate) |> Common.topic()
+      Common.RepoCommand.list(aggregate) |> Common.RepoCommand.topic(),
       Common.RepoCommand.list(aggregate)
     )
 
@@ -59,15 +58,15 @@ defmodule M.SalesOrder.AggregateEmitter do
       [] ->
 
         key = {:aggregate_root, aggregate}
-        value = {id: id}
+        value = id
         Registry.register(@registry, key, value)
 
         {:ok, pid} = M.SalesOrder.Aggregate.start_link(id: id)
         key = {:aggregate_root, aggregate, id: id}
         value = pid
-        Registry.registry(@register, key, value)
+        Registry.register(@registry, key, value)
 
-      [{self(), _}] ->
+      [{pid, _}] when pid == self() ->
         :ok
     end
 

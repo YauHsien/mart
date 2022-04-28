@@ -26,10 +26,10 @@ defmodule M.Member.AggregateEmitter do
 
     aggregate = M.Repo.User.Account
 
-    Common.repo_read_pub_sub_name()
+    M.Member.pubsub_repo_query()
     |> PubSub.subscribe(Common.RepoCommand.list(aggregate) |> Common.RepoCommand.topic() |> Common.RepoCommand.return())
 
-    Common.repo_read_pub_sub_name()
+    M.Member.pubsub_repo_query()
     |> PubSub.broadcast!(
       Common.RepoCommand.list(aggregate) |> Common.RepoCommand.topic(),
       Common.RepoCommand.list(aggregate)

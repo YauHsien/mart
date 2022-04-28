@@ -2,30 +2,28 @@ defmodule M.Repo.Repo do
   use Ecto.Repo,
     otp_app: :mart_repo,
     adapter: Ecto.Adapters.Postgres
-  alias M.Repo.Basket
-  alias M.Repo.Bought
-  alias M.Repo.Course
-  alias M.Repo.Lecturer
-  alias M.Repo.Lession
-  alias M.Repo.Payment
-  alias M.Repo.Pricing
-  alias M.Repo.Promotion
-  alias M.Repo.Room
-  alias M.Repo.SalesOrder
-  alias M.Repo.Shop
-  alias M.Repo.SKU
-  alias M.Repo.Studentship
-  alias M.Repo.Tutorship
-  alias M.Repo.User
-  
+  #alias M.Repo.Basket
+  #alias M.Repo.Bought
+  #alias M.Repo.Course
+  #alias M.Repo.Lecturer
+  #alias M.Repo.Lession
+  #alias M.Repo.Payment
+  #alias M.Repo.Pricing
+  #alias M.Repo.Promotion
+  alias M.Repo.Repo
+  #alias M.Repo.SalesOrder
+  #alias M.Repo.Shop
+  #alias M.Repo.SKU
+  #alias M.Repo.Studentship
+  #alias M.Repo.Tutorship
+  #alias M.Repo.User
+
   import Ecto.Query
   alias Ecto
   alias Ecto.Multi
-  alias M.Member, as: App
-  alias M.Member.Repo
+  alias M.Core.Common
   alias M.Repo.User.Account
   alias NaiveDateTime
-  alias UUID
 
   def user_accounts() do
     from(a in Account)
@@ -36,9 +34,9 @@ defmodule M.Repo.Repo do
   @spec create(any, any) :: Ecto.Multi.t()
   def create(username, password) do
     salt =
-      UUID.uuid5(:nil, "password salt:"|>App.get_uuid())
+      UUID.uuid5(:nil, "password salt:"|>Common.get_uuid())
     user_token =
-      UUID.uuid5(:nil, "user token:"|>App.get_uuid())
+      UUID.uuid5(:nil, "user token:"|>Common.get_uuid())
     Multi.new()
     |> Multi.insert(:user_account, %{
           username: username,
@@ -91,7 +89,7 @@ defmodule M.Repo.Repo do
   @spec change_user_token(account0::%Account{}) :: (account::%Account{})
   defp change_user_token(account) do
     user_token =
-      UUID.uuid5(:nil, "user token:"|>App.get_uuid())
+      UUID.uuid5(:nil, "user token:"|>Common.get_uuid())
     Multi.new()
     |> Multi.update(:user_account, Account.changeset(account,%{user_token: user_token}))
     |> Multi.insert(:user_token, fn %{user_account: account} ->
@@ -102,7 +100,7 @@ defmodule M.Repo.Repo do
     |> Map.get(:user_account)
   end
 
-  def verify(token) do
+  def verify(_token) do
     #Repo.update
     nil
   end

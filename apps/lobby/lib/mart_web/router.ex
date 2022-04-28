@@ -25,7 +25,7 @@ defmodule M.LobbyWeb.Router do
       :show,  # 供應商頁面
       :update # 更改明細資料
     ] do
-      resources "products", ShopProductController # 商家的產品全操作功能
+      resources "/products", ShopProductController # 商家的產品全操作功能
     end
     resources "/products", ProductController, only: [
       :index, # 產品全覽

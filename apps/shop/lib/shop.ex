@@ -4,11 +4,30 @@ defmodule M.Shop do
   """
   use GenServer
   require M.Core.Common
-  alias M.Core.Common
   require M.Shop.Resource.Action
   alias M.Shop.Resource.Action
   alias Phoenix.PubSub
 
+  def app,
+    do: elem(:application.get_application(__MODULE__), 1)
+
+  def pubsub_shop,
+    do: Application.fetch_env!(app(), :node_resources)[:pubsub_shop]
+
+  def pubsub_backoffice,
+    do: Application.fetch_env!(app(), :node_resources)[:pubsub_backoffice]
+
+  def pubsub_env,
+    do: Application.fetch_env!(app(), :node_resources)[:pubsub_env]
+
+  def pubsub_lobby,
+    do: Application.fetch_env!(app(), :node_resources)[:pubsub_lobby]
+
+  def pubsub_repo_query,
+    do: Application.fetch_env!(app(), :node_resources)[:pubsub_repo_query]
+
+  def pubsub_repo_command,
+    do: Application.fetch_env!(app(), :node_resources)[:pubsub_repo_command]
 
 
   @spec start_link(
@@ -47,11 +66,6 @@ defmodule M.Shop do
   ) :: {:ok, map()} |  {:stop, reason :: term()}
 
   def init(args) do
-
-    [
-      "set on_network"
-    ] |>
-      Enum.map(&( PubSub.subscribe(Common.shop_pub_sub_name(), &1) ))
 
     channel = Keyword.get(args, :channel)
     Action.serve(channel, [

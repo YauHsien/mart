@@ -4,7 +4,9 @@ defmodule M.LobbyWeb.PortfolioController do
   """
   use M.LobbyWeb, :controller
   require M.Core.Common
-  alias M.Core.Common
+  alias   M.Core.Common
+  require M.Core.Common.Command
+  require M.Core.Common.Resource
 
   @doc """
   使用歷程全覽
@@ -24,10 +26,10 @@ defmodule M.LobbyWeb.PortfolioController do
   更新使用歷程
   """
   def update(conn, params) do
-    result =
+    _result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.portfolio_order_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_portfolio(),
         Common.Resource.portfolio(),
         Common.Command.update(Common.Resource.portfolio(), params)
       )

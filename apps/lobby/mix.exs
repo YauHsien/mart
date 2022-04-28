@@ -22,7 +22,7 @@ defmodule M.Lobby.MixProject do
       mod: {M.Lobby.Application, []},
       extra_applications: [
         :logger,
-        :runtime_tools, :sprawl
+        :runtime_tools
       ]
     ]
   end

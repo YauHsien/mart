@@ -25,7 +25,7 @@ config :mart_repo,
 config :mart_repo, M.RepoWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: M.RepoWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: M.Repo.PubSub,
+  pubsub_server: Repo.PubSub,
   live_view: [signing_salt: "B4M8BVic"]
 
 # Configures Elixir's Logger

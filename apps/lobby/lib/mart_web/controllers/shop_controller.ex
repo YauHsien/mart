@@ -4,7 +4,9 @@ defmodule M.LobbyWeb.ShopController do
   """
   use M.LobbyWeb, :controller
   require M.Core.Common
-  alias M.Core.Common
+  alias   M.Core.Common
+  require M.Core.Common.Command
+  require M.Core.Common.Resource
 
   @doc """
   商家全覽
@@ -24,10 +26,10 @@ defmodule M.LobbyWeb.ShopController do
   更改商家明細資料
   """
   def update(conn, params) do
-    result =
+    _result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.shop_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_shop(),
         Common.Resource.shop(),
         Common.Command.update(Common.Resource.basket(), params)
       )

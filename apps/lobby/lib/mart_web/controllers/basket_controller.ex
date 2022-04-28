@@ -4,7 +4,9 @@ defmodule M.LobbyWeb.BasketController do
   """
   use M.LobbyWeb, :controller
   require M.Core.Common
-  alias M.Core.Common
+  alias   M.Core.Common
+  require M.Core.Common.Command
+  require M.Core.Common.Resource
 
   @doc """
   購物籃或銷售訂單頁面
@@ -17,10 +19,10 @@ defmodule M.LobbyWeb.BasketController do
   新增訂購品項
   """
   def create(conn, params) do
-    result =
+    _result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.sales_order_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_sales_order(),
         Common.Resource.basket(),
         Common.Command.add_to(Common.Resource.basket(), params)
       )
@@ -32,10 +34,10 @@ defmodule M.LobbyWeb.BasketController do
   移除訂購品項
   """
   def delete(conn, params) do
-    result =
+    _result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.sales_order_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_sales_order(),
         Common.Resource.basket(),
         Common.Command.remove_from(Common.Resource.basket(), params)
       )
@@ -47,10 +49,10 @@ defmodule M.LobbyWeb.BasketController do
   結帳
   """
   def update(conn, params) do
-    result =
+    _result =
       Common.command(
-        Common.lobby_pub_sub_name(),
-        Common.sales_order_pub_sub_name(),
+        M.Lobby.pubsub_lobby(),
+        M.Lobby.pubsub_sales_order(),
         Common.Resource.basket(),
         Common.Command.checkout(Common.Resource.basket(), params)
       )
@@ -61,7 +63,7 @@ defmodule M.LobbyWeb.BasketController do
   @doc """
   銷售訂單全覽
   """
-  def index(conn, params) do
+  def index(conn, _params) do
     render(conn, "sales_orders.html")
   end
 end

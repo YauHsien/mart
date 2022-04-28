@@ -1,5 +1,9 @@
 # Mart, an architecture
 
+## Examples
+
+[All in one](examples/all_in_one/) sites.
+
 ## Frontend nodes
 
 - `:mart_lobby`: functions including

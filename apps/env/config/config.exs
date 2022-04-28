@@ -14,7 +14,7 @@ config :mart_env,
 config :mart_env, M.EnvWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: M.EnvWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: M.Env.PubSub,
+  pubsub_server: Env.PubSub,
   live_view: [signing_salt: "FQmpAh0k"]
 
 

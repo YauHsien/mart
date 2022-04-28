@@ -15,7 +15,7 @@ config :mart_studio,
 config :mart_studio, M.StudioWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: M.StudioWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: M.Studio.PubSub,
+  pubsub_server: Studio.PubSub,
   live_view: [signing_salt: "elLNuC30"]
 
 # Configures the mailer

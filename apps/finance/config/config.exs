@@ -15,7 +15,7 @@ config :mart_finance,
 config :mart_finance, M.FinanceWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: M.FinanceWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: M.Finance.PubSub,
+  pubsub_server: Finance.PubSub,
   live_view: [signing_salt: "2nwfm4Hh"]
 
 # Configures the mailer
