@@ -26,14 +26,15 @@ defmodule M.Core.Common.RepoCommand do
   defmacro aggregate(aggregate, id), do: quote do: {:aggregate, unquote(aggregate), id: unquote(id)}
 
   @doc @comment_topic_list
-  defmacro list(things), do: {:list, things}
+  defmacro list(things), do: quote do: {:list, unquote(things)}
 
-  defmacro repo_query(), do: "repo query"
-  defmacro repo_command(), do: "repo command"
+  #defmacro repo_query(), do: "repo query"
+  #defmacro repo_command(), do: "repo command"
 
   @doc @comment_topic_list <> @comment_topic_rest
-  defmacro topic(name), do: "topic #{inspect name}"
+  def topic(name),
+    do: "topic #{inspect name}"
 
   @doc @comment_topic_list <> @comment_return_rest
-  defmacro return(topic), do: "return #{inspect topic}"
+  def return(topic), do: "return " <> topic
 end

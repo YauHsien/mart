@@ -12,7 +12,7 @@ defmodule M.Repo.Application do
       M.RepoWeb.Telemetry,
       {Phoenix.PubSub, name: Repo.PubSub},
       M.RepoWeb.Endpoint,
-      M.Repo.Worker
+      M.Repo.QueryServer
     ]
 
     opts = [strategy: :one_for_one, name: M.Repo.Supervisor]

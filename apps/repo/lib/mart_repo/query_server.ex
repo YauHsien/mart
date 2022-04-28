@@ -86,7 +86,7 @@ defmodule M.Repo.QueryServer do
     |> Enum.map(&(
           PubSub.broadcast!(
             M.Repo.pubsub_repo_query,
-            Command.RepoCommand.list(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
+            Common.RepoCommand.list(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
             &1
           )
         ))
@@ -101,7 +101,7 @@ defmodule M.Repo.QueryServer do
     |> Enum.map(&(
           PubSub.broadcast!(
             M.Repo.pubsub_repo_query,
-            Commadn.RepoCommand.aggregate(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
+            Common.RepoCommand.aggregate(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
             &1
           )))
 
@@ -109,23 +109,26 @@ defmodule M.Repo.QueryServer do
   end
 
 
-  def handle_info(_msg, state),
-    do: {:noreply, state}
+  def handle_info(msg, state) do
+    Logger.bare_log(:warning, msg)
+    {:noreply, state}
+  end
 
 
 
-  @spec list(binary()) :: [{:object, binary(), id: term()}]
+  #@spec list(atom()) :: [{:object, atom(), id: term()}]
 
   defp list(table),
-    do: Repo.all(from t in table, select: {:obejct, ^table, id: t.id})
+    do: Repo.all(from t in table, select: t.id)
+    |> Enum.map(&( {:object, table, id: &1} ))
 
 
 
-  @spec aggregate(binary(), term()) ::
+  @spec aggregate(atom(), term()) ::
   [
     {
-      {:object, binary(), id: term()} |
-      {:field, binary(), id: term(), field: atom(), value: term()}
+      {:object, atom(), id: term()} |
+      {:field, atom(), id: term(), field: atom(), value: term()}
     }
   ]
 
@@ -142,7 +145,7 @@ defmodule M.Repo.QueryServer do
       {:object, User.Account, id: id},
       {:field, User.Account, id: id, field: :username, value: account.username},
       {:field, User.Account, id: id, field: :password, value: account.password},
-      {:field, User.Account, id: id, field: :salt, value: account.sault},
+      {:field, User.Account, id: id, field: :salt, value: account.salt},
       {:field, User.Account, id: id, field: :password_changed_when, value: account.password_changed_when},
       {:field, User.Account, id: id, field: :user_token, value: account.user_token},
       {:field, User.Account, id: id, field: :expired_when, value: account.expired_when},
