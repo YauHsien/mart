@@ -19,6 +19,10 @@ defmodule M.Repo.User.Account do
       foreign_key: :user_account_id,
       references: :id
 
+    has_many :tutorships, M.Repo.Tutorship,
+      foreign_key: :user_account_id,
+      references: :id
+
     timestamps()
   end
 

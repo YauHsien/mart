@@ -1,74 +1,69 @@
 # Mart Repo
 
-## Relationships between domain objects to repositories
-
-- Member
-  - :user_account (aggregate)
-    - :user_token
-
-- Shop
-  - :shop (aggregate)
-    - :tutorship
-      - :user_account
-    - :sku
-      - :course (aggregate)
-        - :course_plan
-        - :lesson
-      - :pricing
-        - :promotion
-      - :sales_order\_item
-        - :sales_order
-          - :user_account
-
-- Sales Order
-  - :sales_order (aggregate)
-    - :user_account
-    - :sales_order\_item
-    - :payment
-
-- Classroom
-  - :course (aggregate)
-    - :course_plan
-    - :lesson
-      - :room
-        - :tutorship
-          - :user_account
-            - :user_token
-        - :studentship
-          - :user_account
-            - :user_token
-            - :bought_ticket
-              - :bought_package
-        - :vlog
-
-- Accounting
-  - :payment (appregate)
-    - :user_account
-    - :sales_order
-      - :sales_order_item
-        - :skus
-          - :pricing
-            - :promotion
+## Domain aggregates to repositories
 
 - Portfolio
-  - :user_account (aggregate)
-    - :bought_package
-      - :bought_ticket
-      - :sales_order\_item
-      - :skus
-        - :course
-          - :course_plan
-          - :lesson
-        - :pricing
-          - :promotion
+  - :bought_package & :bought\_ticket
+  - Course
+  - :sales_order\_item & Pricing
 
-## Domain events
+- Member
+  - :user_account
+  - Shop
+  - Portfolio
+  - Basket
+  - Sales order
+  - Payment
 
-- Object event:
-  - Value: {:object, table, id: id}
+- Shop
+  - :shop
+  - Course
+  - Listings
+  - Sales order
 
-- Field event:
-  - Value: {:field, table, id: id, field: field, value: value}
+- Course
+  - :shop & :sku
+  - :course_plan
+  - :course
+  - :lesson
+  - :tutorship
 
-- Structure event:
-  - Value: {:relation, parent, id: id, child: child, child_id: child_id}
+- Listings
+  - :sku
+  - Pricing
+  - Course
+
+- Sales order
+  - :user_account
+  - :sales_order
+  - :sales_order\_item
+  - Listings
+  - Payment
+
+- Basket
+  - :user_account
+  - :basket
+  - :sales_order\_item
+  - Listings
+
+- Classroom
+  - :room
+  - :bought\_ticket & :bought_package
+  - :studentship & :user_account & :user\_token
+  - :tutorship & :shop & :user_account & :user\_token
+  - Course
+  - :vlog
+
+- Payment
+  - :payment
+  - :sales_order & Pricing
+  - :shop & :tutorship & Payable (by Classroom)
+  
+- Pricing
+  - :sku
+  - :pricing
+  - :promotion
+
+## Repo messaging
+
+- M.Core.Common.RepoMessage
