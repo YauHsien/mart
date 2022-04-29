@@ -7,7 +7,7 @@ defmodule M.Member.AggregateEmitter do
   use GenServer
   require M.Core.Common
   alias   M.Core.Common
-  require M.Core.Common.RepoCommand
+  require M.Core.Common.RepoMessage
   alias Phoenix.PubSub
 
   @registry M.Member.Registry
@@ -27,12 +27,12 @@ defmodule M.Member.AggregateEmitter do
     aggregate = M.Repo.User.Account
 
     M.Member.pubsub_repo_query()
-    |> PubSub.subscribe(Common.RepoCommand.list(aggregate) |> Common.RepoCommand.topic() |> Common.RepoCommand.return())
+    |> PubSub.subscribe(Common.RepoMessage.list(aggregate) |> Common.RepoMessage.topic() |> Common.RepoMessage.return())
 
     M.Member.pubsub_repo_query()
     |> PubSub.broadcast!(
-      Common.RepoCommand.list(aggregate) |> Common.RepoCommand.topic(),
-      Common.RepoCommand.list(aggregate)
+      Common.RepoMessage.list(aggregate) |> Common.RepoMessage.topic(),
+      Common.RepoMessage.list(aggregate)
     )
 
     {:ok, %{

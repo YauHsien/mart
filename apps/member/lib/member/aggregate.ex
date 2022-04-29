@@ -3,9 +3,10 @@ defmodule M.Member.Aggregate do
   Member Aggregate.
   """
   use GenServer
+  require Logger
   require M.Core.Common
   alias   M.Core.Common
-  require M.Core.Common.RepoCommand
+  require M.Core.Common.RepoMessage
   alias Phoenix.PubSub
 
   #@registry M.Member.Registry
@@ -41,12 +42,12 @@ defmodule M.Member.Aggregate do
     id = Keyword.get(args, :id)
 
     M.Member.pubsub_repo_query()
-    |> PubSub.subscribe(Common.RepoCommand.aggregate(@aggregate) |> Common.RepoCommand.topic() |> Common.RepoCommand.return())
+    |> PubSub.subscribe(Common.RepoMessage.aggregate(@aggregate) |> Common.RepoMessage.topic() |> Common.RepoMessage.return(id))
 
     M.Member.pubsub_repo_query()
     |> PubSub.broadcast!(
-      Common.RepoCommand.aggregate(@aggregate) |> Common.RepoCommand.topic(),
-    Common.RepoCommand.aggregate(@aggregate, id)
+      Common.RepoMessage.aggregate(@aggregate) |> Common.RepoMessage.topic(),
+    Common.RepoMessage.aggregate(@aggregate, id)
     )
 
     {:ok, %{
@@ -67,20 +68,23 @@ defmodule M.Member.Aggregate do
   def handle_info(msg, state)
 
 
-  def handle_info({:field, M.Repo.User.Account, id: _id, field: _field, value: _value0}, state) do
+  def handle_info(Common.RepoMessage.field(M.Repo.User.Account, id, _field, _value0) = msg, %{id: id} = state) do
     # TODO
+    Logger.warn("#{id} and #{inspect msg}")
     {:noreply, state}
   end
 
 
-  def handle_info({:object, M.Repo.User.Token, id: _id, field: _field, value: _value0}, state) do
+  def handle_info(Common.RepoMessage.object(M.Repo.User.Token, _id) = msg, %{id: id} = state) do
     # TODO
+    Logger.warn("#{id} and #{inspect msg}")
     {:noreply, state}
   end
 
 
-  def handle_info({:field, M.Repo.User.Token, id: _id, field: _field, value: _value0}, state) do
+  def handle_info(Common.RepoMessage.field(M.Repo.User.Token, _id, _field, _value0) = msg, %{id: id} = state) do
     # TODO
+    Logger.warn("#{id} and #{inspect msg}")
     #key = {:field, table, id: id, field: field}
     #value = value0
     #Registry.register(@registry, key, value)

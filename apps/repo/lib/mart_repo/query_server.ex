@@ -3,7 +3,7 @@ defmodule M.Repo.QueryServer do
   import  Ecto.Query
   require M.Core.Common
   alias   M.Core.Common
-  require M.Core.Common.RepoCommand
+  require M.Core.Common.RepoMessage
   alias M.Repo.Basket
   alias M.Repo.Bought
   alias M.Repo.Course
@@ -58,11 +58,11 @@ defmodule M.Repo.QueryServer do
       ]
 
     repos
-    |> Enum.map(&( Common.RepoCommand.list(&1) |> Common.RepoCommand.topic ))
+    |> Enum.map(&( Common.RepoMessage.list(&1) |> Common.RepoMessage.topic ))
     |> Enum.map(&( PubSub.subscribe(M.Repo.pubsub_repo_query, &1) ))
 
     repos
-    |> Enum.map(&( Common.RepoCommand.aggregate(&1) |> Common.RepoCommand.topic ))
+    |> Enum.map(&( Common.RepoMessage.aggregate(&1) |> Common.RepoMessage.topic ))
     |> Enum.map(&( PubSub.subscribe(M.Repo.pubsub_repo_query, &1) ))
 
     {:ok, %{}}
@@ -80,13 +80,13 @@ defmodule M.Repo.QueryServer do
   def handle_info(msg, state)
 
 
-  def handle_info(Common.RepoCommand.list(target), state) do
+  def handle_info(Common.RepoMessage.list(target), state) do
 
     list(target)
     |> Enum.map(&(
           PubSub.broadcast!(
             M.Repo.pubsub_repo_query,
-            Common.RepoCommand.list(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
+            Common.RepoMessage.list(target) |> Common.RepoMessage.topic |> Common.RepoMessage.return,
             &1
           )
         ))
@@ -95,13 +95,13 @@ defmodule M.Repo.QueryServer do
   end
 
 
-  def handle_info(Common.RepoCommand.aggregate(target, id), state) do
+  def handle_info(Common.RepoMessage.aggregate(target, id), state) do
 
     aggregate(target, id)
     |> Enum.map(&(
           PubSub.broadcast!(
             M.Repo.pubsub_repo_query,
-            Common.RepoCommand.aggregate(target) |> Common.RepoCommand.topic |> Common.RepoCommand.return,
+            Common.RepoMessage.aggregate(target) |> Common.RepoMessage.topic |> Common.RepoMessage.return(id),
             &1
           )))
 
