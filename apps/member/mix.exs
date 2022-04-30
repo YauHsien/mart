@@ -34,6 +34,9 @@ defmodule M.Member.MixProject do
   defp deps do
     [
       {:phoenix_pubsub, "~> 2.1.1"},
+      {:plug_crypto, "~> 1.2.2"},
+      {:typed_struct, "~> 0.1.4"},
+      {:uuid, ">= 1.1.8"},
       {:mart_core, app: false, path: "../core"}
     ]
   end

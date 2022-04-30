@@ -61,7 +61,7 @@ defmodule M.Member.AggregateEmitter do
         value = id
         Registry.register(@registry, key, value)
 
-        {:ok, pid} = M.Member.Aggregate.start_link(id: id)
+        {:ok, pid} = M.Member.AggregateServer.start_link(id: id)
         key = {:aggregate_root, aggregate, id: id}
         value = pid
         Registry.register(@registry, key, value)

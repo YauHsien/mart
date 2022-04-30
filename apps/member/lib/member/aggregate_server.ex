@@ -1,4 +1,4 @@
-defmodule M.Member.Aggregate do
+defmodule M.Member.AggregateServer do
   @doc """
   Member Aggregate.
   """
