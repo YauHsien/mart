@@ -4,7 +4,7 @@ defmodule M.Domain.MixProject do
   def project do
     [
       app: :mart_domain,
-      version: "0.1.0",
+      version: "1.0.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps()
