@@ -53,3 +53,26 @@ APIs:
 - `get_sku_list(course)`
 - `get_shop(course, sku)`
 - `add_sku(course, sku, shop)`
+
+## Studio aggregate
+
+```
+                (root)
+┌───────┐<    ┌─────────┐    >┌───────┐
+│Course ├─────┤ Course  ├─────┤Lessons│
+│ Plan  │     └┬───────┬┘    *└───────┘
+└───────┘      │chapter│
+               └──┬────┘
+                 v│
+              ┌───┴────┐
+              │ Lesson │
+              └────────┘
+```
+
+APIs:
+- `create(id, create_at, course_name, course_plan, use_count \\ 0)`
+- `create_lesson(id, create_at, chapter, description)`
+- `get_plan(course)`
+- `get_lessons(course)`
+- `get_lesson(course, chapter)`
+- `add_lesson(course, chapter, lesson)`
