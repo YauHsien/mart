@@ -30,3 +30,26 @@ end
 │renew_token(user_account, plain_token, expired_when)│
 └────────────────────────────────────────────────────┘
 ```
+
+## Listings aggregate
+
+```
+ (root)
+┌──────┐    >┌───┐
+│Course├─────┤SKU│
+└┬───┬─┘    *└───┘
+ │SKU│
+ └──┬┘
+   v│
+┌───┴──┐
+│ Shop │
+└──────┘
+```
+
+APIs:
+- `create(id, create_at, course_name, course_plan, lessons, use_count \\ 0)`
+- `create_sku(id, create_at, name)`
+- `create_shop(id, create_at, name)`
+- `get_sku_list(course)`
+- `get_shop(course, sku)`
+- `add_sku(course, sku, shop)`
