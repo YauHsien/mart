@@ -36,8 +36,8 @@ defmodule M.Member.MixProject do
       {:phoenix_pubsub, "~> 2.1.1"},
       {:plug_crypto, "~> 1.2.2"},
       {:typed_struct, "~> 0.1.4"},
-      {:uuid, ">= 1.1.8"},
-      {:mart_core, app: false, path: "../core"}
+      {:mart_core, app: false, path: "../core"},
+      {:mart_domain, app: false, path: "../domain"}
     ]
   end
 

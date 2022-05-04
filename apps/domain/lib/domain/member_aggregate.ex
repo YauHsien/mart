@@ -1,5 +1,5 @@
-defmodule M.Domain.Member do
-
+defmodule M.Domain.MemberAggregate do
+  alias M.Domain.MemberAggregate.UserAccount
 
 
   @type username() :: {:username, String.t()}
@@ -23,5 +23,19 @@ defmodule M.Domain.Member do
     do: quote do: {:user_token, unquote(token), unquote(expired_when)}
 
 
+  defdelegate create(username, password, datetime \\ NaiveDateTime.utc_now()),
+    to: UserAccount
+
+  defdelegate set_password(user_account, password, datetime \\ NaiveDateTime.utc_now()),
+    to: UserAccount
+
+  defdelegate verify_password(user_account, plain_password),
+    to: UserAccount
+
+  defdelegate new_token(user_account, expired_when \\ nil),
+    to: UserAccount
+
+  defdelegate renew_token(user_account, plain_token, expired_when \\ nil),
+    to: UserAccount
 
 end

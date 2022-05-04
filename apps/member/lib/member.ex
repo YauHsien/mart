@@ -7,7 +7,6 @@ defmodule M.Member do
   if it comes from the database, an external API or others.
   """
   alias Timex.Timezone
-  alias UUID
 
   def get_uuid(category) do
     Timezone.local().full_name|>DateTime.now!()|>to_string()|>then(&(category<>&1))

@@ -1,6 +1,7 @@
-defmodule M.Domain.Member.UserAccount do
-  require M.Domain.Member
-  alias M.Domain.Member.UserToken
+defmodule M.Domain.MemberAggregate.UserAccount do
+  require M.Domain.MemberAggregate
+  alias   M.Domain.MemberAggregate
+  alias   M.Domain.MemberAggregate.UserToken
   alias Plug.Crypto
 
 
@@ -15,10 +16,10 @@ defmodule M.Domain.Member.UserAccount do
     field :id, integer(), default: nil
     field :inserted_at, NaiveDateTime.t()
     field :updated_at, NaiveDateTime.t()
-    field :name, M.Domain.Member.username(), enforce: true
-    field :password, M.Domain.Member.password(), enforce: true
-    field :user_token, M.Domain.Member.user_token(), enforce: true
-    field :token_history, M.Domain.Member.user_token_list(), enforce: true
+    field :name, MemberAggregate.username(), enforce: true
+    field :password, MemberAggregate.password(), enforce: true
+    field :user_token, MemberAggregate.user_token(), enforce: true
+    field :token_history, MemberAggregate.user_token_list(), enforce: true
   end
 
 
@@ -29,7 +30,7 @@ defmodule M.Domain.Member.UserAccount do
 
   def create(username, password, datetime \\ NaiveDateTime.utc_now()) do
 
-    pac_name = M.Domain.Member.username(username)
+    pac_name = MemberAggregate.username(username)
     pac_pass = create_password(username, password, datetime)
     pac_token = UserToken.create(pac_name, pac_pass)
 
@@ -49,7 +50,7 @@ defmodule M.Domain.Member.UserAccount do
 
   def set_password(user_account, password, datetime \\ NaiveDateTime.utc_now()) do
 
-    M.Domain.Member.username(username) = user_account.name
+    MemberAggregate.username(username) = user_account.name
     pac_pass = create_password(username, password, datetime)
 
     %__MODULE__{ user_account | password: pac_pass }
@@ -66,7 +67,7 @@ defmodule M.Domain.Member.UserAccount do
       |> Integer.to_string(16)
     enc_pass = Crypto.sign(password, salt, username)
 
-    M.Domain.Member.password(enc_pass, salt, datetime)
+    MemberAggregate.password(enc_pass, salt, datetime)
   end
 
 
@@ -75,8 +76,8 @@ defmodule M.Domain.Member.UserAccount do
 
   def verify_password(user_account, plain_password) do
 
-    M.Domain.Member.username(username) = user_account.name
-    M.Domain.Member.password(enc_pass, salt, _) = user_account.password
+    MemberAggregate.username(username) = user_account.name
+    MemberAggregate.password(enc_pass, salt, _) = user_account.password
 
     case Crypto.verify(plain_password, salt, enc_pass) do
       term when term == {:ok, username} or term == {:error, :expired} ->
@@ -105,8 +106,8 @@ defmodule M.Domain.Member.UserAccount do
 
   def renew_token(user_account, plain_token, expired_when \\ nil) do
 
-    M.Domain.Member.username(username) = user_account.name
-    M.Domain.Member.password(enc_pass, salt, _) = user_account.password
+    MemberAggregate.username(username) = user_account.name
+    MemberAggregate.password(enc_pass, salt, _) = user_account.password
 
     case Crypto.verify(plain_token, salt, enc_pass) do
 
@@ -125,8 +126,8 @@ defmodule M.Domain.Member.UserAccount do
 
   def verify_token(user_account, plain_token) do
 
-    M.Domain.Member.username(username) = user_account.name
-    M.Domain.Member.password(enc_pass, salt, _) = user_account.password
+    MemberAggregate.username(username) = user_account.name
+    MemberAggregate.password(enc_pass, salt, _) = user_account.password
 
     case Crypto.verify(plain_token, salt, enc_pass) do
       {:ok, ^username} ->
