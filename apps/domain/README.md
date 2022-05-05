@@ -80,6 +80,7 @@ APIs:
 ## Customer aggregate
 
 ```
+    (root)
 ┌────────────┐     >┌───────┐
 │User account├──────┤Basket │
 └────────────┘      └───┬───┘
@@ -97,3 +98,26 @@ APIs:
 - `get_basket_items(user_account)`
 - `add_basket(UserAccount.t(), Basket.t())`
 - `add_basket_item(UserAccount.t(), Item.t())`
+
+## Pricing aggregate
+
+```
+   (root)
+┌───────────┐    >┌───────────┐
+│    SKU    ├─────┤ Promotion │
+└┬─────────┬┘    *└───────────┘
+ │promotion│
+ │   id    │
+ └────┬────┘
+     v│
+┌─────┴─────┐
+│ Promotion │
+└───────────┘
+```
+
+APIs:
+- `create(item)`
+- `create_pormotion(id, description, price)`
+- `get_promotion(sku)`
+- `get_promotion(sku, promotion_id)`
+- `add_promotion(sku, promotion)`
