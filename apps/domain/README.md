@@ -121,3 +121,39 @@ APIs:
 - `get_promotion(sku)`
 - `get_promotion(sku, promotion_id)`
 - `add_promotion(sku, promotion)`
+
+## Sales aggregate
+
+```
+
+                     (root)
+┌────────────────────────────────────────────┐    >┌─────────────┐
+│                                            ├─────┤ Sales order │
+│                                            │    *└─────────────┘
+│                                            │    >┌────────────────┐
+│                     Shop                   ├─────┤Paid sales order│
+│                                            │    *└────────────────┘
+│                                            │    >┌──────────────────┐
+│                                            ├─────┤Unpaid sales order│
+└┬──────────────────────────────────────────┬┘    *└──────────────────┘
+ │                     SKU                  │
+ └──────┬─────────────┬──────────────────┬──┘
+       v│*           v│*                v│*
+┌───────┴───┐┌────────┴───────┐┌─────────┴────────┐
+│Sales order││Paid sales order││Unpaid sales order│
+└───────────┘└────────────────┘└──────────────────┘
+
+```
+
+APIs:
+- `create(shop, sales_order_list \\ [])`
+- `create_sales_order(id, create_at, sku_list \\ [], payment \\ nil)`
+- `create_pyament(id, create_at, amount)`
+- `get_sales_orders(shop)`
+- `get_sales_orders(shop, sku)`
+- `get_paid_sales_orders(shop)`
+- `get_paid_sales_orders(shop, sku)`
+- `get_unpaid_sales_orders(shop)`
+- `get_unpaid_sales_orders(shop, sku)`
+- `add_sales_order(shop, sales_order)`
+- `add_sales_order(shop, sales_order, sku_rate_list, payment)`
