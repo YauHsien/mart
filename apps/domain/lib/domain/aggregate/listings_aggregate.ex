@@ -1,4 +1,4 @@
-defmodule M.Domain.ListingsAggregate do
+defmodule M.Domain.Aggregate.ListingsAggregate do
   alias M.Domain.ListingsAggregate.Course
   alias M.Domain.ListingsAggregate.Shop
   alias M.Domain.ListingsAggregate.SKU

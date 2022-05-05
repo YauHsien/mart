@@ -1,6 +1,6 @@
 defmodule M.Domain.MemberAggregate.UserToken do
-  require M.Domain.MemberAggregate
-  alias   M.Domain.MemberAggregate
+  require M.Domain.Aggregate.MemberAggregate
+  alias   M.Domain.Aggregate.MemberAggregate
   alias Plug.Crypto
 
 

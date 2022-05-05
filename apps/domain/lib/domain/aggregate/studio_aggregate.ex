@@ -1,4 +1,4 @@
-defmodule M.Domain.StudioAggregate do
+defmodule M.Domain.Aggregate.StudioAggregate do
   alias M.Domain.StudioAggregate.Course
   alias M.Domain.StudioAggregate.Lesson
 

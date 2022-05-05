@@ -1,4 +1,4 @@
-defmodule M.Domain.MemberAggregate do
+defmodule M.Domain.Aggregate.MemberAggregate do
   alias M.Domain.MemberAggregate.UserAccount
 
 
