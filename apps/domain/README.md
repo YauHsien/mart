@@ -76,3 +76,24 @@ APIs:
 - `get_lessons(course)`
 - `get_lesson(course, chapter)`
 - `add_lesson(course, chapter, lesson)`
+
+## Customer aggregate
+
+```
+┌────────────┐     >┌───────┐
+│User account├──────┤Basket │
+└────────────┘      └───┬───┘
+                       v│*
+                    ┌───┴───┐
+                    │ Item  │
+                    ├───────┤
+                    │  SKU  │
+                    └───────┘
+```
+
+APIs:
+- `create(user_account)`
+- `get_basket(user_account)`
+- `get_basket_items(user_account)`
+- `add_basket(UserAccount.t(), Basket.t())`
+- `add_basket_item(UserAccount.t(), Item.t())`
