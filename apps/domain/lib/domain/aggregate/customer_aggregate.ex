@@ -13,7 +13,8 @@ defmodule M.Domain.Aggregate.CustomerAggregate do
 
 
 
-  defdelegate get_basket_items(basket), to: Basket, as: :get_items
+  def get_basket_items(user_account),
+    do: Basket.get_items(user_account.basket)
 
 
 
