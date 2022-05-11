@@ -1,64 +1,107 @@
 defmodule M.Domain.MemberAggregate.UserAccount do
-  require M.Domain.Aggregate.MemberAggregate
-  alias   M.Domain.Aggregate.MemberAggregate
-  alias   M.Domain.MemberAggregate.UserToken
+  use M.Domain.Stereotype, :aggregate_root
+
+  alias M.Domain.Branding.TutoringBrand
+  alias M.Domain.Customer
+  alias M.Domain.MemberAggregate.UserAccountRepository
+  alias M.Domain.MemberAggregate.UserAccountServer
+  alias M.Domain.MemberAggregate.UserTokenHistory
   alias Plug.Crypto
 
 
 
   use TypedStruct
-
   @typedoc """
   Object: UserAccount (Aggregate root)
   Aggregate: Member
   """
   typedstruct do
-    field :id, integer(), default: nil
+    field :id, :integer, default: nil
     field :inserted_at, NaiveDateTime.t()
     field :updated_at, NaiveDateTime.t()
     field :name, MemberAggregate.username(), enforce: true
     field :password, MemberAggregate.password(), enforce: true
     field :user_token, MemberAggregate.user_token(), enforce: true
-    field :token_history, MemberAggregate.user_token_list(), enforce: true
+    field :token_history, [UserTokenHistory.t], default: []
+    field :tutoring_brands, [TutoringBrand.t], default: []
+    field :customer, Customer.t, enforce: true
   end
 
 
 
-  @spec create(String.t(), String.t()) :: t()
+  @doc """
+  Get `id` encoded.
+  """
+  def encode(id) do
+    id
+  end
 
-  @spec create(String.t(), String.t(), NaiveDateTime.t()) :: t()
 
-  def create(username, password, datetime \\ NaiveDateTime.utc_now()) do
+
+  @doc """
+  Create a bare new user account
+  """
+  @spec create(UserAccountRepository.t, String.t, String.t) :: Registry.registry
+  @spec create(UserAccountRepository.t, String.t, String.t, NaiveDateTime.t) :: Registry.registry
+
+  def create(repository, username, password, datetime \\ NaiveDateTime.utc_now()) do
 
     pac_name = MemberAggregate.username(username)
     pac_pass = create_password(username, password, datetime)
     pac_token = UserToken.create(pac_name, pac_pass)
 
-    %__MODULE__{
-      name: pac_name,
-      password: pac_pass,
-      user_token: pac_token,
-      token_history: []
-    }
+    user_account =
+      %__MODULE__{
+        name: pac_name,
+        password: pac_pass,
+        user_token: pac_token,
+        customer: %Customer{}
+      }
+      |> UserAccountRepository.create_user_account()
+
+    registry_name = {:via, Registry, {repository, encode(username)}}
+    {:ok, _} = GenServer.start_link(__MODULE__, user_account, name: registry_name)
+    registry_name
   end
 
 
 
-  @spec set_password(t(), String.t()) :: t()
+  @doc """
+  Set user password according to the old one.
+  """
+  @spec set_password(UserAccountRepository.t, name, old_password, password) :: t
+  when name: String.t, old_password: String.t, password: String.t
+  @spec set_password(UserAccountRepository.t, name, old_password, password, NaiveDateTime.t) :: t
+  when name: String.t, old_password: String.t, password: String.t
 
-  @spec set_password(t(), String.t(), NaiveDateTime.t()) :: t()
+  def set_password(repository, user_account_name, old_password, password, datetime \\ NaiveDateTime.utc_now()) do
 
-  def set_password(user_account, password, datetime \\ NaiveDateTime.utc_now()) do
+    case UserAccountRepository.find_user_account(repository, user_account_name) do
+      {:error, :not_found} -> {:error, :not_found}
+      {:ok, server} ->
 
-    MemberAggregate.username(username) = user_account.name
-    pac_pass = create_password(username, password, datetime)
+        case UserAccountServer.verify_and_set_password(server, old_password, password) do
+          {:ok, _user_account_1} ->
 
-    %__MODULE__{ user_account | password: pac_pass }
+            UserAccountRepository.save_password(repository, user_account_name)
+
+          {:error, reason} -> {:error, reason}
+        end
+    end
   end
 
 
 
-  defp create_password(username, password, datetime) do
+  defmacro username_tuple(name), do: quote do: {:username, unquote(name)}
+
+  defmacro password_triple(password, salt, changed_when),
+    do: quote do: {:password, unquote(password), unquote(salt), unquote(changed_when)}
+
+  defmacro user_token_tuple(user_token), do: quote do: {:user_token, unquote(user_token)}
+
+
+
+  def create_password(username, password, datetime) do
 
     salt =
       datetime
@@ -67,75 +110,32 @@ defmodule M.Domain.MemberAggregate.UserAccount do
       |> Integer.to_string(16)
     enc_pass = Crypto.sign(password, salt, username)
 
-    MemberAggregate.password(enc_pass, salt, datetime)
+    password_triple(enc_pass, salt, datetime)
   end
 
 
 
-  @spec verify_password(t(), String.t()) :: :ok | :invalid
 
-  def verify_password(user_account, plain_password) do
+  @doc """
+  Get a new user token.
 
-    MemberAggregate.username(username) = user_account.name
-    MemberAggregate.password(enc_pass, salt, _) = user_account.password
+  If the parameter `user_token` is given, it's to renew a token.
+  """
+  @spec get_user_token(UserAccountRepository.t, String.t) :: {:ok, String.t} | {:error, :invalid}
+  @spec get_user_token(UserAccountRepository.t, entry_name, user_token) :: {:ok, maybe_new_token} | {:error, :invalid}
+  when entry_name: String.t, user_token: String.t, maybe_new_token: String.t
 
-    case Crypto.verify(plain_password, salt, enc_pass) do
-      term when term == {:ok, username} or term == {:error, :expired} ->
-        :ok
-      {:error, :invalid} ->
-        :invalid
-    end
-  end
+  def get_user_token(repository, entry_name, user_token \\ nil) do
 
+    {:ok, server} = UserAccountRepository.find_user_account(repository, entry_name)
+    case GenServer.call(server, {:verify, user_token_tuple(user_token)}) do
+      :invalid -> {:error, :invalid}
+      :valid -> {:ok, user_token}
+      :expired ->
 
-
-  @spec new_token(t(), NaiveDateTime.t()) :: t()
-
-  def new_token(user_account, expired_when \\ nil) do
-
-    %__MODULE__{
-      user_account |
-      user_token: UserToken.create(user_account.name, user_account.password, expired_when),
-      token_history: [ user_account.user_token | user_account.token_history ]
-    }
-  end
-
-
-
-  @spec renew_token(t(), String.t()) :: t() | :invalid
-
-  def renew_token(user_account, plain_token, expired_when \\ nil) do
-
-    MemberAggregate.username(username) = user_account.name
-    MemberAggregate.password(enc_pass, salt, _) = user_account.password
-
-    case Crypto.verify(plain_token, salt, enc_pass) do
-
-      term when term == {:ok, username} or term == {:error, :expired} ->
-        new_token(user_account, expired_when)
-
-      {:error, :invalid} ->
-        :invalid
-
-    end
-  end
-
-
-
-  @spec verify_token(t(), String.t()) :: :ok | :expired | :invalid
-
-  def verify_token(user_account, plain_token) do
-
-    MemberAggregate.username(username) = user_account.name
-    MemberAggregate.password(enc_pass, salt, _) = user_account.password
-
-    case Crypto.verify(plain_token, salt, enc_pass) do
-      {:ok, ^username} ->
-        :ok
-      {:error, :expired} ->
-        :expired
-      {:error, :invalid} ->
-        :invalid
+        {:ok, user_token} = GenServer.call(server, {:create, user_token_tuple(user_token)})
+        UserAccountRepository.save_user_token(repository, entry_name)
+        {:ok, user_token}
     end
   end
 
