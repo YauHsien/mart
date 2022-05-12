@@ -29,66 +29,7 @@ defmodule M.Domain.MemberAggregate.UserAccount do
 
 
 
-  @doc """
-  Get `id` encoded.
-  """
-  def encode(id) do
-    id
-  end
-
-
-
-  @doc """
-  Create a bare new user account
-  """
-  @spec create(UserAccountRepository.t, String.t, String.t) :: Registry.registry
-  @spec create(UserAccountRepository.t, String.t, String.t, NaiveDateTime.t) :: Registry.registry
-
-  def create(repository, username, password, datetime \\ NaiveDateTime.utc_now()) do
-
-    pac_name = MemberAggregate.username(username)
-    pac_pass = create_password(username, password, datetime)
-    pac_token = UserToken.create(pac_name, pac_pass)
-
-    user_account =
-      %__MODULE__{
-        name: pac_name,
-        password: pac_pass,
-        user_token: pac_token,
-        customer: %Customer{}
-      }
-      |> UserAccountRepository.create_user_account()
-
-    registry_name = {:via, Registry, {repository, encode(username)}}
-    {:ok, _} = GenServer.start_link(__MODULE__, user_account, name: registry_name)
-    registry_name
-  end
-
-
-
-  @doc """
-  Set user password according to the old one.
-  """
-  @spec set_password(UserAccountRepository.t, name, old_password, password) :: t
-  when name: String.t, old_password: String.t, password: String.t
-  @spec set_password(UserAccountRepository.t, name, old_password, password, NaiveDateTime.t) :: t
-  when name: String.t, old_password: String.t, password: String.t
-
-  def set_password(repository, user_account_name, old_password, password, datetime \\ NaiveDateTime.utc_now()) do
-
-    case UserAccountRepository.find_user_account(repository, user_account_name) do
-      {:error, :not_found} -> {:error, :not_found}
-      {:ok, server} ->
-
-        case UserAccountServer.verify_and_set_password(server, old_password, password) do
-          {:ok, _user_account_1} ->
-
-            UserAccountRepository.save_password(repository, user_account_name)
-
-          {:error, reason} -> {:error, reason}
-        end
-    end
-  end
+  @max_age 86400
 
 
 
@@ -101,6 +42,75 @@ defmodule M.Domain.MemberAggregate.UserAccount do
 
 
 
+  @doc """
+  Create a bare new user account
+  """
+  @spec create(UserAccountRepository.t, String.t, String.t) :: {:ok, UserAccountRepository.entry} | {:error, term()}
+
+  def create(repository, username, password) do
+
+    datetime = NaiveDateTime.utc_now()
+
+    {:password, enc_pass, salt, _} =
+      pac_pass =
+      create_password(username, password, datetime)
+
+    enc_token = Crypto.sign(enc_pass, salt, username, max_age: @max_age)
+
+    %__MODULE__{
+      name: username_tuple(username),
+      password: pac_pass,
+      user_token: user_token_tuple(enc_token),
+      customer: %Customer{}
+    }
+    |> UserAccountRepository.create_user_account(repository)
+  end
+
+
+
+  @doc """
+  Find some existing user account.
+  """
+  @spec find(UserAccountRepository.t, String.t, String.t) :: {:ok, UserAccountRepository.entry()} | {:error, term()}
+
+  def find(repository, username, password), do: UserAccountRepository.find_user_account(repository, username, password)
+
+
+
+  @doc """
+  Find some existing user account by token.
+  """
+  @spec find(UserAccountRepository.t, String.t) :: {:ok, UserAccountRepository.entry()} | {:error, term()}
+
+  def find(repository, token), do: UserAccountRepository.find_user_account(repository, token)
+
+
+
+  #@doc """
+  #Set user password according to the old one.
+  #"""
+  #@spec set_password(UserAccountRepository.entry, old_password, password) :: t
+  #when old_password: String.t, password: String.t
+
+  #def set_password(repository_entry, old_password, password) do
+
+  #  case UserAccountRepository.find_user_account(repository_entry, user_account_name) do
+  #    {:error, :not_found} -> {:error, :not_found}
+  #    {:ok, server} ->
+
+  #      case UserAccountServer.verify_and_set_password(server, old_password, password) do
+  #        {:ok, _user_account_1} ->
+
+  #          UserAccountRepository.save_password(repository, user_account_name)
+
+  #        {:error, reason} -> {:error, reason}
+  #      end
+  #  end
+  #end
+
+
+
+  # Open for import.
   def create_password(username, password, datetime) do
 
     salt =

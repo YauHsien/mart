@@ -11,13 +11,11 @@ defmodule M.Domain.MemberAggregate.UserAccountServer do
   alias Plug.Crypto
 
   @type t :: GenServer.t
-  @max_age 86400
 
 
   @impl true
-  def init(%UserAccount{name: username_tuple(username), password: password_triple(password, salt, _)} = user_account) do
-    enc_token = Crypto.sign(password, salt, username, max_age: @max_age)
-    {:ok, %UserAccount{user_account | user_token: user_token_tuple(enc_token)}}
+  def init(user_account) do
+    {:ok, user_account}
   end
   def init(_), do: {:stop, :not_sup}
 
