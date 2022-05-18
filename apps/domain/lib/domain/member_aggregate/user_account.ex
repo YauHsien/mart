@@ -1,5 +1,4 @@
 defmodule M.Domain.MemberAggregate.UserAccount do
-  use M.Domain.Stereotype, :aggregate_root
 
   alias M.Domain.Branding.TutoringBrand
   alias M.Domain.Customer
@@ -24,7 +23,7 @@ defmodule M.Domain.MemberAggregate.UserAccount do
     field :user_token, MemberAggregate.user_token(), enforce: true
     field :token_history, [UserTokenHistory.t], default: []
     field :tutoring_brands, [TutoringBrand.t], default: []
-    field :customer, Customer.t, enforce: true
+    field :customer, Customer.t
   end
 
 
@@ -60,8 +59,7 @@ defmodule M.Domain.MemberAggregate.UserAccount do
     %__MODULE__{
       name: username_tuple(username),
       password: pac_pass,
-      user_token: user_token_tuple(enc_token),
-      customer: %Customer{}
+      user_token: user_token_tuple(enc_token)
     }
     |> UserAccountRepository.create_user_account(repository)
   end

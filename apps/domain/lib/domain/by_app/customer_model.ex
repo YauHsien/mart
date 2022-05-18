@@ -7,5 +7,5 @@ defimpl M.Domain.ByApp.CustomerModel, for: M.Domain.Application.SalesApplication
 end
 
 defimpl M.Domain.ByApp.CustomerModel, for: M.Domain.Application.CourseApplication do
-  def create(opts), do: M.Domain.Course.CustomerAggregate(opts)
+  def create(opts), do: M.Domain.Course.CustomerAggregate.create(opts)
 end

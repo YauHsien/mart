@@ -1,15 +1,13 @@
-defprotocol M.Domain.ByApp.TutorModel do
-  def create(opts)
+alias M.Domain.ByApp.TutorModel
+alias M.Domain.Branding.TutorEntity, as: BrandingTutorEntity
+alias M.Domain.Course.TutorAggregate
+alias M.Domain.Listing.TutorEntity, as: ListingTutorEntity
+alias M.Domain.TutorRepository
+
+defprotocol TutorModel do
+  def create(opts) # TODO: 須刪除 create/1 因為在 Branding Tutor model 不會有新增
 end
 
-defimpl M.Domain.ByApp.TutorModel, for: M.Domain.Application.ListingApplication do
-  def create(opts), do: M.Domain.Listing.TutorEntity.create(opts)
-end
-
-defimpl M.Domain.ByApp.TutorModel, for: M.Domain.Application.BrandingApplication do
-  def create(opts), do: M.Domain.Branding.TutorEntity.create(opts)
-end
-
-defimpl M.Domain.ByApp.TutorModel, for: M.Domain.Application.CourseApplication do
-  def create(opts), do: M.Domain.Course.TutorAggregate.create(opts)
+defimpl TutorModel, for: BrandingTutorEntity do
+  def create(%BrandingTutorEntity{} = entity), do: TutorRepository.create(entity)
 end
