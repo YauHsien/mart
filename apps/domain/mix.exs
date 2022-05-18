@@ -19,7 +19,7 @@ defmodule M.Domain.MixProject do
 
   defp deps do
     [
-      {:ex_domain_toolkit, "~> 0.1.0", app: false, path: "../../../ex_domain_toolkit"},
+      {:ex_domain_toolkit, "~> 0.1.0", github: "YauHsien/ex_domain_toolkit", branch: "main"},
       {:phoenix_pubsub, "~> 2.1.1"},
       {:plug_crypto, "~> 1.2.2"},
       {:typed_struct, "~> 0.1.4"},
