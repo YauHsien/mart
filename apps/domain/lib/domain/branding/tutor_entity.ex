@@ -1,15 +1,23 @@
 import YDToolkit
+alias M.Domain.Branding
+alias Branding.TutorEntity
+alias TutorEntity.Protocol
 
-entity M.Domain.Branding.TutorEntity do
-  alias M.Domain.ByApp
-  alias M.Domain.Branding.TutorEntity
+defprotocol Protocol do
+	#TODO: need impl.
+end
+
+entity TutorEntity do
+
+  @type id :: :integer | String.t
 
   use TypedStruct
   typedstruct do
-    field :field, :string
+    field :id, id(), default: nil
+    field :name, :string, enforce: true
   end
 
-  #defimpl ByApp.TutorModel do
-  #  def create(%TutorEntity{} = entity), do: ByApp.TutorModel.create(entity)
-  #end
+  defimpl Protocol do
+    #TODO: need impl.
+  end
 end

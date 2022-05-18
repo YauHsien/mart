@@ -1,4 +1,4 @@
-defprotocol M.Domain.BoughtPackageModel do
+defprotocol M.Domain.ByGroup.BoughtPackageModel do
   def create(opts)
 end
 
