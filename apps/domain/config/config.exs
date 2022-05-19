@@ -1,4 +1,5 @@
 import Config
+alias M.Domain.ByGroup
 
 config :mart_domain,
   repo_write_pub_sub: Node.Repo.Command.PubSub,
@@ -6,6 +7,7 @@ config :mart_domain,
   repo_for_bought_package_model: Domain.BoughtPackageModel.Repository,
   repo_for_course_model: Domain.CourseModel.Repository,
   repo_for_customer_model: Domain.CustomerModel.Repository,
+  repo_for_handling_event_model: Domain.HandingEventModel.Repository,
   repo_for_lecturing_specification_model: Domain.LecturingSpecificationModel.Repository,
   repo_for_listing_model: Domain.ListingModel.Repository,
   repo_for_payment_model: Domain.PaymentModel.Repository,
