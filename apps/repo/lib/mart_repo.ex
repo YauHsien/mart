@@ -7,7 +7,9 @@ defmodule M.Repo do
   if it comes from the database, an external API or others.
   """
   def app,
-    do: elem(:application.get_application(__MODULE__), 1)
+    do: Application.get_application(M.Repo.Application)
+
+  def node_resources, do: Application.fetch_env!(app(), :node_resources)
 
   def pubsub_env,
     do: Application.fetch_env!(app(), :node_resources)[:pubsub_env]

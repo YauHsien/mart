@@ -6,17 +6,21 @@ defmodule M.Repo.Application do
 
   @impl true
   def start(_type, _args) do
-
-    children = [
-      M.Repo.Repo,
-      M.RepoWeb.Telemetry,
-      {Phoenix.PubSub, name: Repo.PubSub},
-      M.RepoWeb.Endpoint,
-      M.Repo.QueryServer
-    ]
-
     opts = [strategy: :one_for_one, name: M.Repo.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children(), opts)
+  end
+
+  defp children() do
+    [
+      M.RepoWeb.Telemetry,
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pubsub_repo_query()}, id: :npub_0),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pubsub_repo_command()}, id: :npub_1),
+      Supervisor.child_spec({Phoenix.PubSub, name: M.Repo.pubsub_env()}, id: :npub_2),
+      M.Repo.ReadOnlyRepo,
+      M.Repo.Repo
+      #M.RepoWeb.Endpoint,
+      #M.Repo.QueryServer
+    ]
   end
 
   @impl true

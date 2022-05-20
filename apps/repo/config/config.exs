@@ -8,12 +8,19 @@
 import Config
 
 # Configure your database
-config :mart_repo, M.Member.Repo,
+config :mart_repo, M.Repo.ReadOnlyRepo,
   username: "m",
   password: "321@mart@321",
   hostname: "localhost",
   database: "m_member",
   show_sensitive_data_on_connection_error: true,
+  pool_size: 5
+
+config :mart_repo, M.Repo.Repo,
+  username: "m",
+  password: "123@mart@321",
+  hostname: "localhost",
+  database: "m_member",
   pool_size: 10
 
 config :mart_repo,
@@ -37,6 +44,11 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :sprawl, seed_node: :"env@yauhsien-Precision-5540"
+
+config :mart_repo, :node_resources,
+  pubsub_repo_query: Node.Repo.Query.PubSub,
+  pubsub_repo_command: Node.Repo.Command.PubSub,
+  pubsub_env: Node.Env.PubSub
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
