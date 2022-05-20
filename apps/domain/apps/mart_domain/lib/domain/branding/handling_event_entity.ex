@@ -4,7 +4,11 @@ alias Branding.HandlingEventEntity
 alias HandlingEventEntity.Protocol
 
 defprotocol Protocol do
-  #TODO: need impl.
+  alias Branding.CourseAggregate
+  #alias Branding.TutorEntity
+
+  @spec set(HandlingEventEntity, CourseAggregate, TutorEntity, :atom, NaiveDateTime) :: HandlingEventEntity
+  def set(obj, course, tutor, case_term, date_time)
 end
 
 entity HandlingEventEntity do
@@ -18,9 +22,12 @@ entity HandlingEventEntity do
     field :id, id(), default: nil
     field :course, CourseAggregate, enforce: true
     field :tutor, TutorEntity, enforce: true
+    field :case, :atom, enforce: true
+    field :time, NaiveDateTime, default: NaiveDateTime.utc_now()
   end
 
   defimpl Protocol do
-    #TODO: need impl.
+    def set(%HandlingEventEntity{} = obj, course, tutor, case_term, date_time),
+      do: %HandlingEventEntity{obj | course: course, tutor: tutor, case: case_term, time: date_time}
   end
 end
