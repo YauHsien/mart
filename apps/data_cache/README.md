@@ -12,7 +12,7 @@
 
 我會用一個稱為 Access Message 的查詢條件，每次查詢，先取得一段 Serving Data ，接著處理它，使它加入 Cached Data 。
 
-![Serving-Cached Data 的查詢。](priv/assets/imgae-2.png)
+![Serving-Cached Data 的查詢。](priv/assets/image-2.png)
 
 資料快取處理，開始由資料服務客戶端向服務端發送 Access Message 。資料服務的服務端回覆 Serving Data 。最後，前者消化 Serving Data ，將之收斂到 Cached Data 裡。
 
