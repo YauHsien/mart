@@ -30,7 +30,7 @@ Return Topic 表示資料服務客戶端打算由指定的 Return Topic 通道�
 
 Request Topic 與 Return Topic 都是 value object ，因為可共享使用。但只有 Return Topic 附著在 aggregate Access Message 裡；那是為了能自然地使用請求訊息，並且知道那一則請求訊息的回覆地址。
 
-資料服務的服務端模式
+## 資料服務的服務端模式
 由整個 ERTS 網路，即由一個或多個 ERTS 個體所構成的系統，可以藉由 pubsub name 找到個別 Phoenix.PubSub 。
 
 Phoenix.PubSub 是 service 且是 aggregate 。
@@ -43,7 +43,7 @@ Phoenix.PubSub 是 service 且是 aggregate 。
 
 在系統準備階段，先進行圖示步驟 1: 。接著，每一次查詢，依序進行步驟 2:, 3:, 4:, 5:, 6: 等。
 
-資料服務客戶端模式
+## 資料服務客戶端模式
 客戶端也是，由整個 ERTS 網路（由一個或多個 ERTS 個體所構成的系統）藉由 pubsub name 找到個別的 Phoenix.PubSub 。
 
 客戶端程式由 Serving Data Receiver ， Serving Data Requester 與 Data Cache 組成。
