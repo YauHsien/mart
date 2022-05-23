@@ -1,4 +1,4 @@
-defmodule M.Repo.Lecturer do
+defmodule M.Core.MartRepo.Lecturer do
   use Ecto.Schema
   import Ecto.Changeset
 

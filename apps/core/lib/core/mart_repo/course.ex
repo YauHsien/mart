@@ -1,4 +1,4 @@
-defmodule M.Repo.Course do
+defmodule M.Core.MartRepo.Course do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,21 +8,21 @@ defmodule M.Repo.Course do
     field :sku_id, :id
     field :course_plan_id, :id
 
-    belongs_to :sku, M.Repo.SKU,
+    belongs_to :sku, M.Core.MartRepo.SKU,
       define_field: false,
       foreign_key: :sku_id,
       references: :id
 
-    belongs_to :course_plan, M.Repo.Course.Plan,
+    belongs_to :course_plan, M.Core.MartRepo.Course.Plan,
       define_field: false,
       foreign_key: :course_plan_id,
       references: :id
 
-    has_many :tutorships, M.Repo.Tutorship,
+    has_many :tutorships, M.Core.MartRepo.Tutorship,
       foreign_key: :course_id,
       references: :id
 
-    has_many :bought_packages, M.Repo.Bought.Package,
+    has_many :bought_packages, M.Core.MartRepo.Bought.Package,
       foreign_key: :course_id,
       references: :id
 

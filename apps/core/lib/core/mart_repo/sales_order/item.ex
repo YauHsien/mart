@@ -1,4 +1,4 @@
-defmodule M.Repo.SalesOrder.Item do
+defmodule M.Core.MartRepo.SalesOrder.Item do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,22 +8,22 @@ defmodule M.Repo.SalesOrder.Item do
     field :basket_id, :id
     field :sales_order_id, :id
 
-    belongs_to :sku, M.Repo.SKU,
+    belongs_to :sku, M.Core.MartRepo.SKU,
       define_field: false,
       foreign_key: :sku_id,
       references: :id
 
-    belongs_to :basket, M.Repo.Basket,
+    belongs_to :basket, M.Core.MartRepo.Basket,
       define_field: false,
       foreign_key: :basket_id,
       references: :id
 
-    belongs_to :sales_order, M.Repo.SalesOrder,
+    belongs_to :sales_order, M.Core.MartRepo.SalesOrder,
       define_field: false,
       foreign_key: :sales_order_id,
       references: :id
 
-    has_one :bought_package, M.Repo.Bought.Package,
+    has_one :bought_package, M.Core.MartRepo.Bought.Package,
       foreign_key: :sales_order_item_id,
       references: :id
 

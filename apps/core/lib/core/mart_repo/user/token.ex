@@ -1,4 +1,4 @@
-defmodule M.Repo.User.Token do
+defmodule M.Core.MartRepo.User.Token do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,7 +8,7 @@ defmodule M.Repo.User.Token do
     field :user_token, :string
     field :user_account_id, :id
 
-    belongs_to :user_account, M.Repo.User.Account,
+    belongs_to :user_account, M.Core.MartRepo.User.Account,
       define_field: false,
       foreign_key: :user_account_id,
       references: :id

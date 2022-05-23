@@ -1,4 +1,4 @@
-defmodule M.Repo.Room do
+defmodule M.Core.MartRepo.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,19 +8,19 @@ defmodule M.Repo.Room do
     field :ending_datetime, :naive_datetime
     field :lesson_id, :id
 
-    many_to_many :tutorships, M.Repo.Tutorship,
+    many_to_many :tutorships, M.Core.MartRepo.Tutorship,
       join_through: "lecturers"
 
-    has_many :studentships, M.Repo.Studentship,
+    has_many :studentships, M.Core.MartRepo.Studentship,
       foreign_key: :room_id,
       references: :id
 
-    belongs_to :lesson, M.Repo.Lesson,
+    belongs_to :lesson, M.Core.MartRepo.Lesson,
       define_field: false,
       foreign_key: :lesson_id,
       references: :id
 
-    has_many :vlogs, M.Repo.Room.Vlog,
+    has_many :vlogs, M.Core.MartRepo.Room.Vlog,
       foreign_key: :room_id,
       references: :id
 

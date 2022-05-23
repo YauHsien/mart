@@ -1,4 +1,4 @@
-defmodule M.Repo.Payment do
+defmodule M.Core.MartRepo.Payment do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,12 +10,12 @@ defmodule M.Repo.Payment do
     field :user_account_id, :id
     field :sales_order_id, :id
 
-    belongs_to :user_account, M.Repo.User.Account,
+    belongs_to :user_account, M.Core.MartRepo.User.Account,
       define_field: false,
       foreign_key: :user_account_id,
       references: :id
 
-    belongs_to :sales_order, M.Repo.SalesOrder,
+    belongs_to :sales_order, M.Core.MartRepo.SalesOrder,
       define_field: false,
       foreign_key: :sales_order_id,
       references: :id

@@ -1,21 +1,21 @@
-defmodule M.Repo.Promotion do
+defmodule M.Core.MartRepo.Course.Plan do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "promotions" do
+  schema "course_plans" do
     field :description, :string
     field :name, :string
 
-    has_many :pricings, M.Repo.Pricing,
-      foreign_key: :promotion_id,
+    has_many :courses, M.Core.MartRepo.Course,
+      foreign_key: :course_plan_id,
       references: :id
 
     timestamps()
   end
 
   @doc false
-  def changeset(promotion, attrs) do
-    promotion
+  def changeset(plan, attrs) do
+    plan
     |> cast(attrs, [:name, :description])
     |> validate_required([:name, :description])
   end

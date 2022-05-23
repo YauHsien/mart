@@ -4,22 +4,23 @@ defmodule M.Repo.QueryServer do
   require M.Core.Common
   alias   M.Core.Common
   require M.Core.Common.RepoMessage
-  alias M.Repo.Basket
-  alias M.Repo.Bought
-  alias M.Repo.Course
-  alias M.Repo.Lecturer
-  alias M.Repo.Lession
-  alias M.Repo.Payment
-  alias M.Repo.Pricing
-  alias M.Repo.Promotion
-  alias M.Repo.Repo
-  alias M.Repo.Room
-  alias M.Repo.SalesOrder
-  alias M.Repo.Shop
-  alias M.Repo.SKU
-  alias M.Repo.Studentship
-  alias M.Repo.Tutorship
-  alias M.Repo.User
+  alias M.Core.MartRepo
+  alias MartRepo.Basket
+  alias MartRepo.Bought
+  alias MartRepo.Course
+  alias MartRepo.Lecturer
+  alias MartRepo.Lession
+  alias MartRepo.Payment
+  alias MartRepo.Pricing
+  alias MartRepo.Promotion
+  alias MartRepo.Repo
+  alias MartRepo.Room
+  alias MartRepo.SalesOrder
+  alias MartRepo.Shop
+  alias MartRepo.SKU
+  alias MartRepo.Studentship
+  alias MartRepo.Tutorship
+  alias MartRepo.User
   alias Phoenix.PubSub
 
   def start_link(args), do: GenServer.start_link(__MODULE__, args)

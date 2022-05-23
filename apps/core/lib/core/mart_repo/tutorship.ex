@@ -1,4 +1,4 @@
-defmodule M.Repo.Tutorship do
+defmodule M.Core.MartRepo.Tutorship do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,20 +9,20 @@ defmodule M.Repo.Tutorship do
     field :shop_id, :id
     field :course_id, :id
 
-    many_to_many :rooms, M.Repo.Room,
+    many_to_many :rooms, M.Core.MartRepo.Room,
       join_through: "lectures"
 
-    belongs_to :shop, M.Repo.Shop,
+    belongs_to :shop, M.Core.MartRepo.Shop,
       define_field: false,
       foreign_key: :shop_id,
       references: :id
 
-    belongs_to :course, M.Repo.Course,
+    belongs_to :course, M.Core.MartRepo.Course,
       define_field: false,
       foreign_key: :course_id,
       references: :id
 
-    belongs_to :user_account, M.Repo.User.Account,
+    belongs_to :user_account, M.Core.MartRepo.User.Account,
       define_field: false,
       foreign_key: :user_account_id,
       references: :id

@@ -1,4 +1,4 @@
-defmodule M.Repo.Room.Vlog do
+defmodule M.Core.MartRepo.Room.Vlog do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,7 +8,7 @@ defmodule M.Repo.Room.Vlog do
     field :uri, :string
     field :room_id, :id
 
-    belongs_to :room, M.Repo.Room,
+    belongs_to :room, M.Core.MartRepo.Room,
       define_field: false,
       foreign_key: :room_id,
       references: :id

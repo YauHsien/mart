@@ -22,7 +22,8 @@ defmodule M.Repo.Repo1 do
   alias Ecto
   alias Ecto.Multi
   alias M.Core.Common
-  alias M.Repo.User.Account
+  alias M.Core.MartRepo
+  alias MartRepo.User.Account
   alias NaiveDateTime
 
   def user_accounts() do

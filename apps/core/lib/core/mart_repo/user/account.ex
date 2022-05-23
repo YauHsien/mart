@@ -1,8 +1,8 @@
-defmodule M.Repo.User.Account do
+defmodule M.Core.MartRepo.User.Account do
   use Ecto.Schema
   import Ecto.Changeset
-  alias M.Repo.User.Account
-  alias M.Repo.User.Account.Password
+  alias M.Core.MartRepo.User.Account
+  alias M.Core.MartRepo.User.Account.Password
   alias M.Core.Timespan
   alias Plug.Crypto
 
@@ -15,11 +15,11 @@ defmodule M.Repo.User.Account do
     field :user_token, :string
     field :username, :string
 
-    has_many :user_tokens, M.Repo.User.Token,
+    has_many :user_tokens, M.Core.MartRepo.User.Token,
       foreign_key: :user_account_id,
       references: :id
 
-    has_many :tutorships, M.Repo.Tutorship,
+    has_many :tutorships, M.Core.MartRepo.Tutorship,
       foreign_key: :user_account_id,
       references: :id
 

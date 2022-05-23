@@ -1,4 +1,4 @@
-defmodule M.Repo.Bought.Ticket do
+defmodule M.Core.MartRepo.Bought.Ticket do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,17 +7,17 @@ defmodule M.Repo.Bought.Ticket do
     field :bought_package_id, :id
     field :lesson_id, :id
 
-    belongs_to :bought_package, M.Repo.Bought.Package,
+    belongs_to :bought_package, M.Core.MartRepo.Bought.Package,
       define_field: false,
       foreign_key: :bought_package_id,
       references: :id
 
-    belongs_to :lesson, M.Repo.Lesson,
+    belongs_to :lesson, M.Core.MartRepo.Lesson,
       define_field: false,
       foreign_key: :lesson_id,
       references: :id
 
-    has_one :studentship, M.Repo.Studentship,
+    has_one :studentship, M.Core.MartRepo.Studentship,
       foreign_key: :bought_ticket_id,
       references: :id
 

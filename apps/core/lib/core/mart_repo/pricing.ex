@@ -1,4 +1,4 @@
-defmodule M.Repo.Pricing do
+defmodule M.Core.MartRepo.Pricing do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,12 +7,12 @@ defmodule M.Repo.Pricing do
     field :sku_id, :id
     field :promotion_id, :id
 
-    belongs_to :sku, M.Repo.SKU,
+    belongs_to :sku, M.Core.MartRepo.SKU,
       define_field: false,
       foreign_key: :sku_id,
       references: :id
 
-    belongs_to :promotion, M.Repo.Promotion,
+    belongs_to :promotion, M.Core.MartRepo.Promotion,
       define_field: false,
       foreign_key: :promotion_id,
       references: :id

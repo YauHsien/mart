@@ -1,4 +1,4 @@
-defmodule M.Repo.SKU do
+defmodule M.Core.MartRepo.SKU do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,20 +7,20 @@ defmodule M.Repo.SKU do
     field :price, :decimal
     field :shop_id, :id
 
-    belongs_to :shop, M.Repo.Shop,
+    belongs_to :shop, M.Core.MartRepo.Shop,
       define_field: false,
       foreign_key: :shop_id,
       references: :id
 
-    has_many :pricings, M.Repo.Pricing,
+    has_many :pricings, M.Core.MartRepo.Pricing,
       foreign_key: :sku_id,
       references: :id
 
-    has_one :course, M.Repo.Course,
+    has_one :course, M.Core.MartRepo.Course,
       foreign_key: :sku_id,
       references: :id
 
-    has_many :sales_order_items, M.Repo.SalesOrder.Item,
+    has_many :sales_order_items, M.Core.MartRepo.SalesOrder.Item,
       foreign_key: :sku_id,
       references: :id
 
