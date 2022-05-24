@@ -6,8 +6,12 @@ alias DataCache.BrandingTutorAccessMessage
 alias DataCache.BrandingTutoringBrandAccessMessage
 alias DataCache.BrandingCourseAccessMessage
 alias DataCache.BrandingHandlingEventAccessMessage
+alias MartRepo.Course
+alias MartRepo.HandlingEvent
+alias MartRepo.Lesson
 alias MartRepo.Shop
 alias MartRepo.Tutorship
+alias MartRepo.User
 
 defprotocol AccessMessage.ToQueryProtocol do
   @spec access_by(struct()) :: Ecto.Query.t()
@@ -15,8 +19,10 @@ defprotocol AccessMessage.ToQueryProtocol do
 end
 
 defimpl AccessMessage.ToQueryProtocol, for: BrandingTutorAccessMessage do
-  def access_by(access_message) do
-    raise "not implemented for #{inspect access_message}"
+  def access_by(%BrandingTutorAccessMessage{message: {:id, id}}) do
+    from t in Tutorship, join: a in User.Account, on: t.user_account_id == a.id,
+      where: t.id == ^id,
+      select: [id: t.id, name: a.name]
   end
 end
 defimpl AccessMessage.ToQueryProtocol, for: BrandingTutoringBrandAccessMessage do
@@ -29,12 +35,15 @@ defimpl AccessMessage.ToQueryProtocol, for: BrandingTutoringBrandAccessMessage d
   end
 end
 defimpl AccessMessage.ToQueryProtocol, for: BrandingCourseAccessMessage do
-  def access_by(access_message) do
-    raise "not implemented for #{inspect access_message}"
+  def access_by(%BrandingCourseAccessMessage{message: {:id, id}}) do
+    course_plan_id = from c in Course, where: c.id == ^id, select: c.course_plan_id
+    agenda = from p in Course.Plan, where: p.id == ^course_plan_id, select: [p.name, p.description]
+    lessons = from l in Lesson, where: l.course_id == ^id
+    from c in Course, select: [id: ^id, name: c.name, agenda: ^agenda, lessons: ^lessons, handling_events: []]
   end
 end
 defimpl AccessMessage.ToQueryProtocol, for: BrandingHandlingEventAccessMessage do
-  def access_by(access_message) do
-    raise "not implemented for #{inspect access_message}"
+  def access_by(%BrandingHandlingEventAccessMessage{message: {:id, id}}) do
+    from h in HandlingEvent, where: h.id == ^id
   end
 end
