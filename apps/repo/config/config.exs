@@ -50,6 +50,14 @@ config :mart_repo, :node_resources,
   pubsub_repo_command: Node.Repo.Command.PubSub,
   pubsub_env: Node.Env.PubSub
 
+config :mart_repo, :subscribing_topics,
+  for_member: PubSub.Member.RequestTopic,
+  for_branding: PubSub.Branding.RequestTopic,
+  for_portfolio: PubSub.Portfolio.RequestTopic,
+  for_course: PubSub.Course.RequestTopic,
+  for_listing: PubSub.Listing.RequestTopic,
+  for_sales: PubSub.Sales.RequestTopic
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

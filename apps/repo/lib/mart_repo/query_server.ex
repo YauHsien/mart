@@ -23,7 +23,8 @@ defmodule M.Repo.QueryServer do
   alias MartRepo.User
   alias Phoenix.PubSub
 
-  def start_link(args), do: GenServer.start_link(__MODULE__, args)
+  def start_link(args),
+    do: GenServer.start_link(__MODULE__, args, name: Keyword.fetch!(args, :name))
 
 
 

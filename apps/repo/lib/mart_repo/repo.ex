@@ -16,7 +16,6 @@ defmodule M.Repo.Repo1 do
   #alias M.Repo.SKU
   #alias M.Repo.Studentship
   #alias M.Repo.Tutorship
-  #alias M.Repo.User
 
   import Ecto.Query
   alias Ecto
