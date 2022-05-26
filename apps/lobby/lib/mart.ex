@@ -7,26 +7,11 @@ defmodule M.Lobby do
   if it comes from the database, an external API or others.
   """
   def app,
-    do: elem(:application.get_application(__MODULE__), 1)
+    do: Application.get_application(M.Lobby.Application)
+
+  def pubsub_domain,
+    do: Application.fetch_env!(app(), :node_resources)[:pubsub_domain]
 
   def pubsub_lobby,
     do: Application.fetch_env!(app(), :node_resources)[:pubsub_lobby]
-
-  def pubsub_accounting,
-    do: Application.fetch_env!(app(), :node_resources)[:pubsub_accounting]
-
-  def pubsub_env,
-    do: Application.fetch_env!(app(), :node_resources)[:pubsub_env]
-
-  def pubsub_member,
-    do: Application.fetch_env!(app(), :node_resources)[:pubsub_member]
-
-  def pubsub_portfolio,
-    do: Application.fetch_env!(app(), :node_resources)[:pubsub_portfolio]
-
-  def pubsub_sales_order,
-    do: Application.fetch_env!(app(), :node_resources)[:pubsub_sales_order]
-
-  def pubsub_shop,
-    do: Application.fetch_env!(app(), :node_resources)[:pubsub_shop]
 end

@@ -15,8 +15,8 @@ repository CourseRepository do
   alias Course.CourseAggregate, as: CourseCA
   alias Listing.CourseAggregate, as: ListingCA
   alias Portfolio.CourseAggregate, as: PortfolioCA
-  @command_channel Application.fetch_env!(:mart_domain, :repo_write_pub_sub)
-  @query_channel Application.fetch_env!(:mart_domain, :repo_read_pub_sub)
+  @command_channel M.Domain.pubsub_repo_command()
+  @query_channel M.Domain.pubsub_repo_query()
   @repository Application.fetch_env!(:mart_domain, :repo_for_bought_package_model)
 
   use TypedStruct

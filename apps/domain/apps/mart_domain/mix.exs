@@ -17,8 +17,7 @@ defmodule M.Domain.MixProject do
 
   def application do
     [
-      extra_applications: [:logger],
-      mod: {M.Domain.Application, []}
+      extra_applications: [:logger]
     ]
   end
 

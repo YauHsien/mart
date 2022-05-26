@@ -17,8 +17,7 @@ defmodule M.Domain.Branding.MixProject do
 
   def application do
     [
-      extra_applications: [:logger],
-      mod: {M.Domain.Application.BrandingApplication, []}
+      extra_applications: [:logger]
     ]
   end
 
