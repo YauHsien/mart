@@ -11,6 +11,7 @@ alias DataCache.BrandingHandlingEventAccessMessage
 
 defmodule AccessMessage do
   @range [
+    {:member, :aggregate, :user_account},
     {:branding, :entity, :tutor},
     {:branding, :entity, :tutoring_brand},
     {:branding, :aggregate, :course},
@@ -39,6 +40,7 @@ end
 
 import YDToolkit
 
+entity UserAccountAccessMessage, do: use AccessMessage, domain: :member, type: :aggregate, name: :user_account
 entity BrandingTutorAccessMessage, do: use AccessMessage, domain: :branding, type: :entity, name: :tutor
 entity BrandingTutoringBrandAccessMessage, do: use AccessMessage, domain: :branding, type: :entity, name: :tutoring_brand
 entity BrandingCourseAccessMessage, do: use AccessMessage, domain: :branding, type: :aggregate, name: :course

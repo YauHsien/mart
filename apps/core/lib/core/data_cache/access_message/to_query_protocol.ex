@@ -18,6 +18,12 @@ defprotocol AccessMessage.ToQueryProtocol do
   def access_by(acccess_message)
 end
 
+defimpl AccessMessage.ToQueryProtocol, for: UserAccountAccessMessage do
+  def access_by(%UserAccountAccessMessage{message: {:id, id}}) do
+    from u in User.Account, where: u.id == ^id
+  end
+end
+
 defimpl AccessMessage.ToQueryProtocol, for: BrandingTutorAccessMessage do
   def access_by(%BrandingTutorAccessMessage{message: {:id, id}}) do
     from t in Tutorship, join: a in User.Account, on: t.user_account_id == a.id,
