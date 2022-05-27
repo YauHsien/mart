@@ -14,10 +14,14 @@ alias MartRepo.Tutorship
 alias MartRepo.User
 
 defprotocol AccessMessage.ToQueryProtocol do
+  @moduledoc """
+  Protocol to convert a Access Message to Query.
+  """
   @spec access_by(struct()) :: Ecto.Query.t()
   def access_by(acccess_message)
 end
 
+quote do
 defimpl AccessMessage.ToQueryProtocol, for: UserAccountAccessMessage do
   def access_by(%UserAccountAccessMessage{message: {:id, id}}) do
     from u in User.Account, where: u.id == ^id
@@ -52,4 +56,5 @@ defimpl AccessMessage.ToQueryProtocol, for: BrandingHandlingEventAccessMessage d
   def access_by(%BrandingHandlingEventAccessMessage{message: {:id, id}}) do
     from h in HandlingEvent, where: h.id == ^id
   end
+end
 end

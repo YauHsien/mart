@@ -23,7 +23,7 @@ value_object RequestTopic do
   end
 
   defimpl TopicProtocol do
-    @range [:branding, :portfolio, :course, :listing, :sales]
+    @range [:member, :branding, :portfolio, :course, :listing, :sales]
 
     @spec to_binary(RequestTopic.t()) :: binary()
     def to_binary(%RequestTopic{on_domain: domain}),

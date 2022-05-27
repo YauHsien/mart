@@ -1,3 +1,4 @@
+# TODO: Deprecated
 defmodule M.Domain.MemberAggregate.UserAccount do
 
   alias M.Domain.Branding.TutoringBrand

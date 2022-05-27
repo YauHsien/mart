@@ -1,5 +1,6 @@
 alias M.Core.DataCache
 alias DataCache.AccessMessage
+alias DataCache.UserAccountAccessMessage
 alias DataCache.BrandingTutorAccessMessage
 alias DataCache.BrandingTutoringBrandAccessMessage
 alias DataCache.BrandingCourseAccessMessage
@@ -21,18 +22,20 @@ defmodule AccessMessage do
   defmacro __using__(domain: domain, type: type, name: name) when {domain, type, name} in @range do
     quote do
       alias M.Core.DataCache.ReturnTopic
+      alias Phoenix.PubSub
 
       use TypedStruct
       typedstruct do
-        field :id, term(), enforce: true
-        field :message, term(), enforce: true
-        field :return_topic, ReturnTopic
+        field :domain, :atom, enforce: true
+        field :id, :term, enforce: true
+        field :message, :term, enforce: true
+        field :return_topic, PubSub.topic
       end
 
-      @spec create(term(), ReturnTopic) :: t()
-      @spec create(term(), ReturnTopic, term()) :: t()
+      @spec create(term(), PubSub.topic) :: t()
+      @spec create(term(), PubSub.topic, term()) :: t()
       def create(message, return_topic, id \\ {__MODULE__, NaiveDateTime.utc_now()}) do
-        %__MODULE__{id: id, message: message, return_topic: return_topic}
+        %__MODULE__{domain: unquote(domain), id: id, message: message, return_topic: return_topic}
       end
     end
   end
@@ -40,7 +43,7 @@ end
 
 import YDToolkit
 
-entity UserAccountAccessMessage, do: use AccessMessage, domain: :member, type: :aggregate, name: :user_account
+defmodule UserAccountAccessMessage, do: use AccessMessage, domain: :member, type: :aggregate, name: :user_account
 entity BrandingTutorAccessMessage, do: use AccessMessage, domain: :branding, type: :entity, name: :tutor
 entity BrandingTutoringBrandAccessMessage, do: use AccessMessage, domain: :branding, type: :entity, name: :tutoring_brand
 entity BrandingCourseAccessMessage, do: use AccessMessage, domain: :branding, type: :aggregate, name: :course
