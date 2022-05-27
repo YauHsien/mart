@@ -1,4 +1,4 @@
-defmodule M.Repo.ListingServingRequestReciever do
+defmodule M.Repo.ListingServingRequestReceiver do
   use M.Repo.ServingRequestReceiver, domain: :listing
   alias Phoenix.PubSub
 

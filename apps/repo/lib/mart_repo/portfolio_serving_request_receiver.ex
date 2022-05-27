@@ -1,4 +1,4 @@
-defmodule M.Repo.PortfolioServingRequestReciever do
+defmodule M.Repo.PortfolioServingRequestReceiver do
   use M.Repo.ServingRequestReceiver, domain: :portfolio
   alias Phoenix.PubSub
 

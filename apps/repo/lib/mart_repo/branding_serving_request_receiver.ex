@@ -1,4 +1,4 @@
-defmodule M.Repo.BrandingServingRequestReciever do
+defmodule M.Repo.BrandingServingRequestReceiver do
   use M.Repo.ServingRequestReceiver, domain: :branding
   alias Phoenix.PubSub
 

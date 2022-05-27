@@ -13,7 +13,6 @@ defmodule M.Repo.QueryServer do
   alias MartRepo.Payment
   alias MartRepo.Pricing
   alias MartRepo.Promotion
-  alias MartRepo.Repo
   alias MartRepo.Room
   alias MartRepo.SalesOrder
   alias MartRepo.Shop
@@ -21,6 +20,7 @@ defmodule M.Repo.QueryServer do
   alias MartRepo.Studentship
   alias MartRepo.Tutorship
   alias MartRepo.User
+  alias M.Repo.ReadOnlyRepository, as: Repo
   alias Phoenix.PubSub
 
   def start_link(args),
@@ -99,7 +99,7 @@ defmodule M.Repo.QueryServer do
 
   def handle_info(Common.RepoMessage.aggregate(target, id), state) do
 
-    aggregate(target, id)
+    _aggregate(target, id)
     |> Enum.map(&(
           PubSub.broadcast!(
             M.Repo.pubsub_repo_query,
@@ -126,7 +126,7 @@ defmodule M.Repo.QueryServer do
 
 
 
-  @spec aggregate(atom(), term()) ::
+  @spec _aggregate(atom(), term()) ::
   [
     {
       {:object, atom(), id: term()} |
@@ -134,10 +134,10 @@ defmodule M.Repo.QueryServer do
     }
   ]
 
-  defp aggregate(table, id)
+  defp _aggregate(table, id)
 
 
-  defp aggregate(User.Account, id) do
+  defp _aggregate(User.Account, id) do
 
     account =
       Repo.one(from t in User.Account, where: t.id == ^id)

@@ -13,7 +13,7 @@ defmodule M.Repo.Application do
       M.RepoWeb.Telemetry,
       M.RepoWeb.Endpoint,
       {Registry, keys: :unique, name: RepoRegistry},
-      QueryServer, name: {:via, Registry, {RepoRegistry, RepoQueryServer}}
+      {M.Repo.QueryServer, name: {:via, Registry, {RepoRegistry, RepoQueryServer}}}
     ] ++ (
       [:member, :branding, :portfolio, :course, :listing, :sales]
       |> Enum.map(& Supervisor.child_spec(

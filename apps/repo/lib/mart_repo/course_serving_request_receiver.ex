@@ -1,4 +1,4 @@
-defmodule M.Repo.CourseServingRequestReciever do
+defmodule M.Repo.CourseServingRequestReceiver do
   use M.Repo.ServingRequestReceiver, domain: :course
   alias Phoenix.PubSub
 
