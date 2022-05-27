@@ -16,9 +16,9 @@ config :mart_repo, :node_resources,
   pubsub_repo_command: Node.Repo.CommandChannel
 
 config :mart_repo, :subscribing_topics,
-  for_member: "PubSub.Member.RequestTopic",
-  for_branding: "PubSub.Branding.RequestTopic",
-  for_portfolio: "PubSub.Portfolio.RequestTopic",
-  for_course: "PubSub.Course.RequestTopic",
-  for_listing: "PubSub.Listing.RequestTopic",
-  for_sales: "PubSub.Sales.RequestTopic"
+  for_member: PubSub.Member.RequestTopic,
+  for_branding: PubSub.Branding.RequestTopic,
+  for_portfolio: PubSub.Portfolio.RequestTopic,
+  for_course: PubSub.Course.RequestTopic,
+  for_listing: PubSub.Listing.RequestTopic,
+  for_sales: PubSub.Sales.RequestTopic
