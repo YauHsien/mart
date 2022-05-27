@@ -1,5 +1,5 @@
 defmodule M.Repo.CourseServingRequestReciever do
-  use M.Repo.ServingRequestReceiver
+  use M.Repo.ServingRequestReceiver, domain: :course
   alias Phoenix.PubSub
 
   @impl true

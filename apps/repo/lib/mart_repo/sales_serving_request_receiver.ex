@@ -1,5 +1,5 @@
 defmodule M.Repo.SalesServingRequestReciever do
-  use M.Repo.ServingRequestReceiver
+  use M.Repo.ServingRequestReceiver, domain: :sales
   alias Phoenix.PubSub
 
   @impl true

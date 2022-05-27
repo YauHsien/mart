@@ -1,7 +1,8 @@
 defmodule M.Repo.ServingRequestReceiver do
-  defmacro __using__(_opts) do
+  defmacro __using__(domain: domain) do
     quote do
       use GenServer
+      alias M.Repo.SubscribingTopic, as: Topic
       alias Phoenix.PubSub
 
       def start_link(args), do: GenServer.start_link(__MODULE__, args,
@@ -10,7 +11,7 @@ defmodule M.Repo.ServingRequestReceiver do
       @impl true
       def init(args) do
         Keyword.fetch!(args, :pubsub_query)
-        |> PubSub.subscribe(M.Repo.SubscribingTopic.for_member())
+        |> PubSub.subscribe(unquote("Topic.for_" <> to_string(domain)))
         {:ok,
          %{
            query_server: Keyword.fetch!(args, :query_server)
