@@ -22,7 +22,8 @@ defmodule Repo0525.MixProject do
       {:sprawl, "~> 1.0.0", override: true, github: "YauHsien/beamsprawl", sparse: "sprawl"},
       {:node_resources, "~> 1.0.0", app: false, github: "YauHsien/beamsprawl", sparse: "node_resources"},
       {:phoenix_pubsub, ">= 2.1.1"},
-      {:mart_repo, "~> 0.1.0", app: false, path: "../../../../mart/apps/repo"}
+      {:mart_domain_umbrella, app: false, path: "../../../../mart/apps/domain"},
+      {:mart_repo, "~> 0.1.0", override: true, app: false, path: "../../../../mart/apps/repo"}
     ]
   end
 

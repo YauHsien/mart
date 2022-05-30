@@ -28,7 +28,7 @@ defmodule M.Domain.MixProject do
       {:plug_crypto, "~> 1.2.2"},
       {:typed_struct, "~> 0.1.4"},
       {:uuid, "~> 1.1"},
-      {:mart_core, "~> 0.1.0", app: false, github: "YauHsien/mart", branch: "main", sparse: "apps/core"}
+      {:mart_core, "~> 0.1.0", app: false, path: "../../../core"}
     ]
   end
 end

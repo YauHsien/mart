@@ -1,4 +1,4 @@
-defmodule MartRepo.User.Account.Password do
+defmodule M.Core.MartRepo.User.Account.Password do
   alias Ecto.Changeset
   alias Plug.Crypto
   alias Timex.Timezone

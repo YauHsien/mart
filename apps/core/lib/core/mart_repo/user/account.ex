@@ -1,9 +1,10 @@
 defmodule M.Core.MartRepo.User.Account do
   use Ecto.Schema
   import Ecto.Changeset
-  alias M.Core.MartRepo.User.Account
-  alias M.Core.MartRepo.User.Account.Password
+  alias M.Core.MartRepo
   alias M.Core.Timespan
+  alias MartRepo.User.Account, as: UserAccount
+  alias UserAccount.Password
   alias Plug.Crypto
 
   @derive {Jason.Encoder, only: [:username, :salt, :password_changed_when, :user_token, :expired_when]}
@@ -84,8 +85,8 @@ defmodule M.Core.MartRepo.User.Account do
   {:error, :invalid}
 
   """
-  @spec verify(%Account{}, password :: String.t()) :: {:ok, username :: String.t()} | {:error, term()}
-  def verify(%Account{password: encrypted_password, salt: salt}, password) do
+  @spec verify(%UserAccount{}, password :: String.t()) :: {:ok, username :: String.t()} | {:error, term()}
+  def verify(%UserAccount{password: encrypted_password, salt: salt}, password) do
     password
     |> Crypto.verify(salt, encrypted_password)
   end
@@ -102,8 +103,8 @@ defmodule M.Core.MartRepo.User.Account do
   false
 
   """
-  @spec verify!(%Account{}, password :: String.t()) :: boolean()
-  def verify!(%Account{username: _username} = account, password) do
+  @spec verify!(%UserAccount{}, password :: String.t()) :: boolean()
+  def verify!(%UserAccount{username: _username} = account, password) do
     verify(account, password)
     |> then(&(&1 !== {:error,:invalid}))
   end

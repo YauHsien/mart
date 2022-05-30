@@ -4,8 +4,10 @@ defmodule M.Domain do
   """
 
   def app,
-    do: Application.get_application(M.Domain.Application)
+    do: Application.get_application(M.Domain.Application) ||
+      Keyword.fetch!(__MODULE__.MixProject.project(), :app)
 
+  # TODO: need strip off live configuration from domain structures
   def pubsub_repo_query,
     do: Application.fetch_env!(app(), :node_resources)[:pubsub_repo_query]
 

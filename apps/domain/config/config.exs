@@ -30,5 +30,13 @@ config nil, :node_resources,
   pubsub_domain: Node.Domain.Channel,
   pubsub_lobby: Node.Lobby.Channel
 
+config :mart_domain, :repo_subscribing_topics,
+  for_member: PubSub.Member.RequestTopic,
+  for_branding: PubSub.Branding.RequestTopic,
+  for_portfolio: PubSub.Portfolio.RequestTopic,
+  for_course: PubSub.Course.RequestTopic,
+  for_listing: PubSub.Listing.RequestTopic,
+  for_sales: PubSub.Sales.RequestTopic
+
 config :ex_domain_toolkit,
   registry: Domain.Registry

@@ -26,8 +26,8 @@ defmodule AccessMessage do
 
       use TypedStruct
       typedstruct do
-        field :domain, :atom, enforce: true
-        field :id, :term, enforce: true
+        field :domain, :term, enforce: true, default: {unquote(domain), unquote(type), unquote(name)}
+        field :id, :term, enforce: true, default: NaiveDateTime.utc_now()
         field :message, :term, enforce: true
         field :return_topic, PubSub.topic
       end
@@ -35,7 +35,8 @@ defmodule AccessMessage do
       @spec create(term(), PubSub.topic) :: t()
       @spec create(term(), PubSub.topic, term()) :: t()
       def create(message, return_topic, id \\ {__MODULE__, NaiveDateTime.utc_now()}) do
-        %__MODULE__{domain: unquote(domain), id: id, message: message, return_topic: return_topic}
+        %__MODULE__{domain: {unquote(domain), unquote(type), unquote(name)}, id: id, message: message,
+                    return_topic: return_topic}
       end
     end
   end

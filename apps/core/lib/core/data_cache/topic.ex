@@ -46,8 +46,8 @@ value_object ReturnTopic do
 
   use TypedStruct
   typedstruct do
-    field :on_domain, :string, enfoce: true
-    field :alt, term(), enforce: true
+    field :on_domain, :term, enfoce: true
+    field :alt, term()
   end
 
   defimpl TopicProtocol do

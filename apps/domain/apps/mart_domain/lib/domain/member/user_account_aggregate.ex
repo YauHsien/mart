@@ -1,5 +1,7 @@
 import YDToolkit
+alias M.Core.MartRepo
 alias M.Domain.Member
+alias MartRepo.User.Account, as: UserAccount
 alias Member.UserAccountAggregate
 alias Member.PasswordValue
 alias Member.UserTokenValue
@@ -10,7 +12,16 @@ defprotocol Protocol do
 
   @spec create(String.t, String.t) :: UserAccountAggregate.t
   def create(username, password)
+
+  @spec transfer_from(UserAccount.t, list) :: UserAccountAggregate.t
+  def transfer_from(user, using_history)
 	#TODO: need impl.
+
+  @doc """
+  Support `create/2` and `new/2` operations to build a new user.
+  """
+  @spec new(UserAccountAggregate.t, UserAccountRepository.t) :: UserAccountAggregate.t
+  def new(user, repo)
 end
 
 value_object PasswordValue do
@@ -80,6 +91,21 @@ aggregate UserAccountAggregate do
           enc_token: enc_token,
           expired_when: expired_when
         }
+      }
+    end
+
+    @spec transfer_from(UserAccount.t, list) :: UserAccountAggregate.t
+    def transfer_from(user, using_history) do
+      %UserAccountAggregate{
+        id: user.id,
+        name: user.name,
+        password:
+        %PasswordValue{salt: user.salt, enc_pass: user.password,
+                       last_changed: user.password_changed_when},
+        user_token:
+        %UserTokenValue{salt: user.salt, enc_token: user.user_token,
+                        expired_when: user.expired_when},
+        using_history: using_history
       }
     end
     #TODO: need impl.

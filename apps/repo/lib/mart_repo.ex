@@ -7,7 +7,8 @@ defmodule M.Repo do
   if it comes from the database, an external API or others.
   """
   def app,
-    do: Application.get_application(M.Repo.Application)
+    do: Application.get_application(M.Repo.Application) ||
+      Keyword.fetch!(__MODULE__.MixProject.project, :app)
 
   def node_resources, do: Application.fetch_env!(app(), :node_resources)
 

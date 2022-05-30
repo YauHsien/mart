@@ -1,4 +1,6 @@
 defmodule M.Core.Common do
+  alias M.Core.DataCache
+  alias DataCache.UserAccountAccessMessage
   alias Phoenix.PubSub
 
 
@@ -46,28 +48,44 @@ defmodule M.Core.Common do
 
 
 
-  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map()) :: result :: (map() | false)
+  @spec command(return_to, to, resource, command, timeout)  :: result
+  when return_to: PubSub.t,
+    to: PubSub.t,
+    resource: PubSub.topic,
+    command: UserAccountAccessMessage.t | map,
+    timeout: Integer.t,
+    result: map | false
 
-  @spec command(from :: PubSub.t(), to :: PubSub.t(), resource :: PubSub.topic(), command :: map(), timeout :: Integer.t()) :: result :: (map() | false)
+  def command(return_to, to, resource, command, timeout \\ @timeout)
 
-  def command(from, to, resource, command, timeout \\ @timeout) do
+  def command(return_to, to, resource, %UserAccountAccessMessage{return_topic: return_topic} = command, timeout) do
+    PubSub.subscribe(return_to, return_topic)
+    PubSub.broadcast!(to, resource, command)
+    receive do
+      map_or_false ->
+        PubSub.unsubscribe(return_to, return_topic)
+        map_or_false
+    after
+      timeout ->
+        PubSub.unsubscribe(return_to, return_topic)
+        false
+    end
+  end
 
+  def command(return_to, to, resource, command, timeout) do
     return_addr =
       NaiveDateTime.utc_now() |>
       NaiveDateTime.to_gregorian_seconds() |>
       then(&("#{resource}:#{inspect &1}"))
-
-    PubSub.subscribe(from, return_addr)
-
-    PubSub.broadcast!(to, resource, %{command|pub_sub_name: from, return_addr: return_addr})
-
+    PubSub.subscribe(return_to, return_addr)
+    PubSub.broadcast!(to, resource, %{command | pub_sub_name: return_to, return_addr: return_addr})
     receive do
       map_or_false ->
-        PubSub.unsubscribe(from, return_addr)
+        PubSub.unsubscribe(return_to, return_addr)
         map_or_false
     after
       timeout ->
-        PubSub.unsubscribe(from, return_addr)
+        PubSub.unsubscribe(return_to, return_addr)
         false
     end
   end
