@@ -13,8 +13,8 @@ repository TutorRepository do
   alias Branding.TutorEntity, as: BrandingTE
   alias Course.TutorAggregate
   alias Listing.TutorEntity, as: ListingTE
-  @command_channel Application.fetch_env!(:mart_domain, :repo_write_pub_sub)
-  @query_channel Application.fetch_env!(:mart_domain, :repo_read_pub_sub)
+  @command_channel M.Domain.pubsub_repo_command()
+  @query_channel M.Domain.pubsub_repo_query()
   @repository Application.fetch_env!(:mart_domain, :repo_for_tutor_model)
 
   use TypedStruct

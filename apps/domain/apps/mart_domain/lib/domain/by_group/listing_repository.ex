@@ -11,8 +11,8 @@ end
 repository ListingRepository do
   alias Course.CustomerAggregate
   alias Sales.CustomerEntity
-  @command_channel Application.fetch_env!(:mart_domain, :repo_write_pub_sub)
-  @query_channel Application.fetch_env!(:mart_domain, :repo_read_pub_sub)
+  @command_channel M.Domain.pubsub_repo_command()
+  @query_channel M.Domain.pubsub_repo_query()
   @repository Application.fetch_env!(:mart_domain, :repo_for_listing_model)
 
   use TypedStruct

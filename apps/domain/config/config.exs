@@ -2,8 +2,6 @@ import Config
 alias M.Domain.ByGroup
 
 config :mart_domain,
-  repo_write_pub_sub: Node.Repo.Command.PubSub,
-  repo_read_pub_sub: Node.Repo.Query.PubSub,
   repo_for_bought_package_model: Domain.BoughtPackageModel.Repository,
   repo_for_course_model: Domain.CourseModel.Repository,
   repo_for_customer_model: Domain.CustomerModel.Repository,
@@ -18,6 +16,20 @@ config :mart_domain,
   repo_for_tutor_model: Domain.TutorModel.Repository,
   repo_for_tutoring_brand_model: Domain.TutoringBrand.Repository,
   repo_for_using_event_model: Domain.UsingEventModel.Repository
+
+config :mart_domain, :node_resources,
+  pubsub_repo_query: Node.Repo.QueryChannel,
+  pubsub_repo_command: Node.Repo.CommandChannel,
+  pubsub_domain: Node.Domain.Channel,
+  pubsub_lobby: Node.Lobby.Channel
+
+config :mart_domain, :repo_subscribing_topics,
+  for_member: PubSub.Member.RequestTopic,
+  for_branding: PubSub.Branding.RequestTopic,
+  for_portfolio: PubSub.Portfolio.RequestTopic,
+  for_course: PubSub.Course.RequestTopic,
+  for_listing: PubSub.Listing.RequestTopic,
+  for_sales: PubSub.Sales.RequestTopic
 
 config :ex_domain_toolkit,
   registry: Domain.Registry

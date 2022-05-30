@@ -4,67 +4,29 @@ defmodule M.Repo.QueryServer do
   require M.Core.Common
   alias   M.Core.Common
   require M.Core.Common.RepoMessage
-  alias M.Repo.Basket
-  alias M.Repo.Bought
-  alias M.Repo.Course
-  alias M.Repo.Lecturer
-  alias M.Repo.Lession
-  alias M.Repo.Payment
-  alias M.Repo.Pricing
-  alias M.Repo.Promotion
-  alias M.Repo.Repo
-  alias M.Repo.Room
-  alias M.Repo.SalesOrder
-  alias M.Repo.Shop
-  alias M.Repo.SKU
-  alias M.Repo.Studentship
-  alias M.Repo.Tutorship
-  alias M.Repo.User
+  alias M.Core.MartRepo
+  alias M.Repo.ReadOnlyRepository, as: Repo
+  alias M.Repo.SubscribingTopic
+  alias MartRepo.User
   alias Phoenix.PubSub
 
-  def start_link(args), do: GenServer.start_link(__MODULE__, args)
+  def start_link(args),
+    do: GenServer.start_link(__MODULE__, args, name: Keyword.fetch!(args, :name))
 
-
-
-
+  @query_channel M.Repo.pubsub_repo_query()
 
   @impl true
 
   def init(_args) do
-
-    # Subscribe "topic {:list, aggregate}" in query channel.
-    repos =
-      [
-        Basket,
-        Bought.Package,
-        Bought.Ticket,
-        Course,
-        Course.Plan,
-        Lecturer,
-        Lession,
-        Payment,
-        Pricing,
-        Promotion,
-        Room,
-        Room.Vlog,
-        SalesOrder,
-        SalesOrder.Item,
-        Shop,
-        SKU,
-        Studentship,
-        Tutorship,
-        User.Account,
-        User.Token
-      ]
-
-    repos
-    |> Enum.map(&( Common.RepoMessage.list(&1) |> Common.RepoMessage.topic ))
-    |> Enum.map(&( PubSub.subscribe(M.Repo.pubsub_repo_query, &1) ))
-
-    repos
-    |> Enum.map(&( Common.RepoMessage.aggregate(&1) |> Common.RepoMessage.topic ))
-    |> Enum.map(&( PubSub.subscribe(M.Repo.pubsub_repo_query, &1) ))
-
+    [
+      SubscribingTopic.for_member(),
+      SubscribingTopic.for_branding(),
+      SubscribingTopic.for_portfolio(),
+      SubscribingTopic.for_course(),
+      SubscribingTopic.for_listing(),
+      SubscribingTopic.for_sales()
+    ]
+    |> Enum.map(& PubSub.subscribe(@query_channel, &1))
     {:ok, %{}}
   end
 
@@ -97,7 +59,7 @@ defmodule M.Repo.QueryServer do
 
   def handle_info(Common.RepoMessage.aggregate(target, id), state) do
 
-    aggregate(target, id)
+    _aggregate(target, id)
     |> Enum.map(&(
           PubSub.broadcast!(
             M.Repo.pubsub_repo_query,
@@ -124,7 +86,7 @@ defmodule M.Repo.QueryServer do
 
 
 
-  @spec aggregate(atom(), term()) ::
+  @spec _aggregate(atom(), term()) ::
   [
     {
       {:object, atom(), id: term()} |
@@ -132,10 +94,10 @@ defmodule M.Repo.QueryServer do
     }
   ]
 
-  defp aggregate(table, id)
+  defp _aggregate(table, id)
 
 
-  defp aggregate(User.Account, id) do
+  defp _aggregate(User.Account, id) do
 
     account =
       Repo.one(from t in User.Account, where: t.id == ^id)

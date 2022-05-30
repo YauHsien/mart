@@ -1,7 +1,7 @@
 import Config
 
 # Configure your database
-config :mart_repo, M.Repo.Repo,
+config :mart_repo, M.Repo.ReadWriteRepository,
   username: "m",
   password: "321@mart@321",
   hostname: "localhost",

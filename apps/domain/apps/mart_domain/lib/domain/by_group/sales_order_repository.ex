@@ -9,8 +9,8 @@ end
 
 repository SalesOrderRepository do
   alias Sales.SalesOrderAggregate
-  @command_channel Application.fetch_env!(:mart_domain, :repo_write_pub_sub)
-  @query_channel Application.fetch_env!(:mart_domain, :repo_read_pub_sub)
+  @command_channel M.Domain.pubsub_repo_command()
+  @query_channel M.Domain.pubsub_repo_query()
   @repository Application.fetch_env!(:mart_domain, :repo_for_sales_order_model)
 
   use TypedStruct

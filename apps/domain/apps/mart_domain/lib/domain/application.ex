@@ -19,10 +19,12 @@ defmodule M.Domain.Application do
   alias M.Domain.ByGroup.TutorRepository
   alias M.Domain.ByGroup.TutoringBrandRepository
   alias M.Domain.ByGroup.UsingEventRepository
+  alias M.Repo.CommandServer
 
   defp children() do
     [
-      {Registry, keys: :unique, name: Domain.Registry}
+      {Registry, keys: :unique, name: Domain.Registry},
+      {CommandServer, name: {:via, Registry, {Domain.Registry, CommandServer}}}
     ] ++ (
       [
         {         BoughtPackageRepository, :repo_for_bought_package_model         },
