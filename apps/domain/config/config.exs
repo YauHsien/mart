@@ -23,13 +23,6 @@ config :mart_domain, :node_resources,
   pubsub_domain: Node.Domain.Channel,
   pubsub_lobby: Node.Lobby.Channel
 
-# hack
-config nil, :node_resources,
-  pubsub_repo_query: Node.Repo.QueryChannel,
-  pubsub_repo_command: Node.Repo.CommandChannel,
-  pubsub_domain: Node.Domain.Channel,
-  pubsub_lobby: Node.Lobby.Channel
-
 config :mart_domain, :repo_subscribing_topics,
   for_member: PubSub.Member.RequestTopic,
   for_branding: PubSub.Branding.RequestTopic,

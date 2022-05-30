@@ -38,11 +38,12 @@ config :mart_repo, M.Repo.ReadWriteRepository,
   password: "123@mart@321",
   hostname: "localhost",
   database: "m_member",
+  show_sensitive_data_on_connection_error: false,
   pool_size: 10
 
 config :mart_repo,
   namespace: M.Repo,
-  ecto_repos: [M.Repo.ReadWriteRepository, M.Repo.ReadOnlyRepository],
+  ecto_repos: [M.Repo.ReadWriteRepository],
   node_env: :"env@yauhsien-Precision-5540"
 
 # Configures the endpoint
@@ -66,6 +67,12 @@ config :mart_repo, :node_resources,
   pubsub_repo_query: Node.Repo.Query.PubSub,
   pubsub_repo_command: Node.Repo.Command.PubSub,
   pubsub_env: Node.Env.PubSub
+
+config :mart_domain, :node_resources,
+  pubsub_repo_query: Node.Repo.QueryChannel,
+  pubsub_repo_command: Node.Repo.CommandChannel,
+  pubsub_domain: Node.Domain.Channel,
+  pubsub_lobby: Node.Lobby.Channel
 
 config :mart_repo, :subscribing_topics,
   for_member: PubSub.Member.RequestTopic,

@@ -39,7 +39,7 @@ defmodule M.Repo.MixProject do
       {:phoenix, "~> 1.6.6"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
-      {:postgrex, ">= 0.0.0"},
+      {:postgrex, "~> 0.16.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:typed_struct, "~> 0.1.4"},
@@ -48,7 +48,7 @@ defmodule M.Repo.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:sprawl, ">= 1.0.0", github: "YauHsien/beamsprawl", branch: "main", sparse: "sprawl"},
       {:mart_core, "~> 0.1.0", app: false, path: "../core"},
-      {:mart_domain_umbrella, app: false, path: "../domain"}
+      {:mart_domain, app: false, path: "../domain/apps/mart_domain"}
     ]
   end
 

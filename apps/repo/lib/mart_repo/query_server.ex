@@ -4,8 +4,10 @@ defmodule M.Repo.QueryServer do
   require M.Core.Common
   alias   M.Core.Common
   require M.Core.Common.RepoMessage
+  alias M.Core.MartRepo
   alias M.Repo.ReadOnlyRepository, as: Repo
   alias M.Repo.SubscribingTopic
+  alias MartRepo.User
   alias Phoenix.PubSub
 
   def start_link(args),
